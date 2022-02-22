@@ -36,6 +36,12 @@ namespace EuroStatApp {
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipTitleItem toolTipTitleItem1 = new DevExpress.Utils.ToolTipTitleItem();
+            DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.ToolTipSeparatorItem toolTipSeparatorItem1 = new DevExpress.Utils.ToolTipSeparatorItem();
+            DevExpress.Utils.ToolTipItem toolTipItem2 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.ToolTipItem toolTipItem3 = new DevExpress.Utils.ToolTipItem();
             DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions3 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -45,6 +51,9 @@ namespace EuroStatApp {
             DevExpress.Utils.ContextButton contextButton2 = new DevExpress.Utils.ContextButton();
             DevExpress.Utils.ContextButton contextButton3 = new DevExpress.Utils.ContextButton();
             DevExpress.Utils.ContextButton contextButton4 = new DevExpress.Utils.ContextButton();
+            DevExpress.Utils.ContextButton contextButton5 = new DevExpress.Utils.ContextButton();
+            DevExpress.Utils.ContextButton contextButton6 = new DevExpress.Utils.ContextButton();
+            DevExpress.Utils.ContextButton contextButton7 = new DevExpress.Utils.ContextButton();
             DevExpress.XtraEditors.TableLayout.TableColumnDefinition tableColumnDefinition1 = new DevExpress.XtraEditors.TableLayout.TableColumnDefinition();
             DevExpress.XtraEditors.TableLayout.TableRowDefinition tableRowDefinition1 = new DevExpress.XtraEditors.TableLayout.TableRowDefinition();
             DevExpress.XtraEditors.TableLayout.TableRowDefinition tableRowDefinition2 = new DevExpress.XtraEditors.TableLayout.TableRowDefinition();
@@ -59,22 +68,51 @@ namespace EuroStatApp {
             DevExpress.XtraEditors.TableLayout.TableRowDefinition tableRowDefinition3 = new DevExpress.XtraEditors.TableLayout.TableRowDefinition();
             DevExpress.XtraEditors.TableLayout.TableRowDefinition tableRowDefinition4 = new DevExpress.XtraEditors.TableLayout.TableRowDefinition();
             DevExpress.XtraEditors.TableLayout.TableSpan tableSpan1 = new DevExpress.XtraEditors.TableLayout.TableSpan();
+            DevExpress.XtraGrid.Views.Tile.ItemTemplate itemTemplate2 = new DevExpress.XtraGrid.Views.Tile.ItemTemplate();
             DevExpress.XtraEditors.TableLayout.TableColumnDefinition tableColumnDefinition4 = new DevExpress.XtraEditors.TableLayout.TableColumnDefinition();
             DevExpress.XtraEditors.TableLayout.TableColumnDefinition tableColumnDefinition5 = new DevExpress.XtraEditors.TableLayout.TableColumnDefinition();
-            DevExpress.XtraEditors.TableLayout.TableRowDefinition tableRowDefinition5 = new DevExpress.XtraEditors.TableLayout.TableRowDefinition();
-            DevExpress.XtraEditors.TableLayout.TableRowDefinition tableRowDefinition6 = new DevExpress.XtraEditors.TableLayout.TableRowDefinition();
-            DevExpress.XtraEditors.TableLayout.TableSpan tableSpan2 = new DevExpress.XtraEditors.TableLayout.TableSpan();
             DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement6 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
             DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement7 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
             DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement8 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
+            DevExpress.XtraEditors.TableLayout.TableRowDefinition tableRowDefinition5 = new DevExpress.XtraEditors.TableLayout.TableRowDefinition();
+            DevExpress.XtraEditors.TableLayout.TableRowDefinition tableRowDefinition6 = new DevExpress.XtraEditors.TableLayout.TableRowDefinition();
+            DevExpress.XtraEditors.TableLayout.TableSpan tableSpan2 = new DevExpress.XtraEditors.TableLayout.TableSpan();
+            DevExpress.XtraGrid.Views.Tile.ItemTemplate itemTemplate3 = new DevExpress.XtraGrid.Views.Tile.ItemTemplate();
+            DevExpress.XtraEditors.TableLayout.TableColumnDefinition tableColumnDefinition6 = new DevExpress.XtraEditors.TableLayout.TableColumnDefinition();
+            DevExpress.XtraEditors.TableLayout.TableColumnDefinition tableColumnDefinition7 = new DevExpress.XtraEditors.TableLayout.TableColumnDefinition();
+            DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement9 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
+            DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement10 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
+            DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement11 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
+            DevExpress.XtraEditors.TableLayout.TableRowDefinition tableRowDefinition7 = new DevExpress.XtraEditors.TableLayout.TableRowDefinition();
+            DevExpress.XtraEditors.TableLayout.TableRowDefinition tableRowDefinition8 = new DevExpress.XtraEditors.TableLayout.TableRowDefinition();
+            DevExpress.XtraEditors.TableLayout.TableSpan tableSpan3 = new DevExpress.XtraEditors.TableLayout.TableSpan();
+            DevExpress.XtraEditors.TableLayout.TableColumnDefinition tableColumnDefinition8 = new DevExpress.XtraEditors.TableLayout.TableColumnDefinition();
+            DevExpress.XtraEditors.TableLayout.TableColumnDefinition tableColumnDefinition9 = new DevExpress.XtraEditors.TableLayout.TableColumnDefinition();
+            DevExpress.XtraEditors.TableLayout.TableColumnDefinition tableColumnDefinition10 = new DevExpress.XtraEditors.TableLayout.TableColumnDefinition();
+            DevExpress.XtraEditors.TableLayout.TableColumnDefinition tableColumnDefinition11 = new DevExpress.XtraEditors.TableLayout.TableColumnDefinition();
+            DevExpress.XtraEditors.TableLayout.TableColumnDefinition tableColumnDefinition12 = new DevExpress.XtraEditors.TableLayout.TableColumnDefinition();
+            DevExpress.XtraEditors.TableLayout.TableRowDefinition tableRowDefinition9 = new DevExpress.XtraEditors.TableLayout.TableRowDefinition();
+            DevExpress.XtraEditors.TableLayout.TableRowDefinition tableRowDefinition10 = new DevExpress.XtraEditors.TableLayout.TableRowDefinition();
+            DevExpress.XtraEditors.TableLayout.TableSpan tableSpan4 = new DevExpress.XtraEditors.TableLayout.TableSpan();
+            DevExpress.XtraEditors.TableLayout.TableSpan tableSpan5 = new DevExpress.XtraEditors.TableLayout.TableSpan();
+            DevExpress.XtraEditors.TableLayout.TableSpan tableSpan6 = new DevExpress.XtraEditors.TableLayout.TableSpan();
+            DevExpress.XtraEditors.TableLayout.TableSpan tableSpan7 = new DevExpress.XtraEditors.TableLayout.TableSpan();
+            DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement12 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
+            DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement13 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
+            DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement14 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
+            DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement15 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
+            DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement16 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
+            DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement17 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
             this.gC_DataflowName = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.gC_id = new DevExpress.XtraGrid.Columns.TileViewColumn();
-            this.tVC_Pic = new DevExpress.XtraGrid.Columns.TileViewColumn();
+            this.tVC_COLOR_ICON = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.rIPE_Pic = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
             this.tVC_id = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.tVC_Name = new DevExpress.XtraGrid.Columns.TileViewColumn();
+            this.tVC_GREY_ICON = new DevExpress.XtraGrid.Columns.TileViewColumn();
+            this.tVC_HOVER_ICON = new DevExpress.XtraGrid.Columns.TileViewColumn();
+            this.tVC_Pic = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
-            this.bE_DownLoad = new DevExpress.XtraEditors.ButtonEdit();
             this.lC_URI = new DevExpress.XtraEditors.LabelControl();
             this.pBC_URI = new DevExpress.XtraEditors.ProgressBarControl();
             this.bE_DownLoad = new DevExpress.XtraEditors.ButtonEdit();
@@ -120,7 +158,6 @@ namespace EuroStatApp {
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pBC_URI.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bE_DownLoad.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pBC_URI.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iCBE_Source.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gC_Dataflow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bS_Dataflow)).BeginInit();
@@ -169,15 +206,14 @@ namespace EuroStatApp {
             this.gC_id.VisibleIndex = 1;
             this.gC_id.Width = 68;
             // 
-            // tVC_Pic
+            // tVC_COLOR_ICON
             // 
-            this.tVC_Pic.Caption = "Pic";
-            this.tVC_Pic.ColumnEdit = this.rIPE_Pic;
-            this.tVC_Pic.FieldName = "Pic";
-            this.tVC_Pic.FieldNameSortGroup = "PicIdx";
-            this.tVC_Pic.Name = "tVC_Pic";
-            this.tVC_Pic.Visible = true;
-            this.tVC_Pic.VisibleIndex = 2;
+            this.tVC_COLOR_ICON.Caption = "COLOR_ICON";
+            this.tVC_COLOR_ICON.ColumnEdit = this.rIPE_Pic;
+            this.tVC_COLOR_ICON.FieldName = "COLOR_ICON";
+            this.tVC_COLOR_ICON.Name = "tVC_COLOR_ICON";
+            this.tVC_COLOR_ICON.Visible = true;
+            this.tVC_COLOR_ICON.VisibleIndex = 4;
             // 
             // rIPE_Pic
             // 
@@ -203,9 +239,36 @@ namespace EuroStatApp {
             this.tVC_Name.Visible = true;
             this.tVC_Name.VisibleIndex = 1;
             // 
+            // tVC_GREY_ICON
+            // 
+            this.tVC_GREY_ICON.Caption = "GREY_ICON";
+            this.tVC_GREY_ICON.ColumnEdit = this.rIPE_Pic;
+            this.tVC_GREY_ICON.FieldName = "GREY_ICON";
+            this.tVC_GREY_ICON.Name = "tVC_GREY_ICON";
+            this.tVC_GREY_ICON.Visible = true;
+            this.tVC_GREY_ICON.VisibleIndex = 5;
+            // 
+            // tVC_HOVER_ICON
+            // 
+            this.tVC_HOVER_ICON.Caption = "HOVER_ICON";
+            this.tVC_HOVER_ICON.ColumnEdit = this.rIPE_Pic;
+            this.tVC_HOVER_ICON.FieldName = "HOVER_ICON";
+            this.tVC_HOVER_ICON.Name = "tVC_HOVER_ICON";
+            this.tVC_HOVER_ICON.Visible = true;
+            this.tVC_HOVER_ICON.VisibleIndex = 6;
+            // 
+            // tVC_Pic
+            // 
+            this.tVC_Pic.Caption = "Pic";
+            this.tVC_Pic.ColumnEdit = this.rIPE_Pic;
+            this.tVC_Pic.FieldName = "Pic";
+            this.tVC_Pic.FieldNameSortGroup = "PicIdx";
+            this.tVC_Pic.Name = "tVC_Pic";
+            this.tVC_Pic.Visible = true;
+            this.tVC_Pic.VisibleIndex = 2;
+            // 
             // panelControl1
             // 
-            this.panelControl1.Controls.Add(this.bE_DownLoad);
             this.panelControl1.Controls.Add(this.lC_URI);
             this.panelControl1.Controls.Add(this.pBC_URI);
             this.panelControl1.Controls.Add(this.bE_DownLoad);
@@ -217,23 +280,6 @@ namespace EuroStatApp {
             this.panelControl1.Name = "panelControl1";
             this.panelControl1.Size = new System.Drawing.Size(1346, 23);
             this.panelControl1.TabIndex = 0;
-            // 
-            // bE_DownLoad
-            // 
-            this.bE_DownLoad.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bE_DownLoad.Location = new System.Drawing.Point(468, 2);
-            this.bE_DownLoad.Name = "bE_DownLoad";
-            this.bE_DownLoad.Properties.AutoHeight = false;
-            editorButtonImageOptions1.Image = ((System.Drawing.Image)(resources.GetObject("editorButtonImageOptions1.Image")));
-            this.bE_DownLoad.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Search, "", -1, false, true, true, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "GetFileSize", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
-            this.bE_DownLoad.Size = new System.Drawing.Size(876, 19);
-            this.bE_DownLoad.TabIndex = 1;
-            this.bE_DownLoad.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bE_DownLoad_ButtonClick);
-            this.bE_DownLoad.TextChanged += new System.EventHandler(this.bE_DownLoad_TextChanged);
-            this.bE_DownLoad.Click += new System.EventHandler(this.bE_DownLoad_Click);
-            this.bE_DownLoad.KeyDown += new System.Windows.Forms.KeyEventHandler(this.bE_DownLoad_KeyDown);
             // 
             // lC_URI
             // 
@@ -266,11 +312,29 @@ namespace EuroStatApp {
             this.bE_DownLoad.Location = new System.Drawing.Point(468, 2);
             this.bE_DownLoad.Name = "bE_DownLoad";
             this.bE_DownLoad.Properties.AutoHeight = false;
+            editorButtonImageOptions1.Image = ((System.Drawing.Image)(resources.GetObject("editorButtonImageOptions1.Image")));
             this.bE_DownLoad.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Search, "", -1, false, true, true, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "GetFileSize", null, null, DevExpress.Utils.ToolTipAnchor.Default),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.OK)});
             this.bE_DownLoad.Size = new System.Drawing.Size(876, 19);
+            toolTipTitleItem1.Text = "NAME";
+            toolTipItem1.Text = "Description";
+            toolTipItem2.AllowHtmlText = DevExpress.Utils.DefaultBoolean.True;
+            toolTipItem2.Text = "html: <href>334234234</href>";
+            toolTipItem3.AllowHtmlText = DevExpress.Utils.DefaultBoolean.True;
+            toolTipItem3.Text = "sdmx: <href>eewrer</href>";
+            superToolTip1.Items.Add(toolTipTitleItem1);
+            superToolTip1.Items.Add(toolTipItem1);
+            superToolTip1.Items.Add(toolTipSeparatorItem1);
+            superToolTip1.Items.Add(toolTipItem2);
+            superToolTip1.Items.Add(toolTipItem3);
+            this.bE_DownLoad.SuperTip = superToolTip1;
             this.bE_DownLoad.TabIndex = 1;
+            this.bE_DownLoad.ToolTipIconType = DevExpress.Utils.ToolTipIconType.Information;
             this.bE_DownLoad.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bE_DownLoad_ButtonClick);
+            this.bE_DownLoad.TextChanged += new System.EventHandler(this.bE_DownLoad_TextChanged);
+            this.bE_DownLoad.Click += new System.EventHandler(this.bE_DownLoad_Click);
             this.bE_DownLoad.KeyDown += new System.Windows.Forms.KeyEventHandler(this.bE_DownLoad_KeyDown);
             // 
             // lC_Download
@@ -369,12 +433,36 @@ namespace EuroStatApp {
             contextButton4.Name = "Description";
             contextButton4.ToolTip = "Description of Dataflow";
             contextButton4.ToolTipTitle = "Description";
+            contextButton5.AlignmentOptions.Panel = DevExpress.Utils.ContextItemPanel.Bottom;
+            contextButton5.AlignmentOptions.Position = DevExpress.Utils.ContextItemPosition.Center;
+            contextButton5.AppearanceNormal.ForeColor = System.Drawing.Color.DarkGray;
+            contextButton5.AppearanceNormal.Options.UseForeColor = true;
+            contextButton5.Caption = " Loading Detail...";
+            contextButton5.Id = new System.Guid("0f5a7ee3-fb02-445c-ba3a-ce8046d8853b");
+            contextButton5.ImageOptionsCollection.ItemNormal.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image12")));
+            contextButton5.Name = "Loading";
+            contextButton5.Visibility = DevExpress.Utils.ContextItemVisibility.Hidden;
+            contextButton6.AlignmentOptions.Panel = DevExpress.Utils.ContextItemPanel.Bottom;
+            contextButton6.AlignmentOptions.Position = DevExpress.Utils.ContextItemPosition.Center;
+            contextButton6.Id = new System.Guid("b65ccb86-6949-4905-b9e3-9be4981077c6");
+            contextButton6.ImageOptionsCollection.ItemHovered.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image13")));
+            contextButton6.ImageOptionsCollection.ItemNormal.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image14")));
+            contextButton6.ImageOptionsCollection.ItemPressed.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image15")));
+            contextButton6.Name = "HTML";
+            contextButton7.AlignmentOptions.Panel = DevExpress.Utils.ContextItemPanel.Bottom;
+            contextButton7.AlignmentOptions.Position = DevExpress.Utils.ContextItemPosition.Center;
+            contextButton7.Id = new System.Guid("98712e63-d4e8-4c02-a726-7961109728e5");
+            contextButton7.ImageOptionsCollection.ItemHovered.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image16")));
+            contextButton7.ImageOptionsCollection.ItemNormal.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image17")));
+            contextButton7.ImageOptionsCollection.ItemPressed.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image18")));
+            contextButton7.Name = "SDMX";
             this.tV_Dataflow.ContextButtons.Add(contextButton1);
             this.tV_Dataflow.ContextButtons.Add(contextButton2);
             this.tV_Dataflow.ContextButtons.Add(contextButton3);
             this.tV_Dataflow.ContextButtons.Add(contextButton4);
             this.tV_Dataflow.ContextButtons.Add(contextButton5);
             this.tV_Dataflow.ContextButtons.Add(contextButton6);
+            this.tV_Dataflow.ContextButtons.Add(contextButton7);
             this.tV_Dataflow.GridControl = this.gC_Dataflow;
             this.tV_Dataflow.Name = "tV_Dataflow";
             this.tV_Dataflow.OptionsList.DrawItemSeparators = DevExpress.XtraGrid.Views.Tile.DrawItemSeparatorsMode.None;
@@ -427,6 +515,8 @@ namespace EuroStatApp {
             this.tV_Dataflow.TileTemplate.Add(tileViewItemElement2);
             this.tV_Dataflow.ItemDoubleClick += new DevExpress.XtraGrid.Views.Tile.TileViewItemClickEventHandler(this.tV_Dataflow_ItemDoubleClick);
             this.tV_Dataflow.ContextButtonClick += new DevExpress.Utils.ContextItemClickEventHandler(this.tV_Dataflow_ContextButtonClick);
+            this.tV_Dataflow.ContextButtonCustomize += new DevExpress.XtraGrid.Views.Tile.TileViewContextButtonCustomizeEventHandler(this.tV_Dataflow_ContextButtonCustomize);
+            this.tV_Dataflow.ItemCustomize += new DevExpress.XtraGrid.Views.Tile.TileViewItemCustomizeEventHandler(this.tV_Dataflow_ItemCustomize);
             this.tV_Dataflow.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.tV_Dataflow_CustomColumnDisplayText);
             // 
             // splitterControl1
@@ -495,7 +585,10 @@ namespace EuroStatApp {
             this.tVC_id,
             this.tVC_Name,
             this.tVC_Pic,
-            this.tVC_PicIdx});
+            this.tVC_PicIdx,
+            this.tVC_COLOR_ICON,
+            this.tVC_GREY_ICON,
+            this.tVC_HOVER_ICON});
             this.tV_CategoryScheme.GridControl = this.gC_CategoryScheme;
             this.tV_CategoryScheme.Name = "tV_CategoryScheme";
             this.tV_CategoryScheme.OptionsList.DrawItemSeparators = DevExpress.XtraGrid.Views.Tile.DrawItemSeparatorsMode.None;
@@ -511,8 +604,8 @@ namespace EuroStatApp {
             this.tV_CategoryScheme.SortInfo.AddRange(new DevExpress.XtraGrid.Columns.GridColumnSortInfo[] {
             new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.tVC_PicIdx, DevExpress.Data.ColumnSortOrder.Ascending)});
             tableColumnDefinition2.Length.Type = DevExpress.XtraEditors.TableLayout.TableDefinitionLengthType.Pixel;
-            tableColumnDefinition2.Length.Value = 40D;
-            tableColumnDefinition3.Length.Value = 213D;
+            tableColumnDefinition2.Length.Value = 50D;
+            tableColumnDefinition3.Length.Value = 195D;
             itemTemplate1.Columns.Add(tableColumnDefinition2);
             itemTemplate1.Columns.Add(tableColumnDefinition3);
             tileViewItemElement3.Appearance.Disabled.FontStyleDelta = System.Drawing.FontStyle.Bold;
@@ -528,11 +621,10 @@ namespace EuroStatApp {
             tileViewItemElement3.Appearance.Selected.FontSizeDelta = 1;
             tileViewItemElement3.Appearance.Selected.FontStyleDelta = System.Drawing.FontStyle.Bold;
             tileViewItemElement3.Appearance.Selected.Options.UseFont = true;
-            tileViewItemElement3.Column = this.tVC_Pic;
-            tileViewItemElement3.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
-            tileViewItemElement3.StretchHorizontal = true;
+            tileViewItemElement3.Column = this.tVC_COLOR_ICON;
+            tileViewItemElement3.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
             tileViewItemElement3.StretchVertical = true;
-            tileViewItemElement3.Text = "tVC_Pic";
+            tileViewItemElement3.Text = "tVC_COLOR_ICON";
             tileViewItemElement3.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
             tileViewItemElement3.TextVisible = false;
             tileViewItemElement4.Appearance.Disabled.FontSizeDelta = -1;
@@ -571,25 +663,18 @@ namespace EuroStatApp {
             itemTemplate1.Elements.Add(tileViewItemElement3);
             itemTemplate1.Elements.Add(tileViewItemElement4);
             itemTemplate1.Elements.Add(tileViewItemElement5);
-            itemTemplate1.Name = "template0";
+            itemTemplate1.Name = "COLOR";
             tableRowDefinition3.Length.Value = 15D;
             tableRowDefinition4.Length.Value = 14D;
             itemTemplate1.Rows.Add(tableRowDefinition3);
             itemTemplate1.Rows.Add(tableRowDefinition4);
             tableSpan1.RowSpan = 2;
             itemTemplate1.Spans.Add(tableSpan1);
-            this.tV_CategoryScheme.Templates.Add(itemTemplate1);
             tableColumnDefinition4.Length.Type = DevExpress.XtraEditors.TableLayout.TableDefinitionLengthType.Pixel;
             tableColumnDefinition4.Length.Value = 50D;
             tableColumnDefinition5.Length.Value = 195D;
-            this.tV_CategoryScheme.TileColumns.Add(tableColumnDefinition4);
-            this.tV_CategoryScheme.TileColumns.Add(tableColumnDefinition5);
-            tableRowDefinition5.Length.Value = 15D;
-            tableRowDefinition6.Length.Value = 14D;
-            this.tV_CategoryScheme.TileRows.Add(tableRowDefinition5);
-            this.tV_CategoryScheme.TileRows.Add(tableRowDefinition6);
-            tableSpan2.RowSpan = 2;
-            this.tV_CategoryScheme.TileSpans.Add(tableSpan2);
+            itemTemplate2.Columns.Add(tableColumnDefinition4);
+            itemTemplate2.Columns.Add(tableColumnDefinition5);
             tileViewItemElement6.Appearance.Disabled.FontStyleDelta = System.Drawing.FontStyle.Bold;
             tileViewItemElement6.Appearance.Disabled.Options.UseFont = true;
             tileViewItemElement6.Appearance.Hovered.FontSizeDelta = 1;
@@ -603,10 +688,10 @@ namespace EuroStatApp {
             tileViewItemElement6.Appearance.Selected.FontSizeDelta = 1;
             tileViewItemElement6.Appearance.Selected.FontStyleDelta = System.Drawing.FontStyle.Bold;
             tileViewItemElement6.Appearance.Selected.Options.UseFont = true;
-            tileViewItemElement6.Column = this.tVC_Pic;
+            tileViewItemElement6.Column = this.tVC_GREY_ICON;
             tileViewItemElement6.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
             tileViewItemElement6.StretchVertical = true;
-            tileViewItemElement6.Text = "tVC_Pic";
+            tileViewItemElement6.Text = "tVC_GREY_ICON";
             tileViewItemElement6.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
             tileViewItemElement6.TextVisible = false;
             tileViewItemElement7.Appearance.Disabled.FontSizeDelta = -1;
@@ -642,11 +727,197 @@ namespace EuroStatApp {
             tileViewItemElement8.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
             tileViewItemElement8.Text = "tVC_Name";
             tileViewItemElement8.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
-            this.tV_CategoryScheme.TileTemplate.Add(tileViewItemElement6);
-            this.tV_CategoryScheme.TileTemplate.Add(tileViewItemElement7);
-            this.tV_CategoryScheme.TileTemplate.Add(tileViewItemElement8);
+            itemTemplate2.Elements.Add(tileViewItemElement6);
+            itemTemplate2.Elements.Add(tileViewItemElement7);
+            itemTemplate2.Elements.Add(tileViewItemElement8);
+            itemTemplate2.Name = "GREY";
+            tableRowDefinition5.Length.Value = 15D;
+            tableRowDefinition6.Length.Value = 14D;
+            itemTemplate2.Rows.Add(tableRowDefinition5);
+            itemTemplate2.Rows.Add(tableRowDefinition6);
+            tableSpan2.RowSpan = 2;
+            itemTemplate2.Spans.Add(tableSpan2);
+            tableColumnDefinition6.Length.Type = DevExpress.XtraEditors.TableLayout.TableDefinitionLengthType.Pixel;
+            tableColumnDefinition6.Length.Value = 50D;
+            tableColumnDefinition7.Length.Value = 195D;
+            itemTemplate3.Columns.Add(tableColumnDefinition6);
+            itemTemplate3.Columns.Add(tableColumnDefinition7);
+            tileViewItemElement9.Appearance.Disabled.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement9.Appearance.Disabled.Options.UseFont = true;
+            tileViewItemElement9.Appearance.Hovered.FontSizeDelta = 1;
+            tileViewItemElement9.Appearance.Hovered.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement9.Appearance.Hovered.Options.UseFont = true;
+            tileViewItemElement9.Appearance.Normal.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement9.Appearance.Normal.Options.UseFont = true;
+            tileViewItemElement9.Appearance.Pressed.FontSizeDelta = 1;
+            tileViewItemElement9.Appearance.Pressed.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement9.Appearance.Pressed.Options.UseFont = true;
+            tileViewItemElement9.Appearance.Selected.FontSizeDelta = 1;
+            tileViewItemElement9.Appearance.Selected.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement9.Appearance.Selected.Options.UseFont = true;
+            tileViewItemElement9.Column = this.tVC_HOVER_ICON;
+            tileViewItemElement9.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
+            tileViewItemElement9.StretchVertical = true;
+            tileViewItemElement9.Text = "tVC_HOVER_ICON";
+            tileViewItemElement9.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
+            tileViewItemElement9.TextVisible = false;
+            tileViewItemElement10.Appearance.Disabled.FontSizeDelta = -1;
+            tileViewItemElement10.Appearance.Disabled.Options.UseFont = true;
+            tileViewItemElement10.Appearance.Hovered.FontSizeDelta = -1;
+            tileViewItemElement10.Appearance.Hovered.Options.UseFont = true;
+            tileViewItemElement10.Appearance.Normal.FontSizeDelta = -1;
+            tileViewItemElement10.Appearance.Normal.Options.UseFont = true;
+            tileViewItemElement10.Appearance.Pressed.FontSizeDelta = -1;
+            tileViewItemElement10.Appearance.Pressed.Options.UseFont = true;
+            tileViewItemElement10.Appearance.Selected.FontSizeDelta = -1;
+            tileViewItemElement10.Appearance.Selected.Options.UseFont = true;
+            tileViewItemElement10.Column = this.tVC_id;
+            tileViewItemElement10.ColumnIndex = 1;
+            tileViewItemElement10.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
+            tileViewItemElement10.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
+            tileViewItemElement10.RowIndex = 1;
+            tileViewItemElement10.Text = "tVC_id";
+            tileViewItemElement10.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
+            tileViewItemElement11.Appearance.Disabled.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement11.Appearance.Disabled.Options.UseFont = true;
+            tileViewItemElement11.Appearance.Hovered.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement11.Appearance.Hovered.Options.UseFont = true;
+            tileViewItemElement11.Appearance.Normal.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement11.Appearance.Normal.Options.UseFont = true;
+            tileViewItemElement11.Appearance.Pressed.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement11.Appearance.Pressed.Options.UseFont = true;
+            tileViewItemElement11.Appearance.Selected.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement11.Appearance.Selected.Options.UseFont = true;
+            tileViewItemElement11.Column = this.tVC_Name;
+            tileViewItemElement11.ColumnIndex = 1;
+            tileViewItemElement11.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
+            tileViewItemElement11.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
+            tileViewItemElement11.Text = "tVC_Name";
+            tileViewItemElement11.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
+            itemTemplate3.Elements.Add(tileViewItemElement9);
+            itemTemplate3.Elements.Add(tileViewItemElement10);
+            itemTemplate3.Elements.Add(tileViewItemElement11);
+            itemTemplate3.Name = "HOVER";
+            tableRowDefinition7.Length.Value = 15D;
+            tableRowDefinition8.Length.Value = 14D;
+            itemTemplate3.Rows.Add(tableRowDefinition7);
+            itemTemplate3.Rows.Add(tableRowDefinition8);
+            tableSpan3.RowSpan = 2;
+            itemTemplate3.Spans.Add(tableSpan3);
+            this.tV_CategoryScheme.Templates.Add(itemTemplate1);
+            this.tV_CategoryScheme.Templates.Add(itemTemplate2);
+            this.tV_CategoryScheme.Templates.Add(itemTemplate3);
+            tableColumnDefinition8.Length.Type = DevExpress.XtraEditors.TableLayout.TableDefinitionLengthType.Pixel;
+            tableColumnDefinition8.Length.Value = 50D;
+            tableColumnDefinition9.Length.Value = 195D;
+            tableColumnDefinition10.Length.Value = 40D;
+            tableColumnDefinition11.Length.Value = 40D;
+            tableColumnDefinition12.Length.Value = 40D;
+            this.tV_CategoryScheme.TileColumns.Add(tableColumnDefinition8);
+            this.tV_CategoryScheme.TileColumns.Add(tableColumnDefinition9);
+            this.tV_CategoryScheme.TileColumns.Add(tableColumnDefinition10);
+            this.tV_CategoryScheme.TileColumns.Add(tableColumnDefinition11);
+            this.tV_CategoryScheme.TileColumns.Add(tableColumnDefinition12);
+            tableRowDefinition9.Length.Value = 15D;
+            tableRowDefinition10.Length.Value = 14D;
+            this.tV_CategoryScheme.TileRows.Add(tableRowDefinition9);
+            this.tV_CategoryScheme.TileRows.Add(tableRowDefinition10);
+            tableSpan4.RowSpan = 2;
+            tableSpan5.ColumnIndex = 2;
+            tableSpan5.RowSpan = 2;
+            tableSpan6.ColumnIndex = 3;
+            tableSpan6.RowSpan = 2;
+            tableSpan7.ColumnIndex = 4;
+            tableSpan7.RowSpan = 2;
+            this.tV_CategoryScheme.TileSpans.Add(tableSpan4);
+            this.tV_CategoryScheme.TileSpans.Add(tableSpan5);
+            this.tV_CategoryScheme.TileSpans.Add(tableSpan6);
+            this.tV_CategoryScheme.TileSpans.Add(tableSpan7);
+            tileViewItemElement12.Appearance.Disabled.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement12.Appearance.Disabled.Options.UseFont = true;
+            tileViewItemElement12.Appearance.Hovered.FontSizeDelta = 1;
+            tileViewItemElement12.Appearance.Hovered.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement12.Appearance.Hovered.Options.UseFont = true;
+            tileViewItemElement12.Appearance.Normal.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement12.Appearance.Normal.Options.UseFont = true;
+            tileViewItemElement12.Appearance.Pressed.FontSizeDelta = 1;
+            tileViewItemElement12.Appearance.Pressed.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement12.Appearance.Pressed.Options.UseFont = true;
+            tileViewItemElement12.Appearance.Selected.FontSizeDelta = 1;
+            tileViewItemElement12.Appearance.Selected.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement12.Appearance.Selected.Options.UseFont = true;
+            tileViewItemElement12.Column = this.tVC_Pic;
+            tileViewItemElement12.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
+            tileViewItemElement12.StretchVertical = true;
+            tileViewItemElement12.Text = "tVC_Pic";
+            tileViewItemElement12.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
+            tileViewItemElement12.TextVisible = false;
+            tileViewItemElement13.Appearance.Disabled.FontSizeDelta = -1;
+            tileViewItemElement13.Appearance.Disabled.Options.UseFont = true;
+            tileViewItemElement13.Appearance.Hovered.FontSizeDelta = -1;
+            tileViewItemElement13.Appearance.Hovered.Options.UseFont = true;
+            tileViewItemElement13.Appearance.Normal.FontSizeDelta = -1;
+            tileViewItemElement13.Appearance.Normal.Options.UseFont = true;
+            tileViewItemElement13.Appearance.Pressed.FontSizeDelta = -1;
+            tileViewItemElement13.Appearance.Pressed.Options.UseFont = true;
+            tileViewItemElement13.Appearance.Selected.FontSizeDelta = -1;
+            tileViewItemElement13.Appearance.Selected.Options.UseFont = true;
+            tileViewItemElement13.Column = this.tVC_id;
+            tileViewItemElement13.ColumnIndex = 1;
+            tileViewItemElement13.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
+            tileViewItemElement13.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
+            tileViewItemElement13.RowIndex = 1;
+            tileViewItemElement13.Text = "tVC_id";
+            tileViewItemElement13.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
+            tileViewItemElement14.Appearance.Disabled.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement14.Appearance.Disabled.Options.UseFont = true;
+            tileViewItemElement14.Appearance.Hovered.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement14.Appearance.Hovered.Options.UseFont = true;
+            tileViewItemElement14.Appearance.Normal.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement14.Appearance.Normal.Options.UseFont = true;
+            tileViewItemElement14.Appearance.Pressed.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement14.Appearance.Pressed.Options.UseFont = true;
+            tileViewItemElement14.Appearance.Selected.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement14.Appearance.Selected.Options.UseFont = true;
+            tileViewItemElement14.Column = this.tVC_Name;
+            tileViewItemElement14.ColumnIndex = 1;
+            tileViewItemElement14.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
+            tileViewItemElement14.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
+            tileViewItemElement14.Text = "tVC_Name";
+            tileViewItemElement14.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
+            tileViewItemElement15.Column = this.tVC_COLOR_ICON;
+            tileViewItemElement15.ColumnIndex = 2;
+            tileViewItemElement15.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
+            tileViewItemElement15.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
+            tileViewItemElement15.StretchVertical = true;
+            tileViewItemElement15.Text = "tVC_COLOR_ICON";
+            tileViewItemElement15.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
+            tileViewItemElement15.TextVisible = false;
+            tileViewItemElement16.Column = this.tVC_GREY_ICON;
+            tileViewItemElement16.ColumnIndex = 3;
+            tileViewItemElement16.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
+            tileViewItemElement16.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
+            tileViewItemElement16.StretchVertical = true;
+            tileViewItemElement16.Text = "tVC_GREY_ICON";
+            tileViewItemElement16.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
+            tileViewItemElement16.TextVisible = false;
+            tileViewItemElement17.Column = this.tVC_HOVER_ICON;
+            tileViewItemElement17.ColumnIndex = 4;
+            tileViewItemElement17.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
+            tileViewItemElement17.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
+            tileViewItemElement17.StretchVertical = true;
+            tileViewItemElement17.Text = "tVC_HOVER_ICON";
+            tileViewItemElement17.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
+            tileViewItemElement17.TextVisible = false;
+            this.tV_CategoryScheme.TileTemplate.Add(tileViewItemElement12);
+            this.tV_CategoryScheme.TileTemplate.Add(tileViewItemElement13);
+            this.tV_CategoryScheme.TileTemplate.Add(tileViewItemElement14);
+            this.tV_CategoryScheme.TileTemplate.Add(tileViewItemElement15);
+            this.tV_CategoryScheme.TileTemplate.Add(tileViewItemElement16);
+            this.tV_CategoryScheme.TileTemplate.Add(tileViewItemElement17);
             this.tV_CategoryScheme.ItemClick += new DevExpress.XtraGrid.Views.Tile.TileViewItemClickEventHandler(this.tV_CategoryScheme_ItemClick);
             this.tV_CategoryScheme.ItemCustomize += new DevExpress.XtraGrid.Views.Tile.TileViewItemCustomizeEventHandler(this.tV_CategoryScheme_ItemCustomize);
+            this.tV_CategoryScheme.CustomItemTemplate += new DevExpress.XtraGrid.Views.Tile.TileViewCustomItemTemplateEventHandler(this.tV_CategoryScheme_CustomItemTemplate);
             this.tV_CategoryScheme.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.tV_CategoryScheme_FocusedRowChanged);
             this.tV_CategoryScheme.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.tV_CategoryScheme_CustomColumnDisplayText);
             // 
@@ -959,7 +1230,6 @@ namespace EuroStatApp {
             ((System.ComponentModel.ISupportInitialize)(this.rIPE_Pic)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.panelControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.bE_DownLoad.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pBC_URI.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bE_DownLoad.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.iCBE_Source.Properties)).EndInit();
@@ -1039,6 +1309,9 @@ namespace EuroStatApp {
         private DevExpress.XtraBars.SkinDropDownButtonItem skinDropDownButtonItem;
         private DevExpress.XtraBars.BarEditItem barEditItemLoadType;
         private DevExpress.XtraEditors.Repository.RepositoryItemImageComboBox repItemImageComboBoxLoadType;
+        private DevExpress.XtraGrid.Columns.TileViewColumn tVC_COLOR_ICON;
+        private DevExpress.XtraGrid.Columns.TileViewColumn tVC_GREY_ICON;
+        private DevExpress.XtraGrid.Columns.TileViewColumn tVC_HOVER_ICON;
     }
 }
 

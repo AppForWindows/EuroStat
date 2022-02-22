@@ -22,6 +22,7 @@ namespace EuroStat {
         public delegate void DataSetDownloadProgress(int ProgressPercentage, long BytesReceived, long TotalBytesToReceive);
         public delegate void DataSetDownloaded(DataSet Result, bool Cancelled, Exception Error);
         public delegate void DataSetFinal(DataSet Result);
+        public delegate void DataflowUpdated(DataRow DataFlow);
         public static DataSet GetDataSet(string URI, IProgress<decimal> PR) {
             if (PR != null) PR.Report(0);
             DataSet ds = new DataSet();
@@ -60,7 +61,7 @@ namespace EuroStat {
             return ds;
         }
         public static string ModifXML(string XML) {
-            return Regex.Replace(XML, @"(</?)(\w+:)", "$1").Replace("<s:Source><Ref", "<s:SourceRef").Replace("</s:Source>", "").Replace("<s:Target><Ref", "<s:TargetRef").Replace("</s:Target>", "").Replace("<Source><Ref", "<SourceRef").Replace("</Source>", "").Replace("<Target><Ref", "<TargetRef").Replace("</Target>", "");
+            return Regex.Replace(XML, @"(</?)(\w+:)", "$1").Replace("<s:Source><Ref", "<s:SourceRef").Replace("</s:Source>", "").Replace("<s:Target><Ref", "<s:TargetRef").Replace("</s:Target>", "").Replace("<c:Annotations>","").Replace("</c:Annotations>","").Replace("<Source><Ref", "<SourceRef").Replace("</Source>", "").Replace("<Target><Ref", "<TargetRef").Replace("</Target>", "").Replace("<Annotations>","").Replace("</Annotations>","");
         }
         public static void BeginLoadDataSet(string URI, DataSetDownloadProgress DDP, DataSetDownloaded DSD, DataSetFinal DSF) {
             System.Net.WebClient wClient = new System.Net.WebClient();
