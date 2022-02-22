@@ -77,6 +77,7 @@ namespace EuroStatApp {
             this.bE_DownLoad = new DevExpress.XtraEditors.ButtonEdit();
             this.lC_URI = new DevExpress.XtraEditors.LabelControl();
             this.pBC_URI = new DevExpress.XtraEditors.ProgressBarControl();
+            this.bE_DownLoad = new DevExpress.XtraEditors.ButtonEdit();
             this.lC_Download = new DevExpress.XtraEditors.LabelControl();
             this.iCBE_Source = new DevExpress.XtraEditors.ImageComboBoxEdit();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
@@ -117,6 +118,7 @@ namespace EuroStatApp {
             ((System.ComponentModel.ISupportInitialize)(this.rIPE_Pic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pBC_URI.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bE_DownLoad.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pBC_URI.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iCBE_Source.Properties)).BeginInit();
@@ -206,6 +208,7 @@ namespace EuroStatApp {
             this.panelControl1.Controls.Add(this.bE_DownLoad);
             this.panelControl1.Controls.Add(this.lC_URI);
             this.panelControl1.Controls.Add(this.pBC_URI);
+            this.panelControl1.Controls.Add(this.bE_DownLoad);
             this.panelControl1.Controls.Add(this.lC_Download);
             this.panelControl1.Controls.Add(this.iCBE_Source);
             this.panelControl1.Controls.Add(this.labelControl1);
@@ -256,6 +259,19 @@ namespace EuroStatApp {
             this.pBC_URI.Size = new System.Drawing.Size(80, 14);
             this.pBC_URI.TabIndex = 4;
             this.pBC_URI.Visible = false;
+            // 
+            // bE_DownLoad
+            // 
+            this.bE_DownLoad.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bE_DownLoad.Location = new System.Drawing.Point(468, 2);
+            this.bE_DownLoad.Name = "bE_DownLoad";
+            this.bE_DownLoad.Properties.AutoHeight = false;
+            this.bE_DownLoad.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.OK)});
+            this.bE_DownLoad.Size = new System.Drawing.Size(876, 19);
+            this.bE_DownLoad.TabIndex = 1;
+            this.bE_DownLoad.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.bE_DownLoad_ButtonClick);
+            this.bE_DownLoad.KeyDown += new System.Windows.Forms.KeyEventHandler(this.bE_DownLoad_KeyDown);
             // 
             // lC_Download
             // 
@@ -357,6 +373,8 @@ namespace EuroStatApp {
             this.tV_Dataflow.ContextButtons.Add(contextButton2);
             this.tV_Dataflow.ContextButtons.Add(contextButton3);
             this.tV_Dataflow.ContextButtons.Add(contextButton4);
+            this.tV_Dataflow.ContextButtons.Add(contextButton5);
+            this.tV_Dataflow.ContextButtons.Add(contextButton6);
             this.tV_Dataflow.GridControl = this.gC_Dataflow;
             this.tV_Dataflow.Name = "tV_Dataflow";
             this.tV_Dataflow.OptionsList.DrawItemSeparators = DevExpress.XtraGrid.Views.Tile.DrawItemSeparatorsMode.None;
@@ -943,6 +961,7 @@ namespace EuroStatApp {
             this.panelControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bE_DownLoad.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pBC_URI.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bE_DownLoad.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.iCBE_Source.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gC_Dataflow)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bS_Dataflow)).EndInit();

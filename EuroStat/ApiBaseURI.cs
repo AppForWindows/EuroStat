@@ -83,35 +83,35 @@ namespace EuroStat {
                 try {
                     CategoryScheme.Columns.Add(CategorySchemeName, typeof(string));
                     foreach (DataRow CS in CategoryScheme.Rows) {
-                        DataRow name = CS.GetChildRows("CategoryScheme_Name").FirstOrDefault(n => n["lang"].ToString() == "en");
-                        if (name != null)
+                    DataRow name = CS.GetChildRows("CategoryScheme_Name").FirstOrDefault(n => n["lang"].ToString() == "en");
+                    if (name != null)
                             CS[CategorySchemeName] = name["Name_Text"];
-                    }
+                }
 
                     Category.Columns.Add(CategoryName, typeof(string));
                     foreach (DataRow C in Category.Rows) {
-                        DataRow name = C.GetChildRows("Category_Name").FirstOrDefault(n => n["lang"].ToString() == "en");
-                        if (name != null)
+                    DataRow name = C.GetChildRows("Category_Name").FirstOrDefault(n => n["lang"].ToString() == "en");
+                    if (name != null)
                             C[CategoryName] = name["Name_Text"];
-                    }
+                }
                     foreach (DataRow C in Category.Select("CategoryScheme_Id is not null"))
-                        SetCategoryScheme(C, C["CategoryScheme_Id"]);
+                    SetCategoryScheme(C, C["CategoryScheme_Id"]);
                 } catch { }
             else if (CR == CategoryResource.categorisation)
                 try {
                     Categorisation.Columns.Add("SourceID", typeof(string));
                     Categorisation.Columns.Add("TargetID", typeof(string));
                     Categorisation.Columns.Add("TargetParentID", typeof(string));
-                    foreach (DataRow C in ds.Tables["Categorisation"].Rows) {
-                        DataRow S = C.GetChildRows("Categorisation_SourceRef").FirstOrDefault();
-                        if (S != null)
-                            C["SourceID"] = S["id"];
-                        DataRow T = C.GetChildRows("Categorisation_TargetRef").FirstOrDefault();
-                        if (T != null) {
-                            C["TargetID"] = T["id"];
-                            C["TargetParentID"] = T["maintainableParentID"];
-                        }
+                foreach (DataRow C in ds.Tables["Categorisation"].Rows) {
+                    DataRow S = C.GetChildRows("Categorisation_SourceRef").FirstOrDefault();
+                    if (S != null)
+                        C["SourceID"] = S["id"];
+                    DataRow T = C.GetChildRows("Categorisation_TargetRef").FirstOrDefault();
+                    if (T != null) {
+                        C["TargetID"] = T["id"];
+                        C["TargetParentID"] = T["maintainableParentID"];
                     }
+                }
                 } catch { }
         }
         private void SetCategoryScheme(DataRow r, object id) {
