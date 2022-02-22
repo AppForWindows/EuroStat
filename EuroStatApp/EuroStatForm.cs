@@ -16,7 +16,7 @@ namespace EuroStatApp {
         ApiBaseURI ApiBase;
         Dictionary<Type, ApiBaseURI> ApiBaseList = new Dictionary<Type, ApiBaseURI>();
         DataSet ds_CategoryScheme { get { return ApiBase != null ? ApiBase.ds_CategoryScheme : null; } }
-        DataSet ds_Categorysation{ get { return ApiBase != null ? ApiBase.ds_Categorysation : null; } }
+        DataSet ds_Categorysation { get { return ApiBase != null ? ApiBase.ds_Categorysation : null; } }
         DataSet ds_Dataflow { get { return ApiBase != null ? ApiBase.ds_Dataflow : null; } }
         LoadType curLoadTyte {
             get {
@@ -64,13 +64,13 @@ namespace EuroStatApp {
             sC_Left.BringToFront();
         }
         private void gC_CategoryScheme_MouseEnter(object sender, EventArgs e) {
-            tL_Category.Visible = sC_Left.Visible =  false;
+            tL_Category.Visible = sC_Left.Visible = false;
             gC_CategoryScheme.BringToFront();
         }
         private void gC_CategoryScheme_MouseLeave(object sender, EventArgs e) {
             tL_Category.BringToFront();
             sC_Left.BringToFront();
-            tL_Category.Visible = sC_Left.Visible =  true;
+            tL_Category.Visible = sC_Left.Visible = true;
         }
         private void tV_CategoryScheme_ItemClick(object sender, DevExpress.XtraGrid.Views.Tile.TileViewItemClickEventArgs e) {
             gC_CategoryScheme_MouseLeave(gC_CategoryScheme, new EventArgs());
@@ -163,42 +163,42 @@ namespace EuroStatApp {
                                 gC_Dataflow.Enabled = true;
                                 if (TV.FocusedRowHandle != TVI.RowHandle)
                                     TV.FocusedRowHandle = TVI.RowHandle;
-                            if (ds == null || ds.Tables == null || ds.Tables.Count == 0) return;
-                            if (e.Item.Name.Contains("Form")) {
+                                if (ds == null || ds.Tables == null || ds.Tables.Count == 0) return;
+                                if (e.Item.Name.Contains("Form")) {
                                     formDS = new DataSetForm(ds);
                                     formDS.Text = ApiBase.DataflowDataURI(D["id"].ToString(), DataflowDataDetail.empty, false);
-                                formDS.Height = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height - 200;
-                                formDS.Width = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width - 100;
-                                formDS.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+                                    formDS.Height = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height - 200;
+                                    formDS.Width = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width - 100;
+                                    formDS.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
                                     formDS.Show(this);
-                            } else
-                                try {
-                                    lC_Dataflow.Text = D["DataflowName"].ToString();
+                                } else
+                                    try {
+                                        lC_Dataflow.Text = D["DataflowName"].ToString();
                                         lC_DataflowURI.Text = ApiBase.DataflowDataURI(D["id"].ToString(), DataflowDataDetail.empty, false);
-                                    xTabControl.BeginUpdate();
-                                    xTabControl.TabPages.Clear(true);
+                                        xTabControl.BeginUpdate();
+                                        xTabControl.TabPages.Clear(true);
                                         if (e.Item.Name.Contains("Chart")) {
 
                                         } else
-                                    foreach (DataTable dt in ds.Tables) {
-                                        DevExpress.XtraTab.XtraTabPage TP = new DevExpress.XtraTab.XtraTabPage();
-                                        TP.Name = TP.Text = dt.TableName;
-                                        xTabControl.TabPages.Add(TP);
+                                            foreach (DataTable dt in ds.Tables) {
+                                                DevExpress.XtraTab.XtraTabPage TP = new DevExpress.XtraTab.XtraTabPage();
+                                                TP.Name = TP.Text = dt.TableName;
+                                                xTabControl.TabPages.Add(TP);
 
-                                        DevExpress.XtraGrid.GridControl GC = new DevExpress.XtraGrid.GridControl();
-                                        DevExpress.XtraGrid.Views.Grid.GridView GV = new DevExpress.XtraGrid.Views.Grid.GridView(GC);
-                                        GC.MainView = GV;
-                                        GV.OptionsCustomization.AllowFilter = false;
-                                        GV.OptionsView.ColumnAutoWidth = false;
+                                                DevExpress.XtraGrid.GridControl GC = new DevExpress.XtraGrid.GridControl();
+                                                DevExpress.XtraGrid.Views.Grid.GridView GV = new DevExpress.XtraGrid.Views.Grid.GridView(GC);
+                                                GC.MainView = GV;
+                                                GV.OptionsCustomization.AllowFilter = false;
+                                                GV.OptionsView.ColumnAutoWidth = false;
 
-                                        GC.UseEmbeddedNavigator = true;
-                                        GC.Dock = DockStyle.Fill;
-                                        GC.Parent = TP;
+                                                GC.UseEmbeddedNavigator = true;
+                                                GC.Dock = DockStyle.Fill;
+                                                GC.Parent = TP;
 
-                                        GC.DataSource = ds;
-                                        GC.DataMember = dt.TableName;
-                                    }
-                                } finally { xTabControl.EndUpdate(); }
+                                                GC.DataSource = ds;
+                                                GC.DataMember = dt.TableName;
+                                            }
+                                    } finally { xTabControl.EndUpdate(); }
                             } finally { if (fP_Right.IsPopupOpen) fP_Right.HidePopup(); if (formDS != null) formDS.BringToFront(); }
                         });
                     });
@@ -214,7 +214,7 @@ namespace EuroStatApp {
             if (iCBE_Source.EditValue is Type && ((Type)iCBE_Source.EditValue).IsSubclassOf(typeof(ApiBaseURI)))
                 try {
                     ApiBase = ApiBaseList.ContainsKey((Type)iCBE_Source.EditValue) ? ApiBaseList[(Type)iCBE_Source.EditValue] : ((Type)iCBE_Source.EditValue).GetConstructor(new Type[] { }).Invoke(new object[] { }) as ApiBaseURI;
-                if (ApiBase == null) return;
+                    if (ApiBase == null) return;
                     if (!ApiBaseList.ContainsKey((Type)iCBE_Source.EditValue))
                         ApiBaseList.Add((Type)iCBE_Source.EditValue, ApiBase);
                     if (SetEnabled(false)) {
@@ -227,68 +227,67 @@ namespace EuroStatApp {
 
                     if (curLoadTyte == LoadType.Delegate) {
                         pP_Left.Caption = "Загрузка Каталогов"; pP_Left.Description = string.Empty;
-                if (!fP_Left.IsPopupOpen) fP_Left.ShowPopup();
-                ApiBase.CategoryListBegin(CategoryResource.categoryscheme,
-                    delegate (int PP, long BR, long TBR) {
-                        this.Invoke((MethodInvoker)delegate {
-                            pBC_Left.EditValue = PP;
-                            pP_Left.Description = BR.ToString() + " b";
-                            if (!fP_Left.IsPopupOpen) fP_Left.ShowPopup();
-                        });
-                    },
-                    delegate (DataSet ds, bool C, Exception E) {
+                        if (!fP_Left.IsPopupOpen) fP_Left.ShowPopup();
+                        ApiBase.CategoryListBegin(CategoryResource.categoryscheme,
+                            delegate (int PP, long BR, long TBR) {
+                                this.Invoke((MethodInvoker)delegate {
+                                    pBC_Left.EditValue = PP;
+                                    pP_Left.Description = BR.ToString() + " b";
+                                    if (!fP_Left.IsPopupOpen) fP_Left.ShowPopup();
+                                });
+                            },
+                            delegate (DataSet ds, bool C, Exception E) {
                                 AddPic();
-                        this.Invoke((MethodInvoker)delegate {
+                                this.Invoke((MethodInvoker)delegate {
                                     SetDataSourceCategoryScheme();
-                            if (fP_Left.IsPopupOpen) fP_Left.HidePopup();
+                                    if (fP_Left.IsPopupOpen) fP_Left.HidePopup();
                                     SetEnabled(false);
-                        });
-                    });
+                                });
+                            });
 
                         pP_Center.Caption = "Загрузка Связей"; pP_Center.Description = string.Empty;
-                if (!fP_Center.IsPopupOpen) fP_Center.ShowPopup();
-                ApiBase.CategoryListBegin(CategoryResource.categorisation,
-                    delegate (int PP, long BR, long TBR) {
-                        this.Invoke((MethodInvoker)delegate {
-                            pBC_Center.EditValue = PP;
-                            pP_Center.Description = BR.ToString() + " b";
-                            if (!fP_Center.IsPopupOpen) fP_Center.ShowPopup();
-                        });
-                    },
-                    delegate (DataSet ds, bool C, Exception E) {
-                        ds_Categorysation = ds;
-                        this.Invoke((MethodInvoker)delegate {
+                        if (!fP_Center.IsPopupOpen) fP_Center.ShowPopup();
+                        ApiBase.CategoryListBegin(CategoryResource.categorisation,
+                            delegate (int PP, long BR, long TBR) {
+                                this.Invoke((MethodInvoker)delegate {
+                                    pBC_Center.EditValue = PP;
+                                    pP_Center.Description = BR.ToString() + " b";
+                                    if (!fP_Center.IsPopupOpen) fP_Center.ShowPopup();
+                                });
+                            },
+                            delegate (DataSet ds, bool C, Exception E) {
+                                this.Invoke((MethodInvoker)delegate {
                                     SetDataSourceCategorysation();
-                            if (fP_Center.IsPopupOpen) fP_Center.HidePopup();
+                                    if (fP_Center.IsPopupOpen) fP_Center.HidePopup();
                                     SetEnabled(false);
-                        });
-                    });
+                                });
+                            });
 
                         pP_Right.Caption = "Загрузка Потоков Данных"; pP_Right.Description = string.Empty;
-                if (!fP_Right.IsPopupOpen) fP_Right.ShowPopup();
-                ApiBase.MetaDataListBegin(MetaDataListResource.dataflow, details.full, false,
-                    delegate (int PP, long BR, long TBR) {
-                        this.Invoke((MethodInvoker)delegate {
-                            pBC_Right.EditValue = PP;
-                            pP_Right.Description = BR.ToString() + " b";
-                            if (!fP_Right.IsPopupOpen) fP_Right.ShowPopup();
-                        });
-                    },
-                    delegate (DataSet ds, bool C, Exception E) {
-                        ds_Dataflow = ds;
-                        this.Invoke((MethodInvoker)delegate {
+                        if (!fP_Right.IsPopupOpen) fP_Right.ShowPopup();
+                        ApiBase.MetaDataListBegin(MetaDataListResource.dataflow, details.full, false,
+                            delegate (int PP, long BR, long TBR) {
+                                this.Invoke((MethodInvoker)delegate {
+                                    pBC_Right.EditValue = PP;
+                                    pP_Right.Description = BR.ToString() + " b";
+                                    if (!fP_Right.IsPopupOpen) fP_Right.ShowPopup();
+                                });
+                            },
+                            delegate (DataSet ds, bool C, Exception E) {
+                                this.Invoke((MethodInvoker)delegate {
                                     SetDataSourceDataflow();
                                     if (fP_Right.IsPopupOpen) fP_Right.HidePopup();
                                     SetEnabled(false);
                                 });
                             });
                     } else if (curLoadTyte == LoadType.Async)
-                            try {
+                        try {
                             ShowLoadMessage(this, "Загрузка Данных", "Ожидайте...");
                             Task<DataSet> CategorySchemeTask = ApiBase.CategoryListAsync(CategoryResource.categoryscheme);
                             Task<DataSet> CategoriSationTask = ApiBase.CategoryListAsync(CategoryResource.categorisation);
                             Task<DataSet> MetaDataListTask = ApiBase.MetaDataListAsync(MetaDataListResource.dataflow, details.full, false);
 
+                            DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoryScheme");
                             DataSet CategoryScheme = await CategorySchemeTask;
                             AddPic();
                             this.Invoke((MethodInvoker)delegate {
@@ -296,23 +295,25 @@ namespace EuroStatApp {
                                 if (fP_Left.IsPopupOpen) fP_Left.HidePopup();
                                 SetEnabled(false);
                             });
-                            DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoryScheme");
+                            DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoryScheme Done");
+                            DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoriSation");
                             DataSet CategoriSation = await CategoriSationTask;
                             this.Invoke((MethodInvoker)delegate {
                                 SetDataSourceCategorysation();
                                 if (fP_Center.IsPopupOpen) fP_Center.HidePopup();
                                 SetEnabled(false);
                             });
-                            DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoriSation");
+                            DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoriSation Done");
+                            DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("MetaDataList");
                             DataSet MetaDataList = await MetaDataListTask;
                             this.Invoke((MethodInvoker)delegate {
                                 SetDataSourceDataflow();
-                            if (fP_Right.IsPopupOpen) fP_Right.HidePopup();
+                                if (fP_Right.IsPopupOpen) fP_Right.HidePopup();
                                 SetEnabled(false);
                             });
-                            DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("MetaDataList");
+                            DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("MetaDataList Done");
                             SetEnabled(false);
-                        } catch(Exception al) { SetEnabled(true); throw al; } finally { CloseLoadMessage(); }
+                        } catch (Exception al) { SetEnabled(true); throw al; } finally { CloseLoadMessage(); }
                     else if (curLoadTyte == LoadType.CurThread)
                         System.Threading.Tasks.Parallel.Invoke(
                             () => {
@@ -330,7 +331,7 @@ namespace EuroStatApp {
                                     SetDataSourceCategorysation();
                                     if (fP_Center.IsPopupOpen) fP_Center.HidePopup();
                                     SetEnabled(false);
-                        });
+                                });
                             },
                             () => {
                                 ApiBase.ds_Dataflow = ApiBase.MetaDataList(MetaDataListResource.dataflow, details.full, false, null);
@@ -338,7 +339,7 @@ namespace EuroStatApp {
                                     SetDataSourceDataflow();
                                     if (fP_Right.IsPopupOpen) fP_Right.HidePopup();
                                     SetEnabled(false);
-                    });
+                                });
                             }
                         );
                 } finally { gC_CategoryScheme_MouseEnter(gC_CategoryScheme, new EventArgs()); }
@@ -379,7 +380,7 @@ namespace EuroStatApp {
             try {
 
             } catch { } finally { }
-            }
+        }
         void SetDataSourceDataflow() {
             try {
                 gC_Dataflow.BeginUpdate();
@@ -403,7 +404,7 @@ namespace EuroStatApp {
                             throw new Exception("No ContentLength, No Header Content-Length");
                 } catch (Exception gfs) { XtraMessageBox.Show(gfs.Message, "GetFileSize"); }
             else
-            bE_DownLoad_KeyDown(bE_DownLoad, new KeyEventArgs(Keys.Enter));
+                bE_DownLoad_KeyDown(bE_DownLoad, new KeyEventArgs(Keys.Enter));
         }
         private void bE_DownLoad_KeyDown(object sender, KeyEventArgs e) {
             if (e.KeyData != Keys.Enter || string.IsNullOrWhiteSpace(bE_DownLoad.Text))
@@ -421,7 +422,7 @@ namespace EuroStatApp {
             System.Net.WebClient wClient = new System.Net.WebClient();
             Uri uri = new Uri(bE_DownLoad.Text);
             wClient.DownloadProgressChanged += delegate (object o, System.Net.DownloadProgressChangedEventArgs dpcea) {
-                this.BeginInvoke((MethodInvoker)delegate () { pBC_URI.EditValue = dpcea.ProgressPercentage; lC_Download.Text = dpcea.BytesReceived.ToString()+" b "; });
+                this.BeginInvoke((MethodInvoker)delegate () { pBC_URI.EditValue = dpcea.ProgressPercentage; lC_Download.Text = dpcea.BytesReceived.ToString() + " b "; });
             };
             wClient.DownloadStringCompleted += delegate (object o, System.Net.DownloadStringCompletedEventArgs dscea) {
                 if (dscea.Cancelled) return;
@@ -472,7 +473,7 @@ namespace EuroStatApp {
 
         public static void ShowLoadMessage(Form Parent, string Caption, string Description) {
             if (DevExpress.XtraSplashScreen.SplashScreenManager.Default == null)
-                DevExpress.XtraSplashScreen.SplashScreenManager.ShowForm(Parent, typeof(CommonWaitForm), true, true, false);
+                DevExpress.XtraSplashScreen.SplashScreenManager.ShowForm(Parent, typeof(CommonWaitForm), true, true, false, DevExpress.XtraSplashScreen.ParentFormState.Locked);
             DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormCaption(Caption);
             DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription(Description);
         }

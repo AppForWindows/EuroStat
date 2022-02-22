@@ -373,8 +373,6 @@ namespace EuroStatApp {
             this.tV_Dataflow.ContextButtons.Add(contextButton2);
             this.tV_Dataflow.ContextButtons.Add(contextButton3);
             this.tV_Dataflow.ContextButtons.Add(contextButton4);
-            this.tV_Dataflow.ContextButtons.Add(contextButton5);
-            this.tV_Dataflow.ContextButtons.Add(contextButton6);
             this.tV_Dataflow.GridControl = this.gC_Dataflow;
             this.tV_Dataflow.Name = "tV_Dataflow";
             this.tV_Dataflow.OptionsList.DrawItemSeparators = DevExpress.XtraGrid.Views.Tile.DrawItemSeparatorsMode.None;
