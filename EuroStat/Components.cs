@@ -22,7 +22,7 @@ namespace EuroStat {
         public delegate void DataSetDownloadProgress(int ProgressPercentage, long BytesReceived, long TotalBytesToReceive);
         public delegate void DataSetDownloaded(DataSet Result, bool Cancelled, Exception Error);
         public delegate void DataSetFinal(DataSet Result);
-        public delegate void DataflowUpdated(DataRow DataFlow);
+        public delegate void DataflowUpdated(Dataflow Df);
         public static DataSet GetDataSet(string URI, IProgress<decimal> PR) {
             if (PR != null) PR.Report(0);
             DataSet ds = new DataSet();

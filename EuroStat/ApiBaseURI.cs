@@ -11,125 +11,68 @@ using System.ComponentModel;
 namespace EuroStat {
     [DisplayName("ApiBaseURI"), Description("https://ec.europa.eu/eurostat/online-help/public/en/API_01_Introduction_en/#APIBASE_URI")]
     public abstract class ApiBaseURI {
+        public abstract string ID { get; }
         public string DisplayName { get { return Components.GetDisplayName(this.GetType()); } }
         public string Description { get { return Attribute.GetCustomAttribute(this.GetType(), typeof(DescriptionAttribute)) != null ? ((DescriptionAttribute)Attribute.GetCustomAttribute(this.GetType(), typeof(DescriptionAttribute))).Description : this.GetType().FullName; } }
         public abstract string api_base_uri { get; }
         public abstract string agencyID { get; }
         public abstract string catalogue { get; }
 
-        public DataSet ds_CategoryScheme;
-        public DataSet ds_Categorysation;
-        public DataSet ds_Dataflow;
-        public virtual DataTable CategoryScheme { get { return ds_CategoryScheme != null && ds_CategoryScheme.Tables != null ? ds_CategoryScheme.Tables["CategoryScheme"] : null; } }
-        public virtual string CategorySchemeName { get { return "CategorySchemeName"; } }
-        public virtual DataTable Category { get { return ds_CategoryScheme != null && ds_CategoryScheme.Tables != null ? ds_CategoryScheme.Tables["Category"] : null; } }
-        public virtual string CategoryName { get { return "CategoryName"; } }
-        public virtual string CategoryKeyFieldName { get { return ds_CategoryScheme != null && ds_CategoryScheme.Relations != null && ds_CategoryScheme.Relations["Category_Category"] != null ? ds_CategoryScheme.Relations["Category_Category"].ParentColumns[0].ColumnName : string.Empty; } }
-        public virtual string CategoryParentFieldName { get { return ds_CategoryScheme != null && ds_CategoryScheme.Relations != null && ds_CategoryScheme.Relations["Category_Category"] != null ? ds_CategoryScheme.Relations["Category_Category"].ChildColumns[0].ColumnName : string.Empty; } }
-        public virtual DataTable Categorisation { get { return ds_Categorysation != null && ds_Categorysation.Tables != null ? ds_Categorysation.Tables["Categorisation"] : null; } }
-        public virtual DataTable Dataflow { get { return ds_Dataflow != null && ds_Dataflow.Tables != null ? ds_Dataflow.Tables["Dataflow"] : null; } }
+        public List<CategoryScheme> CategorySchemeList = null;
+        public List<Category> CategoryList = null;
+        public List<Categorisation> CategorisationList = null;
+        public List<Dataflow> DataflowList = null;
 
-        public void ClearDataSet() { ds_CategoryScheme = null; ds_Categorysation = null; ds_Dataflow = null; }
+        public void ClearDataSet() { CategorySchemeList = null; CategoryList = null; CategorisationList = null; DataflowList = null; }
 
-        public virtual string MetaDataListURI(MetaDataListResource MTLR, details D, bool completestubs) {
+        public virtual string DataflowListURI(MetaDataListResource MTLR, details D, bool completestubs) {
             return string.Format(@"{0}/sdmx/2.1/{1}/{2}/all?detail={3}{4}", api_base_uri, MTLR.ToString(), agencyID, D.ToString(), completestubs ? "&completestub=true" : "");
         }
-        public virtual DataSet MetaDataList(MetaDataListResource MTLR, details D, bool completestubs, IProgress<decimal> PR) {
-            DataSet ds = Components.GetDataSet(MetaDataListURI(MTLR, D, completestubs), PR);
-            MetaDataListPrepare(ds, MTLR, D, completestubs);
+        public virtual DataSet DataflowListGet(MetaDataListResource MTLR, details D, bool completestubs, IProgress<decimal> PR) {
+            DataSet ds = Components.GetDataSet(DataflowListURI(MTLR, D, completestubs), PR);
+            DataflowPrepare(ds, MTLR, D, completestubs);
             return ds;
         }
-        public virtual void MetaDataListBegin(MetaDataListResource MTLR, details D, bool completestubs, Components.DataSetDownloadProgress DDP, Components.DataSetDownloaded DSD) {
-            Components.BeginLoadDataSet(MetaDataListURI(MTLR, D, completestubs), DDP, DSD, delegate (DataSet ds) { MetaDataListPrepare(ds, MTLR, D, completestubs); });
+        public virtual void DataflowListBegin(MetaDataListResource MTLR, details D, bool completestubs, Components.DataSetDownloadProgress DDP, Components.DataSetDownloaded DSD) {
+            Components.BeginLoadDataSet(DataflowListURI(MTLR, D, completestubs), DDP, DSD, delegate (DataSet ds) { DataflowPrepare(ds, MTLR, D, completestubs); });
         }
-        public virtual void MetaDataListPrepare(DataSet ds, MetaDataListResource MTLR, details D, bool completestubs) {
-            ds_Dataflow = ds;
+        public virtual void DataflowPrepare(DataSet ds, MetaDataListResource MTLR, details D, bool completestubs) {
+            if (MTLR == MetaDataListResource.dataflow)
+                DataflowList = new List<Dataflow>();
             if (ds == null || ds.Tables.Count == 0) return;
-            if (MTLR == MetaDataListResource.dataflow) {
-                ds.Tables["Dataflow"].Columns.Add("DataflowName", typeof(string));
-                ds.Tables["Dataflow"].Columns.Add("DataflowDescription", typeof(string));
-                ds.Tables["Dataflow"].Columns.Add("DataflowHTML", typeof(string));
-                ds.Tables["Dataflow"].Columns.Add("DataflowSDMX", typeof(string));
-                foreach (DataRow Df in ds.Tables["Dataflow"].Rows) {
-                    DataRow name = Df.GetChildRows("Dataflow_Name").FirstOrDefault(n => n["lang"].ToString() == "en");
-                    if (name != null)
-                        Df["DataflowName"] = name["Name_Text"];
-                    if (ds.Tables.Contains("Description") && ds.Tables["Description"].Columns.Contains("Description_Text")) {
-                        DataRow desc = Df.GetChildRows("Dataflow_Description").FirstOrDefault(d => d["lang"].ToString() == "en");
-                        if (desc != null)
-                            Df["DataflowDescription"] = desc["Description_Text"];
-                    }
-                    if (ds.Tables.Contains("Annotation") && ds.Tables["Annotation"].Columns.Contains("AnnotationURL")) {
-                        DataRow html = Df.GetChildRows("Dataflow_Annotation").FirstOrDefault(d => d["AnnotationType"].ToString() == "ESMS_HTML");
-                        if (html != null)
-                            Df["DataflowHTML"] = html["AnnotationURL"];
-                        DataRow sdmx = Df.GetChildRows("Dataflow_Annotation").FirstOrDefault(d => d["AnnotationType"].ToString() == "ESMS_SDMX");
-                        if (sdmx != null)
-                            Df["DataflowSDMX"] = sdmx["AnnotationURL"];
-                    }
-                }
-            }
+            if (MTLR == MetaDataListResource.dataflow)
+                try {
+                    foreach (DataRow Df in ds.Tables["Dataflow"].Rows)
+                        DataflowList.Add(new Dataflow(this, Df["id"].ToString(), Df));
+                } catch (Exception d) { }
         }
-        public virtual async Task<DataSet> MetaDataListAsync(MetaDataListResource MTLR, details D, bool completestubs) {
-             return await Components.GetDataSetAsync(MetaDataListURI(MTLR, D, completestubs), delegate (DataSet ds) { MetaDataListPrepare(ds, MTLR, D, completestubs); });
+        public virtual async Task<DataSet> DataflowListAsync(MetaDataListResource MTLR, details D, bool completestubs) {
+            return await Components.GetDataSetAsync(DataflowListURI(MTLR, D, completestubs), delegate (DataSet ds) { DataflowPrepare(ds, MTLR, D, completestubs); });
         }
 
         public virtual void DataflowUpdateBegin(Components.DataflowUpdated DfU, Components.DataSetDownloaded DSD) {
-            if (ds_Dataflow == null || Dataflow == null || Dataflow.Rows.Count == 0) return;
-            Components.BeginLoadDataSet(MetaDataListURI(MetaDataListResource.dataflow, details.allstubs, true), null, DSD, delegate (DataSet ds) { DataflowUpdatePrepare(ds, DfU); });
+            if (DataflowList == null || DataflowList.Count == 0) return;
+            Components.BeginLoadDataSet(DataflowListURI(MetaDataListResource.dataflow, details.allstubs, true), null, DSD, delegate (DataSet ds) { DataflowUpdatePrepare(ds, DfU); });
         }
         public virtual void DataflowUpdatePrepare(DataSet ds, Components.DataflowUpdated DfU) {
-            if (ds == null || ds.Tables.Count == 0) return;
-            foreach (DataRow D in Dataflow.Rows) {
-                LoadDataRowFromDS(D, ds);
-                if (DfU != null) DfU.Invoke(D);
+            if (ds == null || ds.Tables.Count == 0 || DataflowList == null || DataflowList.Count == 0) return;
+            foreach (Dataflow Df in DataflowList) {
+                Df.UpdateFromDS(ds);
+                if (DfU != null) DfU.Invoke(Df);
             }
         }
         public virtual async void DataflowUpdateAsync(Components.DataflowUpdated DfU) {
-            foreach (DataRow D in Dataflow.Rows) {
-                await Components.GetDataSetAsync(string.Format(@"{0}/sdmx/2.1/dataflow/{1}/{2}?detail=allstubs&completestub=true", api_base_uri, agencyID, D["id"]), delegate (DataSet ds) { DataflowUpdatePrepare(ds, D); });
-                if (DfU != null) DfU.Invoke(D);
-            }
-        }
-        public virtual void DataflowUpdatePrepare(DataSet ds, DataRow D) {
-            if (ds == null || ds.Tables.Count == 0) return;
-            LoadDataRowFromDS(D, ds);
-        }
-        void LoadDataRowFromDS(DataRow D, DataSet ds) {
-            foreach (DataRow Df in ds.Tables["Dataflow"].Select("id='" + D["id"].ToString() + "'")) {
-                DataRow name = Df.GetChildRows("Dataflow_Name").FirstOrDefault(n => n["lang"].ToString() == "en");
-                if (name != null)
-                    D["DataflowName"] = name["Name_Text"];
-                if (ds.Tables.Contains("Description") && ds.Tables["Description"].Columns.Contains("Description_Text")) {
-                    DataRow desc = Df.GetChildRows("Dataflow_Description").FirstOrDefault(d => d["lang"].ToString() == "en");
-                    if (desc != null)
-                        D["DataflowDescription"] = desc["Description_Text"];
-                } else if (D["DataflowDescription"] == DBNull.Value)
-                    D["DataflowDescription"] = string.Empty;
-                if (ds.Tables.Contains("Annotation") && ds.Tables["Annotation"].Columns.Contains("AnnotationURL")) {
-                    DataRow html = Df.GetChildRows("Dataflow_Annotation").FirstOrDefault(d => d["AnnotationType"].ToString() == "ESMS_HTML");
-                    if (html != null)
-                        D["DataflowHTML"] = html["AnnotationURL"];
-                    else if (D["DataflowHTML"] == DBNull.Value)
-                        D["DataflowHTML"] = string.Empty;
-                    DataRow sdmx = Df.GetChildRows("Dataflow_Annotation").FirstOrDefault(d => d["AnnotationType"].ToString() == "ESMS_SDMX");
-                    if (sdmx != null)
-                        D["DataflowSDMX"] = sdmx["AnnotationURL"];
-                    else if (D["DataflowSDMX"] == DBNull.Value)
-                        D["DataflowSDMX"] = string.Empty;
-                } else {
-                    if (D["DataflowHTML"] == DBNull.Value)
-                        D["DataflowHTML"] = string.Empty;
-                    if (D["DataflowSDMX"] == DBNull.Value)
-                        D["DataflowSDMX"] = string.Empty;
-                }
+            if (DataflowList == null || DataflowList.Count == 0) return;
+            foreach (Dataflow Df in DataflowList) {
+                await Components.GetDataSetAsync(string.Format(@"{0}/sdmx/2.1/dataflow/{1}/{2}?detail=allstubs&completestub=true", api_base_uri, agencyID, Df.ID), delegate (DataSet ds) { Df.UpdateFromDS(ds); });
+                if (DfU != null) DfU.Invoke(Df);
             }
         }
 
         public virtual string CategoryListURI(CategoryResource CR) {
             return string.Format(@"{0}/sdmx/2.1/{1}/{2}/all", api_base_uri, CR.ToString(), agencyID);
         }
-        public virtual DataSet CategoryList(CategoryResource CR, IProgress<decimal> PR) {
+        public virtual DataSet CategoryListGet(CategoryResource CR, IProgress<decimal> PR) {
             DataSet ds = Components.GetDataSet(CategoryListURI(CR), PR);
             CategoryListPrepare(ds, CR);
             return ds;
@@ -138,56 +81,26 @@ namespace EuroStat {
             Components.BeginLoadDataSet(CategoryListURI(CR), DDP, DSD, delegate (DataSet ds) { CategoryListPrepare(ds, CR); });
         }
         public virtual void CategoryListPrepare(DataSet ds, CategoryResource CR) {
-            if (CR == CategoryResource.categoryscheme)
-                ds_CategoryScheme = ds;
-            else if (CR == CategoryResource.categorisation)
-                ds_Categorysation = ds;
+            if (CR == CategoryResource.categoryscheme) {
+                CategorySchemeList = new List<CategoryScheme>();
+                CategoryList = new List<Category>();
+            } else if (CR == CategoryResource.categorisation)
+                CategorisationList = new List<Categorisation>();
             if (ds == null || ds.Tables.Count == 0) return;
             if (CR == CategoryResource.categoryscheme)
                 try {
-                    CategoryScheme.Columns.Add(CategorySchemeName, typeof(string));
-                    CategoryScheme.Columns.Add("COLOR_ICON", typeof(byte[]));
-                    CategoryScheme.Columns.Add("GREY_ICON", typeof(byte[]));
-                    CategoryScheme.Columns.Add("HOVER_ICON", typeof(byte[]));
-                    foreach (DataRow CS in CategoryScheme.Rows) try {
-                            DataRow name = CS.GetChildRows("CategoryScheme_Name").FirstOrDefault(n => n["lang"].ToString() == "en");
-                            if (name != null)
-                                CS[CategorySchemeName] = name["Name_Text"];
-                            DataRow Ic = CS.GetChildRows("CategoryScheme_Annotation").FirstOrDefault(n => n["AnnotationType"].ToString() == "DISSEMINATION_COLOR_ICON");
-                            if (Ic != null) 
-                                CS["COLOR_ICON"] = Convert.FromBase64String(Ic["AnnotationTitle"].ToString());
-                            Ic = CS.GetChildRows("CategoryScheme_Annotation").FirstOrDefault(n => n["AnnotationType"].ToString() == "DISSEMINATION_GREY_ICON");
-                            if (Ic != null)
-                                CS["GREY_ICON"] = Convert.FromBase64String(Ic["AnnotationTitle"].ToString());
-                            Ic = CS.GetChildRows("CategoryScheme_Annotation").FirstOrDefault(n => n["AnnotationType"].ToString() == "DISSEMINATION_HOVER_ICON");
-                            if (Ic != null)
-                                CS["HOVER_ICON"] = Convert.FromBase64String(Ic["AnnotationTitle"].ToString());
-                        } catch(Exception cs) { }
+                    foreach (DataRow CS in ds.Tables["CategoryScheme"].Rows)
+                        CategorySchemeList.Add(new CategoryScheme(this, CS["id"].ToString(), CS));
 
-                    Category.Columns.Add(CategoryName, typeof(string));
-                    foreach (DataRow C in Category.Rows) {
-                        DataRow name = C.GetChildRows("Category_Name").FirstOrDefault(n => n["lang"].ToString() == "en");
-                        if (name != null)
-                            C[CategoryName] = name["Name_Text"];
-                    }
-                    foreach (DataRow C in Category.Select("CategoryScheme_Id is not null"))
+                    foreach (DataRow C in ds.Tables["Category"].Select("CategoryScheme_Id is not null"))
                         SetCategoryScheme(C, C["CategoryScheme_Id"]);
+                    foreach (DataRow C in ds.Tables["Category"].Rows)
+                        CategoryList.Add(new Category(this, C["id"].ToString(), C));
                 } catch { }
             else if (CR == CategoryResource.categorisation)
                 try {
-                    Categorisation.Columns.Add("SourceID", typeof(string));
-                    Categorisation.Columns.Add("TargetID", typeof(string));
-                    Categorisation.Columns.Add("TargetParentID", typeof(string));
-                    foreach (DataRow C in ds.Tables["Categorisation"].Rows) {
-                        DataRow S = C.GetChildRows("Categorisation_SourceRef").FirstOrDefault();
-                        if (S != null)
-                            C["SourceID"] = S["id"];
-                        DataRow T = C.GetChildRows("Categorisation_TargetRef").FirstOrDefault();
-                        if (T != null) {
-                            C["TargetID"] = T["id"];
-                            C["TargetParentID"] = T["maintainableParentID"];
-                        }
-                    }
+                    foreach (DataRow C in ds.Tables["Categorisation"].Rows)
+                        CategorisationList.Add(new Categorisation(this, C["id"].ToString(), C));
                 } catch { }
         }
         private void SetCategoryScheme(DataRow r, object id) {
@@ -199,25 +112,6 @@ namespace EuroStat {
         public virtual async Task<DataSet> CategoryListAsync(CategoryResource CR) {
             return await Components.GetDataSetAsync(CategoryListURI(CR), delegate (DataSet ds) { CategoryListPrepare(ds, CR); });
         }
-
-        //public virtual string DataflowURI(string ID, DataflowResource DR, string ver, DataflowReferences references, bool compressed) {
-        //    List<string> param = new List<string> { references != DataflowReferences.empty ? "references=" + references.ToString() : "", compressed ? "compressed=true" : "" };//lang=en
-        //    param.RemoveAll(p => string.IsNullOrWhiteSpace(p));
-        //    return string.Format(@"{0}/sdmx/2.1/{1}/{2}/{3}{4}{5}", api_base_uri, DR.ToString(), agencyID, ID, !string.IsNullOrWhiteSpace(ver) ? "/" + ver : "", param.Count > 0 ? "?" + string.Join("&", param) : "");
-        //}
-        //public virtual DataSet DataflowList(string ID, DataflowResource DR, string ver, DataflowReferences references, bool compressed, IProgress<decimal> PR) {
-        //    return Components.GetDataSet(DataflowURI(ID, DR, ver, references, compressed), PR);
-        //}
-        //public virtual void DataflowListBegin(string ID, DataflowResource DR, string ver, DataflowReferences references, bool compressed, Components.DataSetDownloadProgress DDP, Components.DataSetDownloaded DSD) {
-        //    Components.BeginLoadDataSet(DataflowURI(ID, DR, ver, references, compressed), DDP, DSD, delegate (DataSet ds) { DataflowListPrepare(ds, ID, DR, ver, references, compressed); });
-        //}
-        //public virtual void DataflowListPrepare(DataSet ds, string ID, DataflowResource DR, string ver, DataflowReferences references, bool compressed) {
-        //    if (ds == null || ds.Tables.Count == 0) return;
-            
-        //}
-        //public virtual async Task<DataSet> DataflowListAsync(string ID, DataflowResource DR, string ver, DataflowReferences references, bool compressed) {
-        //    return await Components.GetDataSetAsync(DataflowURI(ID, DR, ver, references, compressed), delegate (DataSet ds) { DataflowListPrepare(ds, ID, DR, ver, references, compressed); });
-        //}
 
         public virtual string DataflowDataURI(string ID, DataflowDataDetail DDD, bool compressed) {
             string key = "";
@@ -237,6 +131,149 @@ namespace EuroStat {
         }
         public virtual async Task<DataSet> DataflowDataAsync(string ID, DataflowDataDetail DDD, bool compressed) {
             return await Components.GetDataSetAsync(DataflowDataURI(ID, DDD, compressed), delegate (DataSet ds) { DataflowDataPrepare(ds, ID, DDD, compressed); });
+        }
+    }
+
+    public class CategoryScheme {
+        public ApiBaseURI ApiBase { get; private set; }
+        public string ApiBaseID { get; private set; }
+        public string ID { get; private set; }
+        public string Name { get; set; }
+        public byte[] IconColor { get; set; }
+        public byte[] IconGray { get; set; }
+        public byte[] IconHover { get; set; }
+
+        public CategoryScheme(ApiBaseURI _ApiBase, string _ID, DataRow drCategoryScheme) {
+            ApiBase = _ApiBase;
+            ApiBaseID = _ApiBase.ID;
+            ID = _ID;
+            try {
+                DataRow name = drCategoryScheme.GetChildRows("CategoryScheme_Name").FirstOrDefault(n => n["lang"].ToString() == "en");
+                if (name != null)
+                    Name = name["Name_Text"].ToString();
+                DataRow Ic = drCategoryScheme.GetChildRows("CategoryScheme_Annotation").FirstOrDefault(n => n["AnnotationType"].ToString() == "DISSEMINATION_COLOR_ICON");
+                if (Ic != null)
+                    IconColor = Convert.FromBase64String(Ic["AnnotationTitle"].ToString());
+                Ic = drCategoryScheme.GetChildRows("CategoryScheme_Annotation").FirstOrDefault(n => n["AnnotationType"].ToString() == "DISSEMINATION_GREY_ICON");
+                if (Ic != null)
+                    IconGray = Convert.FromBase64String(Ic["AnnotationTitle"].ToString());
+                Ic = drCategoryScheme.GetChildRows("CategoryScheme_Annotation").FirstOrDefault(n => n["AnnotationType"].ToString() == "DISSEMINATION_HOVER_ICON");
+                if (Ic != null)
+                    IconHover = Convert.FromBase64String(Ic["AnnotationTitle"].ToString());
+            } catch (Exception cs) { }
+        }
+
+        public Category[] CategoryList { get { return ApiBase != null && ApiBase.CategoryList != null ? ApiBase.CategoryList.Where(cl => cl.CategorySchemeID == ID).ToArray() : new Category[] { }; } }
+    }
+    public class Category {
+        public ApiBaseURI ApiBase { get; private set; }
+        public string ApiBaseID { get; private set; }
+        public CategoryScheme CategoryScheme { get { return ApiBase != null && ApiBase.CategorySchemeList != null ? ApiBase.CategorySchemeList.FirstOrDefault(cs => cs.ID == CategorySchemeID) : null; } }
+        public string CategorySchemeID { get; private set; }
+        public string ID { get; private set; }
+        public string ParentID { get; private set; }
+        public string Name { get; private set; }
+
+        public Category(ApiBaseURI _ApiBase, string _ID, DataRow drCategory) {
+            ApiBase = _ApiBase;
+            ApiBaseID = _ApiBase.ID;
+            ID = _ID;
+            try {
+                if (drCategory.GetParentRow("CategoryScheme_Category") != null)
+                    CategorySchemeID = drCategory.GetParentRow("CategoryScheme_Category")["id"].ToString();
+                if (drCategory.Table.DataSet.Relations["Category_Category"] != null && drCategory.GetParentRow("Category_Category") != null)
+                    ParentID = drCategory.GetParentRow("Category_Category")["id"].ToString();
+                DataRow name = drCategory.GetChildRows("Category_Name").FirstOrDefault(n => n["lang"].ToString() == "en");
+                if (name != null)
+                    Name = name["Name_Text"].ToString();
+            } catch (Exception c) { }
+        }
+    }
+    public class Categorisation {
+        public ApiBaseURI ApiBase { get; private set; }
+        public string ApiBaseID { get; private set; }
+        public string ID { get; private set; }
+        public string SourceID { get; private set; }
+        public string TargetID { get; private set; }
+        public string TargetParentID { get; private set; }
+
+        public Categorisation(ApiBaseURI _ApiBase, string _ID, DataRow drCategorisation) {
+            ApiBase = _ApiBase;
+            ApiBaseID = _ApiBase.ID;
+            ID = _ID;
+            try {
+                DataRow S = drCategorisation.GetChildRows("Categorisation_SourceRef").FirstOrDefault();
+                if (S != null)
+                    SourceID = S["id"].ToString();
+                DataRow T = drCategorisation.GetChildRows("Categorisation_TargetRef").FirstOrDefault();
+                if (T != null) {
+                    TargetID = T["id"].ToString();
+                    TargetParentID = T["maintainableParentID"].ToString();
+                }
+            } catch (Exception c) { }
+        }
+    }
+    public class Dataflow {
+        public ApiBaseURI ApiBase { get; private set; }
+        public string ApiBaseID { get; private set; }
+        public string ID { get; private set; }
+        public string Name { get; private set; }
+        public string Description { get; private set; } = null;
+        public string HTML { get; private set; } = null;
+        public string SDMX { get; private set; } = null;
+
+        public Dataflow(ApiBaseURI _ApiBase, string _ID, DataRow drDataflow) {
+            ApiBase = _ApiBase;
+            ApiBaseID = _ApiBase.ID;
+            ID = _ID;
+            try {
+                DataRow name = drDataflow.GetChildRows("Dataflow_Name").FirstOrDefault(n => n["lang"].ToString() == "en");
+                if (name != null)
+                    Name = name["Name_Text"].ToString();
+                if (drDataflow.Table.DataSet.Tables.Contains("Description") && drDataflow.Table.DataSet.Tables["Description"].Columns.Contains("Description_Text")) {
+                    DataRow desc = drDataflow.GetChildRows("Dataflow_Description").FirstOrDefault(d => d["lang"].ToString() == "en");
+                    if (desc != null)
+                        Description = desc["Description_Text"].ToString();
+                }
+                if (drDataflow.Table.DataSet.Tables.Contains("Annotation") && drDataflow.Table.DataSet.Tables["Annotation"].Columns.Contains("AnnotationURL")) {
+                    DataRow html = drDataflow.GetChildRows("Dataflow_Annotation").FirstOrDefault(d => d["AnnotationType"].ToString() == "ESMS_HTML");
+                    if (html != null)
+                        HTML = html["AnnotationURL"].ToString();
+                    DataRow sdmx = drDataflow.GetChildRows("Dataflow_Annotation").FirstOrDefault(d => d["AnnotationType"].ToString() == "ESMS_SDMX");
+                    if (sdmx != null)
+                        SDMX = sdmx["AnnotationURL"].ToString();
+                }
+            } catch (Exception d) { }
+        }
+        public void UpdateFromDS(DataSet ds) {
+            foreach (DataRow Df in ds.Tables["Dataflow"].Select("id='" + ID + "'")) {
+                DataRow name = Df.GetChildRows("Dataflow_Name").FirstOrDefault(n => n["lang"].ToString() == "en");
+                if (name != null)
+                    Name = name["Name_Text"].ToString();
+                if (ds.Tables.Contains("Description") && ds.Tables["Description"].Columns.Contains("Description_Text")) {
+                    DataRow desc = Df.GetChildRows("Dataflow_Description").FirstOrDefault(d => d["lang"].ToString() == "en");
+                    if (desc != null)
+                        Description = desc["Description_Text"].ToString();
+                } else if (Description == null)
+                    Description = string.Empty;
+                if (ds.Tables.Contains("Annotation") && ds.Tables["Annotation"].Columns.Contains("AnnotationURL")) {
+                    DataRow html = Df.GetChildRows("Dataflow_Annotation").FirstOrDefault(d => d["AnnotationType"].ToString() == "ESMS_HTML");
+                    if (html != null)
+                        HTML = html["AnnotationURL"].ToString();
+                    else if (HTML == null)
+                        HTML = string.Empty;
+                    DataRow sdmx = Df.GetChildRows("Dataflow_Annotation").FirstOrDefault(d => d["AnnotationType"].ToString() == "ESMS_SDMX");
+                    if (sdmx != null)
+                        SDMX = sdmx["AnnotationURL"].ToString();
+                    else if (SDMX == null)
+                        SDMX = string.Empty;
+                } else {
+                    if (HTML == null)
+                        HTML = string.Empty;
+                    if (SDMX == null)
+                        SDMX = string.Empty;
+                }
+            }
         }
     }
 }

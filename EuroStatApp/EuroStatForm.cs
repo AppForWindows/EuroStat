@@ -15,9 +15,6 @@ namespace EuroStatApp {
     public partial class EuroStatForm : DevExpress.XtraBars.ToolbarForm.ToolbarForm {
         ApiBaseURI ApiBase;
         Dictionary<Type, ApiBaseURI> ApiBaseList = new Dictionary<Type, ApiBaseURI>();
-        DataSet ds_CategoryScheme { get { return ApiBase != null ? ApiBase.ds_CategoryScheme : null; } }
-        DataSet ds_Categorysation { get { return ApiBase != null ? ApiBase.ds_Categorysation : null; } }
-        DataSet ds_Dataflow { get { return ApiBase != null ? ApiBase.ds_Dataflow : null; } }
         LoadType curLoadTyte {
             get {
                 LoadType LT = LoadType.Delegate;
@@ -50,7 +47,6 @@ namespace EuroStatApp {
                 process.Start();
             } catch { }
         }
-
         private void Default_StyleChanged(object sender, EventArgs e) {
             tL_Category.Width = pC_Left.Width;
             pC_Left_SizeChanged(pC_Left, new EventArgs());
@@ -92,99 +88,102 @@ namespace EuroStatApp {
             if (TV.FocusedRowHandle == e.Item.RowHandle)
                 tV_CategoryScheme_FocusedRowChanged(sender, new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs(TV.FocusedRowHandle, e.Item.RowHandle));
         }
+        private void tV_CategoryScheme_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e) {
+            DevExpress.XtraGrid.Views.Tile.TileView TV = (DevExpress.XtraGrid.Views.Tile.TileView)sender;
+            CategoryScheme CS = TV.GetRow(e.FocusedRowHandle) as CategoryScheme;
+            if (CS == null  || ApiBase == null || ApiBase.CategorisationList == null || ApiBase.CategorisationList.Count == 0) {
+                tL_Category.DataSource = null;
+                gC_Dataflow.DataSource = null;
+                return;
+            }
+            tL_Category.DataSource = ApiBase.CategoryList.Where(c => c.CategorySchemeID == CS.ID).ToList();
+            Categorisation[] Categorisation = ApiBase.CategorisationList.Where(c => c.TargetParentID == CS.ID).ToArray();
+            List<string> IdList = Categorisation.Select(c => c.SourceID).ToList();
+            gC_Dataflow.DataSource = ApiBase.DataflowList.Where(d => IdList.Contains(d.ID)).ToList();
+            tL_Category.ClearSelection();
+            tL_Category.ClearFocusedColumn();
+        }
         private void tV_CategoryScheme_CustomColumnDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e) {
-            if (!e.IsForGroupRow && e.Column.FieldName == "id")
+            if (!e.IsForGroupRow && e.Column.FieldName == "ID")
                 e.DisplayText = string.Format("[{0}]", e.Value);
         }
         private void tV_CategoryScheme_ItemCustomize(object sender, DevExpress.XtraGrid.Views.Tile.TileViewItemCustomizeEventArgs e) {
             DevExpress.XtraGrid.Views.Tile.TileView TV = (DevExpress.XtraGrid.Views.Tile.TileView)sender;
             e.Item.Checked = TV.FocusedRowHandle == e.RowHandle;
         }
-        private void tL_Category_VisibleChanged(object sender, EventArgs e) {
-            sC_Left.Visible = tL_Category.Visible;
-            if (sC_Left.Visible)
-                sC_Left.BringToFront();
-        }
-        int CategorySchemeImageIdx(string Name) {
-            int idx = 9;
-            if (Name.ToLower().Contains("general") || Name.ToLower().Contains("regional"))
-                idx = 0;
-            else if (Name.ToLower().Contains("economy") || Name.ToLower().Contains("finance"))
-                idx = 1;
-            else if (Name.ToLower().Contains("population") || Name.ToLower().Contains("social"))
-                idx = 2;
-            else if (Name.ToLower().Contains("industry") || Name.ToLower().Contains("trade") || Name.ToLower().Contains("services"))
-                idx = 3;
-            else if (Name.ToLower().Contains("agriculture") || Name.ToLower().Contains("forest") || Name.ToLower().Contains("fish"))
-                idx = 4;
-            else if (Name.ToLower().Contains("international") || Name.ToLower().Contains("goods"))
-                idx = 5;
-            else if (Name.ToLower().Contains("transport") || Name.ToLower().Contains("train"))
-                idx = 6;
-            else if (Name.ToLower().Contains("environment") || Name.ToLower().Contains("energy"))
-                idx = 7;
-            else if (Name.ToLower().Contains("science") || Name.ToLower().Contains("technology") || Name.ToLower().Contains("society"))
-                idx = 8;
-            else if (Name.ToLower().Contains("policy"))
-                idx = 9;
-            else if (Name.ToLower().Contains("cross") || Name.ToLower().Contains("cutting"))
-                idx = 10;
-            return idx;
-        }
         private void tV_CategoryScheme_CustomItemTemplate(object sender, DevExpress.XtraGrid.Views.Tile.TileViewCustomItemTemplateEventArgs e) {
             DevExpress.XtraGrid.Views.Tile.TileView TV = (DevExpress.XtraGrid.Views.Tile.TileView)sender;
-            DataRow CR = TV.GetDataRow(e.RowHandle);
-            if (CR == null || CR["COLOR_ICON"] == DBNull.Value) {
-            }else if (TV.FocusedRowHandle == e.RowHandle)
+            CategoryScheme CS = TV.GetRow(e.RowHandle) as CategoryScheme;
+            if (CS == null || CS.IconColor == null || CS.IconColor.Length == 0) {
+            } else if (TV.FocusedRowHandle == e.RowHandle)
                 e.Template = e.Templates["HOVER"];
             else if (tL_Category.Visible)
                 e.Template = e.Templates["GREY"];
             else
                 e.Template = e.Templates["COLOR"];
         }
+        private void tL_Category_FocusedNodeChanged(object sender, DevExpress.XtraTreeList.FocusedNodeChangedEventArgs e) {
+            if (tL_Category.Selection.Count == 0 || tL_Category.Selection[0] == null || ApiBase.CategorisationList == null || ApiBase.CategorisationList.Count == 0)
+                return;
+            if (tL_Category.GetDataRecordByNode(tL_Category.Selection[0]) is Category)
+                try {
+                    gC_Dataflow.BeginUpdate();
+                    Category C = tL_Category.GetDataRecordByNode(tL_Category.Selection[0]) as Category;
+                    Categorisation[] Categorisation = ApiBase.CategorisationList.Where(c => c.TargetID.StartsWith(C.ID) || c.TargetID.Contains('.' + C.ID + '.') || c.TargetID.EndsWith('.' + C.ID)).ToArray();
+                    List<string> IdList = Categorisation.Select(c => c.SourceID).ToList();
+                    gC_Dataflow.DataSource = ApiBase.DataflowList.Where(d => IdList.Contains(d.ID)).ToList();
+                } catch { } finally { gC_Dataflow.EndUpdate(); }
+        }
+        private void tL_Category_VisibleChanged(object sender, EventArgs e) {
+            sC_Left.Visible = tL_Category.Visible;
+            if (sC_Left.Visible)
+                sC_Left.BringToFront();
+        }
 
         private void tV_Dataflow_ItemDoubleClick(object sender, DevExpress.XtraGrid.Views.Tile.TileViewItemClickEventArgs e) {
             DevExpress.XtraGrid.Views.Tile.TileView TV = (DevExpress.XtraGrid.Views.Tile.TileView)sender;
             DevExpress.XtraGrid.Views.Tile.TileViewItem TVI = e.Item as DevExpress.XtraGrid.Views.Tile.TileViewItem;
-            DataRow D = TV.GetDataRow(TVI.RowHandle);
-            if (TV == null || TVI == null || D == null || ApiBase == null) return;
+            if (TV == null || TVI == null || ApiBase == null) return;
+            Dataflow Df = TV.GetRow(TVI.RowHandle) as Dataflow;
+            if (Df == null) return;
             tV_Dataflow_ContextButtonClick(tV_Dataflow, new DevExpress.Utils.ContextItemClickEventArgs(TV.ContextButtons[1], null, e.Item));
         }
         private void tV_Dataflow_CustomColumnDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e) {
-            if (!e.IsForGroupRow && e.Column.FieldName == "id")
+            if (!e.IsForGroupRow && e.Column.FieldName == "ID")
                 e.DisplayText = string.Format("[{0}]", e.Value);
         }
         private void tV_Dataflow_ContextButtonClick(object sender, DevExpress.Utils.ContextItemClickEventArgs e) {
             DevExpress.XtraGrid.Views.Tile.TileView TV = (DevExpress.XtraGrid.Views.Tile.TileView)sender;
             DevExpress.XtraGrid.Views.Tile.TileViewItem TVI = e.DataItem as DevExpress.XtraGrid.Views.Tile.TileViewItem;
-            DataRow D = TV.GetDataRow(TVI.RowHandle);
-            if (TV == null || TVI == null || D == null || ApiBase == null) return;
+            if (TV == null || TVI == null || ApiBase == null) return;
+            Dataflow Df = TV.GetRow(TVI.RowHandle) as Dataflow;
+            if (Df == null) return;
             if (e.Item.Name.Contains("Description") || e.Item.Name.Contains("Loading")) {
                 DevExpress.Utils.ToolTipControllerShowEventArgs TT = DevExpress.Utils.ToolTipController.DefaultController.CreateShowArgs();
                 TT.ToolTipLocation = DevExpress.Utils.ToolTipLocation.LeftTop;
-                if (D["DataflowDescription"] == DBNull.Value || D["DataflowHTML"] == DBNull.Value || D["DataflowSDMX"] == DBNull.Value) {
-                    TT.Title = D["DataflowName"].ToString();
-                    TT.ToolTip = "is stil loading";
+                if (Df.Description == null || Df.HTML == null || Df.SDMX == null) {
+                    TT.Title = Df.Name;
+                    TT.ToolTip = "is loading...";
                     TT.IconType = DevExpress.Utils.ToolTipIconType.Hand;
                 } else {
                     DevExpress.Utils.SuperToolTip STT = new DevExpress.Utils.SuperToolTip();
                     DevExpress.Utils.ToolTipTitleItem TTTI = new DevExpress.Utils.ToolTipTitleItem();
-                    TTTI.Text = D["DataflowName"].ToString();
+                    TTTI.Text = Df.Name;
                     STT.Items.Add(TTTI);
                     DevExpress.Utils.ToolTipItem TTId = new DevExpress.Utils.ToolTipItem();
-                    TTId.Text = D["DataflowDescription"].ToString();
+                    TTId.Text = Df.Description;
                     STT.Items.Add(TTId);
                     STT.Items.Add(new DevExpress.Utils.ToolTipSeparatorItem());
-                    if (!string.IsNullOrWhiteSpace(D["DataflowHTML"].ToString())) {
+                    if (!string.IsNullOrWhiteSpace(Df.HTML)) {
                         DevExpress.Utils.ToolTipItem TTI = new DevExpress.Utils.ToolTipItem();
                         TTI.AllowHtmlText = DevExpress.Utils.DefaultBoolean.True;
-                        TTI.Text = "<href=" + D["DataflowHTML"].ToString() + ">html Annotation</href>";
+                        TTI.Text = "<href=" + Df.HTML + ">html Annotation</href>";
                         STT.Items.Add(TTI);
                     }
-                    if (!string.IsNullOrWhiteSpace(D["DataflowSDMX"].ToString())) {
+                    if (!string.IsNullOrWhiteSpace(Df.SDMX)) {
                         DevExpress.Utils.ToolTipItem TTI = new DevExpress.Utils.ToolTipItem();
                         TTI.AllowHtmlText = DevExpress.Utils.DefaultBoolean.True;
-                        TTI.Text = "<href=" + D["DataflowSDMX"].ToString() + ">sdmx Annotation</href>";
+                        TTI.Text = "<href=" + Df.SDMX + ">sdmx Annotation</href>";
                         STT.Items.Add(TTI);
                     }
                     TT.SuperTip = STT;
@@ -193,24 +192,24 @@ namespace EuroStatApp {
             } else if (e.Item.Name.Contains("HTML")) {
                 DevExpress.Utils.HyperlinkClickEventArgs HC = new DevExpress.Utils.HyperlinkClickEventArgs();
                 HC.Text = "html Annotation";
-                HC.Link = D["DataflowHTML"].ToString();
+                HC.Link = Df.HTML;
                 DefaultController_HyperlinkClick(e.Item, HC);
             } else if (e.Item.Name.Contains("SDMX")) {
                 DevExpress.Utils.HyperlinkClickEventArgs HC = new DevExpress.Utils.HyperlinkClickEventArgs();
                 HC.Text = "sdmx Annotation";
-                HC.Link = D["DataflowSDMX"].ToString();
+                HC.Link = Df.SDMX;
                 DefaultController_HyperlinkClick(e.Item, HC);
             } else {
                 gC_Dataflow.Enabled = false;
                 if (!e.Item.Name.Contains("Form")) {
                     xTabControl.TabPages.Clear(true);
-                    lC_Dataflow.Text = "Loading: " + D["DataflowName"].ToString();
-                    lC_DataflowURI.Text = ApiBase.DataflowDataURI(D["id"].ToString(), DataflowDataDetail.empty, false);
+                    lC_Dataflow.Text = "Loading: " + Df.Name;
+                    lC_DataflowURI.Text = ApiBase.DataflowDataURI(Df.ID, DataflowDataDetail.empty, false);
                 }
 
-                pP_Right.Caption = D["DataflowName"].ToString(); pP_Right.Description = string.Empty;
+                pP_Right.Caption = Df.Name; pP_Right.Description = string.Empty;
                 if (!fP_Right.IsPopupOpen) fP_Right.ShowPopup();
-                ApiBase.DataflowDataBegin(D["id"].ToString(), DataflowDataDetail.empty, false,
+                ApiBase.DataflowDataBegin(Df.ID, DataflowDataDetail.empty, false,
                     delegate (int PP, long BR, long TBR) {
                         this.Invoke((MethodInvoker)delegate {
                             pBC_Right.EditValue = PP;
@@ -228,15 +227,15 @@ namespace EuroStatApp {
                                 if (ds == null || ds.Tables == null || ds.Tables.Count == 0) return;
                                 if (e.Item.Name.Contains("Form")) {
                                     formDS = new DataSetForm(ds);
-                                    formDS.Text = ApiBase.DataflowDataURI(D["id"].ToString(), DataflowDataDetail.empty, false);
+                                    formDS.Text = ApiBase.DataflowDataURI(Df.ID, DataflowDataDetail.empty, false);
                                     formDS.Height = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height - 200;
                                     formDS.Width = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width - 100;
                                     formDS.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
                                     formDS.Show(this);
                                 } else
                                     try {
-                                        lC_Dataflow.Text = D["DataflowName"].ToString();
-                                        lC_DataflowURI.Text = ApiBase.DataflowDataURI(D["id"].ToString(), DataflowDataDetail.empty, false);
+                                        lC_Dataflow.Text = Df.Name;
+                                        lC_DataflowURI.Text = ApiBase.DataflowDataURI(Df.ID, DataflowDataDetail.empty, false);
                                         xTabControl.BeginUpdate();
                                         xTabControl.TabPages.Clear(true);
                                         if (e.Item.Name.Contains("Chart")) {
@@ -271,20 +270,20 @@ namespace EuroStatApp {
         }
         private void tV_Dataflow_ContextButtonCustomize(object sender, DevExpress.XtraGrid.Views.Tile.TileViewContextButtonCustomizeEventArgs e) {
             DevExpress.XtraGrid.Views.Tile.TileView TV = (DevExpress.XtraGrid.Views.Tile.TileView)sender;
-            DataRow D = TV.GetDataRow(e.RowHandle);
-            if (D == null) return;
+            Dataflow Df = TV.GetRow(e.RowHandle) as Dataflow;
+            if (Df == null) return;
             if (e.Item.Name.Contains("Loading"))
-                e.Item.Visibility = D["DataflowDescription"] == DBNull.Value || D["DataflowHTML"] == DBNull.Value || D["DataflowSDMX"] == DBNull.Value ? DevExpress.Utils.ContextItemVisibility.Visible : DevExpress.Utils.ContextItemVisibility.Hidden;
+                e.Item.Visibility = Df.Description == null || Df.HTML == null || Df.SDMX == null ? DevExpress.Utils.ContextItemVisibility.Visible : DevExpress.Utils.ContextItemVisibility.Hidden;
             else if (e.Item.Name.Contains("Description"))
-                e.Item.Visibility = D["DataflowDescription"] != DBNull.Value || D["DataflowHTML"] != DBNull.Value || D["DataflowSDMX"] != DBNull.Value ? DevExpress.Utils.ContextItemVisibility.Auto : DevExpress.Utils.ContextItemVisibility.Hidden;
+                e.Item.Visibility = Df.Description != null || Df.HTML != null || Df.SDMX != null ? DevExpress.Utils.ContextItemVisibility.Auto : DevExpress.Utils.ContextItemVisibility.Hidden;
             else if (e.Item.Name.Contains("HTML"))
-                e.Item.Visibility = D["DataflowHTML"] != DBNull.Value && !string.IsNullOrEmpty(D["DataflowHTML"].ToString()) ? DevExpress.Utils.ContextItemVisibility.Auto : DevExpress.Utils.ContextItemVisibility.Hidden;
+                e.Item.Visibility = Df.HTML != null && !string.IsNullOrEmpty(Df.HTML) ? DevExpress.Utils.ContextItemVisibility.Auto : DevExpress.Utils.ContextItemVisibility.Hidden;
             else if (e.Item.Name.Contains("SDMX"))
-                e.Item.Visibility = D["DataflowSDMX"] != DBNull.Value && !string.IsNullOrEmpty(D["DataflowSDMX"].ToString()) ? DevExpress.Utils.ContextItemVisibility.Auto : DevExpress.Utils.ContextItemVisibility.Hidden;
+                e.Item.Visibility = Df.SDMX != null && !string.IsNullOrEmpty(Df.SDMX) ? DevExpress.Utils.ContextItemVisibility.Auto : DevExpress.Utils.ContextItemVisibility.Hidden;
         }
 
         bool SetEnabled(bool En) {
-            bool Res = ds_CategoryScheme != null && ds_Categorysation != null && ds_Dataflow != null || En;
+            bool Res = ApiBase != null && ApiBase.CategorySchemeList != null &&  ApiBase.CategorisationList != null &&  ApiBase.DataflowList != null || En;
             gC_CategoryScheme.Enabled = iCBE_Source.Enabled = Res;
             return Res;
         }
@@ -315,7 +314,6 @@ namespace EuroStatApp {
                                 });
                             },
                             delegate (DataSet ds, bool C, Exception E) {
-                                AddPic();
                                 this.Invoke((MethodInvoker)delegate {
                                     SetDataSourceCategoryScheme();
                                     if (fP_Left.IsPopupOpen) fP_Left.HidePopup();
@@ -343,7 +341,7 @@ namespace EuroStatApp {
 
                         pP_Right.Caption = "Загрузка Потоков Данных"; pP_Right.Description = string.Empty;
                         if (!fP_Right.IsPopupOpen) fP_Right.ShowPopup();
-                        ApiBase.MetaDataListBegin(MetaDataListResource.dataflow, details.allstubs, false,
+                        ApiBase.DataflowListBegin(MetaDataListResource.dataflow, details.allstubs, false,
                             delegate (int PP, long BR, long TBR) {
                                 this.Invoke((MethodInvoker)delegate {
                                     pBC_Right.EditValue = PP;
@@ -357,19 +355,17 @@ namespace EuroStatApp {
                                     if (fP_Right.IsPopupOpen) fP_Right.HidePopup();
                                     SetEnabled(false);
                                 });
-                                ApiBase.DataflowUpdateBegin(delegate (DataRow D) {
+                                ApiBase.DataflowUpdateBegin(delegate (Dataflow Df) {
                                     this.Invoke((MethodInvoker)delegate {
                                         try {
                                             tV_Dataflow.BeginUpdate();
-                                            tV_Dataflow.RefreshRow(tV_Dataflow.GetRowHandle(ApiBase.Dataflow.Rows.IndexOf(D)));
+                                            tV_Dataflow.RefreshRow(tV_Dataflow.GetRowHandle(ApiBase.DataflowList.IndexOf(Df)));
                                         } catch { } finally { tV_Dataflow.EndUpdate(); }
                                     });
                                 }, delegate (DataSet dataset, bool cancel, Exception exeption) {
                                     this.Invoke((MethodInvoker)delegate {
                                         try {
                                             gC_Dataflow.BeginUpdate();
-                                            bS_Dataflow.DataSource = ds_Dataflow;
-                                            bS_Dataflow.DataMember = ApiBase.Dataflow.TableName;
                                         } finally { gC_Dataflow.EndUpdate(); }
                                     });
                                 });
@@ -380,11 +376,10 @@ namespace EuroStatApp {
                             ShowLoadMessage(this, "Загрузка Данных", "Ожидайте...");
                             Task<DataSet> CategorySchemeTask = ApiBase.CategoryListAsync(CategoryResource.categoryscheme);
                             Task<DataSet> CategoriSationTask = ApiBase.CategoryListAsync(CategoryResource.categorisation);
-                            Task<DataSet> MetaDataListTask = ApiBase.MetaDataListAsync(MetaDataListResource.dataflow, details.allstubs, false);
+                            Task<DataSet> DataflowListTask = ApiBase.DataflowListAsync(MetaDataListResource.dataflow, details.allstubs, false);
 
                             DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoryScheme");
                             DataSet CategoryScheme = await CategorySchemeTask;
-                            AddPic();
                             this.Invoke((MethodInvoker)delegate {
                                 SetDataSourceCategoryScheme();
                                 if (fP_Left.IsPopupOpen) fP_Left.HidePopup();
@@ -399,19 +394,19 @@ namespace EuroStatApp {
                                 SetEnabled(false);
                             });
                             DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoriSation Done");
-                            DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("MetaDataList");
-                            DataSet MetaDataList = await MetaDataListTask;
+                            DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("DataflowList");
+                            DataSet DataflowList = await DataflowListTask;
                             this.Invoke((MethodInvoker)delegate {
                                 SetDataSourceDataflow();
                                 if (fP_Right.IsPopupOpen) fP_Right.HidePopup();
                                 SetEnabled(false);
                             });
-                            DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("MetaDataList Done");
-                            ApiBase.DataflowUpdateAsync(delegate (DataRow D) {
+                            DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("DataflowList Done");
+                            ApiBase.DataflowUpdateAsync(delegate (Dataflow Df) {
                                 this.Invoke((MethodInvoker)delegate {
                                     try {
                                         tV_Dataflow.BeginUpdate();
-                                        tV_Dataflow.RefreshRow(tV_Dataflow.GetRowHandle(ApiBase.Dataflow.Rows.IndexOf(D)));
+                                        tV_Dataflow.RefreshRow(tV_Dataflow.GetRowHandle(ApiBase.DataflowList.IndexOf(Df)));
                                     } catch { } finally { tV_Dataflow.EndUpdate(); }
                                 });
                             });
@@ -420,8 +415,7 @@ namespace EuroStatApp {
                     else if (curLoadTyte == LoadType.CurThread)
                         System.Threading.Tasks.Parallel.Invoke(
                             () => {
-                                ApiBase.ds_CategoryScheme = ApiBase.CategoryList(CategoryResource.categoryscheme, null);
-                                AddPic();
+                                ApiBase.CategoryListGet(CategoryResource.categoryscheme, null);
                                 this.Invoke((MethodInvoker)delegate {
                                     SetDataSourceCategoryScheme();
                                     if (fP_Left.IsPopupOpen) fP_Left.HidePopup();
@@ -429,7 +423,7 @@ namespace EuroStatApp {
                                 });
                             },
                             () => {
-                                ApiBase.ds_Categorysation = ApiBase.CategoryList(CategoryResource.categorisation, null);
+                                ApiBase.CategoryListGet(CategoryResource.categorisation, null);
                                 this.Invoke((MethodInvoker)delegate {
                                     SetDataSourceCategorysation();
                                     if (fP_Center.IsPopupOpen) fP_Center.HidePopup();
@@ -437,7 +431,7 @@ namespace EuroStatApp {
                                 });
                             },
                             () => {
-                                ApiBase.ds_Dataflow = ApiBase.MetaDataList(MetaDataListResource.dataflow, details.allstubs, false, null);
+                                ApiBase.DataflowListGet(MetaDataListResource.dataflow, details.allstubs, false, null);
                                 this.Invoke((MethodInvoker)delegate {
                                     SetDataSourceDataflow();
                                     if (fP_Right.IsPopupOpen) fP_Right.HidePopup();
@@ -447,24 +441,12 @@ namespace EuroStatApp {
                                     this.Invoke((MethodInvoker)delegate {
                                         try {
                                             gC_Dataflow.BeginUpdate();
-                                            bS_Dataflow.DataSource = ds_Dataflow;
-                                            bS_Dataflow.DataMember = ApiBase.Dataflow.TableName;
                                         } finally { gC_Dataflow.EndUpdate(); }
                                     });
                                 });
                             }
                         );
                 } finally { gC_CategoryScheme_MouseEnter(gC_CategoryScheme, new EventArgs()); }
-        }
-        void AddPic() {
-            if (ApiBase.CategoryScheme != null && ApiBase.CategoryScheme.Columns.Contains(ApiBase.CategorySchemeName)) {
-                ApiBase.CategoryScheme.Columns.Add("PicIdx", typeof(int));
-                ApiBase.CategoryScheme.Columns.Add("Pic", typeof(Image));
-                foreach (DataRow CS in ApiBase.CategoryScheme.Rows) {
-                    CS["PicIdx"] = CategorySchemeImageIdx(CS[ApiBase.CategorySchemeName].ToString());
-                    CS["Pic"] = iC.Images[(int)CS["PicIdx"]];
-                }
-            }
         }
         private void iCBE_Source_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
             if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.OK) {
@@ -480,13 +462,13 @@ namespace EuroStatApp {
         void SetDataSourceCategoryScheme() {
             try {
                 gC_CategoryScheme.BeginUpdate(); tL_Category.BeginUpdate();
-                gC_CategoryScheme.DataSource = ds_CategoryScheme;
-                gC_CategoryScheme.DataMember = ApiBase.CategoryScheme.TableName;
-                tL_Category.DataSource = ds_CategoryScheme;
-                tL_Category.DataMember = string.Format("{0}.{0}_{1}", ApiBase.CategoryScheme.TableName, ApiBase.Category.TableName);
-                tL_Category.KeyFieldName = ApiBase.CategoryKeyFieldName;
-                tL_Category.ParentFieldName = ApiBase.CategoryParentFieldName;
-            } catch { } finally { gC_CategoryScheme.EndUpdate(); tL_Category.EndUpdate(); }
+                gC_CategoryScheme.DataSource = ApiBase.CategorySchemeList;
+                gC_CategoryScheme.DataMember = null;
+                tL_Category.DataSource = null;
+                tL_Category.DataMember = null;
+                tL_Category.KeyFieldName = "ID";
+                tL_Category.ParentFieldName = "ParentID";
+            } catch (Exception e) { } finally { gC_CategoryScheme.EndUpdate(); tL_Category.EndUpdate(); }
         }
         void SetDataSourceCategorysation() {
             try {
@@ -496,10 +478,9 @@ namespace EuroStatApp {
         void SetDataSourceDataflow() {
             try {
                 gC_Dataflow.BeginUpdate();
-                bS_Dataflow.DataSource = ds_Dataflow;
-                bS_Dataflow.DataMember = ApiBase.Dataflow.TableName;
-                bS_Dataflow.Filter = string.Empty;
-            } finally { gC_Dataflow.EndUpdate(); }
+                gC_Dataflow.DataSource = null;
+                gC_Dataflow.DataMember = null;
+            } catch (Exception e) { } finally { gC_Dataflow.EndUpdate(); }
         }
 
         private void bE_DownLoad_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
@@ -559,28 +540,6 @@ namespace EuroStatApp {
         }
         private void bE_DownLoad_Click(object sender, EventArgs e) {
             //bE_DownLoad.SelectAll();
-        }
-
-        private void tV_CategoryScheme_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e) {
-            DevExpress.XtraGrid.Views.Tile.TileView TV = (DevExpress.XtraGrid.Views.Tile.TileView)sender;
-            DataRow CR = TV.GetDataRow(e.FocusedRowHandle);
-            if (CR == null || ds_Categorysation == null || ds_Categorysation.Tables.Count == 0)
-                return;
-            DataRow[] CS = ApiBase.Categorisation.Select("TargetParentID='" + CR["id"].ToString() + "'");
-            bS_Dataflow.Filter = "id in ('" + string.Join("','", CS.Select(r => r["SourceID"].ToString())) + "')";
-            tL_Category.ClearSelection();
-            tL_Category.ClearFocusedColumn();
-        }
-
-        private void tL_Category_FocusedNodeChanged(object sender, DevExpress.XtraTreeList.FocusedNodeChangedEventArgs e) {
-            if (tL_Category.Selection.Count == 0 || tL_Category.Selection[0] == null || ds_Categorysation == null || ds_Categorysation.Tables.Count == 0)
-                return;
-            if (tL_Category.GetDataRecordByNode(tL_Category.Selection[0]) is DataRowView)
-                try {
-                    DataRow C = ((DataRowView)tL_Category.GetDataRecordByNode(tL_Category.Selection[0])).Row;
-                    DataRow[] CS = ApiBase.Categorisation.Select(string.Format("TargetID like '{0}%' or TargetID like '%.{0}.%' or TargetID like '%.{0}'", C["id"]));
-                    bS_Dataflow.Filter = "id in ('" + string.Join("','", CS.Select(r => r["SourceID"].ToString())) + "')";
-                } catch { }
         }
 
         public static void ShowLoadMessage(Form Parent, string Caption, string Description) {

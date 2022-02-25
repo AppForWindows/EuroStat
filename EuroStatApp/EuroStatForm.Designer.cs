@@ -102,16 +102,14 @@ namespace EuroStatApp {
             DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement14 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
             DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement15 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
             DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement16 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
-            DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement17 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
-            this.gC_DataflowName = new DevExpress.XtraGrid.Columns.TileViewColumn();
-            this.gC_id = new DevExpress.XtraGrid.Columns.TileViewColumn();
-            this.tVC_COLOR_ICON = new DevExpress.XtraGrid.Columns.TileViewColumn();
+            this.gC_Name = new DevExpress.XtraGrid.Columns.TileViewColumn();
+            this.gC_ID = new DevExpress.XtraGrid.Columns.TileViewColumn();
+            this.tVC_IconColor = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.rIPE_Pic = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
-            this.tVC_id = new DevExpress.XtraGrid.Columns.TileViewColumn();
+            this.tVC_ID = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.tVC_Name = new DevExpress.XtraGrid.Columns.TileViewColumn();
-            this.tVC_GREY_ICON = new DevExpress.XtraGrid.Columns.TileViewColumn();
-            this.tVC_HOVER_ICON = new DevExpress.XtraGrid.Columns.TileViewColumn();
-            this.tVC_Pic = new DevExpress.XtraGrid.Columns.TileViewColumn();
+            this.tVC_IconGrey = new DevExpress.XtraGrid.Columns.TileViewColumn();
+            this.tVC_IconHover = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.lC_URI = new DevExpress.XtraEditors.LabelControl();
             this.pBC_URI = new DevExpress.XtraEditors.ProgressBarControl();
@@ -120,7 +118,6 @@ namespace EuroStatApp {
             this.iCBE_Source = new DevExpress.XtraEditors.ImageComboBoxEdit();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.gC_Dataflow = new DevExpress.XtraGrid.GridControl();
-            this.bS_Dataflow = new System.Windows.Forms.BindingSource(this.components);
             this.tV_Dataflow = new DevExpress.XtraGrid.Views.Tile.TileView();
             this.splitterControl1 = new DevExpress.XtraEditors.SplitterControl();
             this.tL_Category = new DevExpress.XtraTreeList.TreeList();
@@ -128,7 +125,6 @@ namespace EuroStatApp {
             this.splitterControl2 = new DevExpress.XtraEditors.SplitterControl();
             this.gC_CategoryScheme = new DevExpress.XtraGrid.GridControl();
             this.tV_CategoryScheme = new DevExpress.XtraGrid.Views.Tile.TileView();
-            this.tVC_PicIdx = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.pC_Left = new DevExpress.XtraEditors.PanelControl();
             this.fP_Right = new DevExpress.Utils.FlyoutPanel();
             this.pP_Right = new DevExpress.XtraWaitForm.ProgressPanel();
@@ -160,7 +156,6 @@ namespace EuroStatApp {
             ((System.ComponentModel.ISupportInitialize)(this.bE_DownLoad.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iCBE_Source.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gC_Dataflow)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bS_Dataflow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tV_Dataflow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tL_Category)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gC_CategoryScheme)).BeginInit();
@@ -183,89 +178,77 @@ namespace EuroStatApp {
             ((System.ComponentModel.ISupportInitialize)(this.repItemImageComboBoxLoadType)).BeginInit();
             this.SuspendLayout();
             // 
-            // gC_DataflowName
+            // gC_Name
             // 
-            this.gC_DataflowName.AppearanceCell.FontStyleDelta = System.Drawing.FontStyle.Bold;
-            this.gC_DataflowName.AppearanceCell.Options.UseFont = true;
-            this.gC_DataflowName.Caption = "Name";
-            this.gC_DataflowName.FieldName = "DataflowName";
-            this.gC_DataflowName.Name = "gC_DataflowName";
-            this.gC_DataflowName.Visible = true;
-            this.gC_DataflowName.VisibleIndex = 0;
-            this.gC_DataflowName.Width = 343;
+            this.gC_Name.AppearanceCell.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            this.gC_Name.AppearanceCell.Options.UseFont = true;
+            this.gC_Name.Caption = "Name";
+            this.gC_Name.FieldName = "Name";
+            this.gC_Name.Name = "gC_Name";
+            this.gC_Name.Visible = true;
+            this.gC_Name.VisibleIndex = 0;
+            this.gC_Name.Width = 343;
             // 
-            // gC_id
+            // gC_ID
             // 
-            this.gC_id.AppearanceCell.FontSizeDelta = -1;
-            this.gC_id.AppearanceCell.Options.UseFont = true;
-            this.gC_id.Caption = "id";
-            this.gC_id.FieldName = "id";
-            this.gC_id.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Right;
-            this.gC_id.Name = "gC_id";
-            this.gC_id.Visible = true;
-            this.gC_id.VisibleIndex = 1;
-            this.gC_id.Width = 68;
+            this.gC_ID.AppearanceCell.FontSizeDelta = -1;
+            this.gC_ID.AppearanceCell.Options.UseFont = true;
+            this.gC_ID.Caption = "ID";
+            this.gC_ID.FieldName = "ID";
+            this.gC_ID.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Right;
+            this.gC_ID.Name = "gC_ID";
+            this.gC_ID.Visible = true;
+            this.gC_ID.VisibleIndex = 1;
+            this.gC_ID.Width = 68;
             // 
-            // tVC_COLOR_ICON
+            // tVC_IconColor
             // 
-            this.tVC_COLOR_ICON.Caption = "COLOR_ICON";
-            this.tVC_COLOR_ICON.ColumnEdit = this.rIPE_Pic;
-            this.tVC_COLOR_ICON.FieldName = "COLOR_ICON";
-            this.tVC_COLOR_ICON.Name = "tVC_COLOR_ICON";
-            this.tVC_COLOR_ICON.Visible = true;
-            this.tVC_COLOR_ICON.VisibleIndex = 4;
+            this.tVC_IconColor.Caption = "IconColor";
+            this.tVC_IconColor.ColumnEdit = this.rIPE_Pic;
+            this.tVC_IconColor.FieldName = "IconColor";
+            this.tVC_IconColor.Name = "tVC_IconColor";
+            this.tVC_IconColor.Visible = true;
+            this.tVC_IconColor.VisibleIndex = 2;
             // 
             // rIPE_Pic
             // 
             this.rIPE_Pic.Name = "rIPE_Pic";
             // 
-            // tVC_id
+            // tVC_ID
             // 
-            this.tVC_id.Caption = "id";
-            this.tVC_id.FieldName = "id";
-            this.tVC_id.FieldNameSortGroup = "PicIdx";
-            this.tVC_id.Name = "tVC_id";
-            this.tVC_id.Visible = true;
-            this.tVC_id.VisibleIndex = 0;
+            this.tVC_ID.Caption = "ID";
+            this.tVC_ID.FieldName = "ID";
+            this.tVC_ID.Name = "tVC_ID";
+            this.tVC_ID.Visible = true;
+            this.tVC_ID.VisibleIndex = 0;
             // 
             // tVC_Name
             // 
             this.tVC_Name.AppearanceCell.FontStyleDelta = System.Drawing.FontStyle.Bold;
             this.tVC_Name.AppearanceCell.Options.UseFont = true;
             this.tVC_Name.Caption = "Name";
-            this.tVC_Name.FieldName = "CategorySchemeName";
-            this.tVC_Name.FieldNameSortGroup = "PicIdx";
+            this.tVC_Name.FieldName = "Name";
             this.tVC_Name.Name = "tVC_Name";
             this.tVC_Name.Visible = true;
             this.tVC_Name.VisibleIndex = 1;
             // 
-            // tVC_GREY_ICON
+            // tVC_IconGrey
             // 
-            this.tVC_GREY_ICON.Caption = "GREY_ICON";
-            this.tVC_GREY_ICON.ColumnEdit = this.rIPE_Pic;
-            this.tVC_GREY_ICON.FieldName = "GREY_ICON";
-            this.tVC_GREY_ICON.Name = "tVC_GREY_ICON";
-            this.tVC_GREY_ICON.Visible = true;
-            this.tVC_GREY_ICON.VisibleIndex = 5;
+            this.tVC_IconGrey.Caption = "IconGrey";
+            this.tVC_IconGrey.ColumnEdit = this.rIPE_Pic;
+            this.tVC_IconGrey.FieldName = "IconGrey";
+            this.tVC_IconGrey.Name = "tVC_IconGrey";
+            this.tVC_IconGrey.Visible = true;
+            this.tVC_IconGrey.VisibleIndex = 3;
             // 
-            // tVC_HOVER_ICON
+            // tVC_IconHover
             // 
-            this.tVC_HOVER_ICON.Caption = "HOVER_ICON";
-            this.tVC_HOVER_ICON.ColumnEdit = this.rIPE_Pic;
-            this.tVC_HOVER_ICON.FieldName = "HOVER_ICON";
-            this.tVC_HOVER_ICON.Name = "tVC_HOVER_ICON";
-            this.tVC_HOVER_ICON.Visible = true;
-            this.tVC_HOVER_ICON.VisibleIndex = 6;
-            // 
-            // tVC_Pic
-            // 
-            this.tVC_Pic.Caption = "Pic";
-            this.tVC_Pic.ColumnEdit = this.rIPE_Pic;
-            this.tVC_Pic.FieldName = "Pic";
-            this.tVC_Pic.FieldNameSortGroup = "PicIdx";
-            this.tVC_Pic.Name = "tVC_Pic";
-            this.tVC_Pic.Visible = true;
-            this.tVC_Pic.VisibleIndex = 2;
+            this.tVC_IconHover.Caption = "IconHover";
+            this.tVC_IconHover.ColumnEdit = this.rIPE_Pic;
+            this.tVC_IconHover.FieldName = "IconHover";
+            this.tVC_IconHover.Name = "tVC_IconHover";
+            this.tVC_IconHover.Visible = true;
+            this.tVC_IconHover.VisibleIndex = 4;
             // 
             // panelControl1
             // 
@@ -380,7 +363,6 @@ namespace EuroStatApp {
             // 
             // gC_Dataflow
             // 
-            this.gC_Dataflow.DataSource = this.bS_Dataflow;
             this.gC_Dataflow.Dock = System.Windows.Forms.DockStyle.Left;
             this.gC_Dataflow.Location = new System.Drawing.Point(411, 54);
             this.gC_Dataflow.MainView = this.tV_Dataflow;
@@ -394,8 +376,8 @@ namespace EuroStatApp {
             // tV_Dataflow
             // 
             this.tV_Dataflow.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.gC_DataflowName,
-            this.gC_id});
+            this.gC_Name,
+            this.gC_ID});
             this.tV_Dataflow.ContextButtonOptions.BottomPanelPadding = new System.Windows.Forms.Padding(0);
             this.tV_Dataflow.ContextButtonOptions.CenterPanelPadding = new System.Windows.Forms.Padding(0);
             this.tV_Dataflow.ContextButtonOptions.FarPanelPadding = new System.Windows.Forms.Padding(0);
@@ -490,7 +472,7 @@ namespace EuroStatApp {
             tileViewItemElement1.Appearance.Pressed.Options.UseFont = true;
             tileViewItemElement1.Appearance.Selected.FontStyleDelta = System.Drawing.FontStyle.Bold;
             tileViewItemElement1.Appearance.Selected.Options.UseFont = true;
-            tileViewItemElement1.Column = this.gC_DataflowName;
+            tileViewItemElement1.Column = this.gC_Name;
             tileViewItemElement1.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
             tileViewItemElement1.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
             tileViewItemElement1.Text = "gC_DataflowName";
@@ -505,7 +487,7 @@ namespace EuroStatApp {
             tileViewItemElement2.Appearance.Pressed.Options.UseFont = true;
             tileViewItemElement2.Appearance.Selected.FontSizeDelta = -1;
             tileViewItemElement2.Appearance.Selected.Options.UseFont = true;
-            tileViewItemElement2.Column = this.gC_id;
+            tileViewItemElement2.Column = this.gC_ID;
             tileViewItemElement2.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
             tileViewItemElement2.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
             tileViewItemElement2.RowIndex = 1;
@@ -548,7 +530,7 @@ namespace EuroStatApp {
             // treeListColumn1
             // 
             this.treeListColumn1.Caption = "Name";
-            this.treeListColumn1.FieldName = "CategoryName";
+            this.treeListColumn1.FieldName = "Name";
             this.treeListColumn1.Name = "treeListColumn1";
             this.treeListColumn1.Visible = true;
             this.treeListColumn1.VisibleIndex = 0;
@@ -582,13 +564,11 @@ namespace EuroStatApp {
             this.tV_CategoryScheme.Appearance.ItemSelected.FontStyleDelta = System.Drawing.FontStyle.Bold;
             this.tV_CategoryScheme.Appearance.ItemSelected.Options.UseFont = true;
             this.tV_CategoryScheme.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.tVC_id,
+            this.tVC_ID,
             this.tVC_Name,
-            this.tVC_Pic,
-            this.tVC_PicIdx,
-            this.tVC_COLOR_ICON,
-            this.tVC_GREY_ICON,
-            this.tVC_HOVER_ICON});
+            this.tVC_IconColor,
+            this.tVC_IconGrey,
+            this.tVC_IconHover});
             this.tV_CategoryScheme.GridControl = this.gC_CategoryScheme;
             this.tV_CategoryScheme.Name = "tV_CategoryScheme";
             this.tV_CategoryScheme.OptionsList.DrawItemSeparators = DevExpress.XtraGrid.Views.Tile.DrawItemSeparatorsMode.None;
@@ -601,8 +581,6 @@ namespace EuroStatApp {
             this.tV_CategoryScheme.OptionsTiles.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.tV_CategoryScheme.OptionsTiles.Padding = new System.Windows.Forms.Padding(0);
             this.tV_CategoryScheme.OptionsTiles.RowCount = 0;
-            this.tV_CategoryScheme.SortInfo.AddRange(new DevExpress.XtraGrid.Columns.GridColumnSortInfo[] {
-            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.tVC_PicIdx, DevExpress.Data.ColumnSortOrder.Ascending)});
             tableColumnDefinition2.Length.Type = DevExpress.XtraEditors.TableLayout.TableDefinitionLengthType.Pixel;
             tableColumnDefinition2.Length.Value = 50D;
             tableColumnDefinition3.Length.Value = 195D;
@@ -621,10 +599,10 @@ namespace EuroStatApp {
             tileViewItemElement3.Appearance.Selected.FontSizeDelta = 1;
             tileViewItemElement3.Appearance.Selected.FontStyleDelta = System.Drawing.FontStyle.Bold;
             tileViewItemElement3.Appearance.Selected.Options.UseFont = true;
-            tileViewItemElement3.Column = this.tVC_COLOR_ICON;
+            tileViewItemElement3.Column = this.tVC_IconColor;
             tileViewItemElement3.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
             tileViewItemElement3.StretchVertical = true;
-            tileViewItemElement3.Text = "tVC_COLOR_ICON";
+            tileViewItemElement3.Text = "tVC_IconColor";
             tileViewItemElement3.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
             tileViewItemElement3.TextVisible = false;
             tileViewItemElement4.Appearance.Disabled.FontSizeDelta = -1;
@@ -637,12 +615,12 @@ namespace EuroStatApp {
             tileViewItemElement4.Appearance.Pressed.Options.UseFont = true;
             tileViewItemElement4.Appearance.Selected.FontSizeDelta = -1;
             tileViewItemElement4.Appearance.Selected.Options.UseFont = true;
-            tileViewItemElement4.Column = this.tVC_id;
+            tileViewItemElement4.Column = this.tVC_ID;
             tileViewItemElement4.ColumnIndex = 1;
             tileViewItemElement4.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
             tileViewItemElement4.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
             tileViewItemElement4.RowIndex = 1;
-            tileViewItemElement4.Text = "tVC_id";
+            tileViewItemElement4.Text = "tVC_ID";
             tileViewItemElement4.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
             tileViewItemElement5.Appearance.Disabled.FontStyleDelta = System.Drawing.FontStyle.Bold;
             tileViewItemElement5.Appearance.Disabled.Options.UseFont = true;
@@ -688,10 +666,10 @@ namespace EuroStatApp {
             tileViewItemElement6.Appearance.Selected.FontSizeDelta = 1;
             tileViewItemElement6.Appearance.Selected.FontStyleDelta = System.Drawing.FontStyle.Bold;
             tileViewItemElement6.Appearance.Selected.Options.UseFont = true;
-            tileViewItemElement6.Column = this.tVC_GREY_ICON;
+            tileViewItemElement6.Column = this.tVC_IconGrey;
             tileViewItemElement6.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
             tileViewItemElement6.StretchVertical = true;
-            tileViewItemElement6.Text = "tVC_GREY_ICON";
+            tileViewItemElement6.Text = "tVC_IconGrey";
             tileViewItemElement6.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
             tileViewItemElement6.TextVisible = false;
             tileViewItemElement7.Appearance.Disabled.FontSizeDelta = -1;
@@ -704,12 +682,12 @@ namespace EuroStatApp {
             tileViewItemElement7.Appearance.Pressed.Options.UseFont = true;
             tileViewItemElement7.Appearance.Selected.FontSizeDelta = -1;
             tileViewItemElement7.Appearance.Selected.Options.UseFont = true;
-            tileViewItemElement7.Column = this.tVC_id;
+            tileViewItemElement7.Column = this.tVC_ID;
             tileViewItemElement7.ColumnIndex = 1;
             tileViewItemElement7.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
             tileViewItemElement7.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
             tileViewItemElement7.RowIndex = 1;
-            tileViewItemElement7.Text = "tVC_id";
+            tileViewItemElement7.Text = "tVC_ID";
             tileViewItemElement7.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
             tileViewItemElement8.Appearance.Disabled.FontStyleDelta = System.Drawing.FontStyle.Bold;
             tileViewItemElement8.Appearance.Disabled.Options.UseFont = true;
@@ -755,10 +733,10 @@ namespace EuroStatApp {
             tileViewItemElement9.Appearance.Selected.FontSizeDelta = 1;
             tileViewItemElement9.Appearance.Selected.FontStyleDelta = System.Drawing.FontStyle.Bold;
             tileViewItemElement9.Appearance.Selected.Options.UseFont = true;
-            tileViewItemElement9.Column = this.tVC_HOVER_ICON;
+            tileViewItemElement9.Column = this.tVC_IconHover;
             tileViewItemElement9.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
             tileViewItemElement9.StretchVertical = true;
-            tileViewItemElement9.Text = "tVC_HOVER_ICON";
+            tileViewItemElement9.Text = "tVC_IconHover";
             tileViewItemElement9.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
             tileViewItemElement9.TextVisible = false;
             tileViewItemElement10.Appearance.Disabled.FontSizeDelta = -1;
@@ -771,12 +749,12 @@ namespace EuroStatApp {
             tileViewItemElement10.Appearance.Pressed.Options.UseFont = true;
             tileViewItemElement10.Appearance.Selected.FontSizeDelta = -1;
             tileViewItemElement10.Appearance.Selected.Options.UseFont = true;
-            tileViewItemElement10.Column = this.tVC_id;
+            tileViewItemElement10.Column = this.tVC_ID;
             tileViewItemElement10.ColumnIndex = 1;
             tileViewItemElement10.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
             tileViewItemElement10.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
             tileViewItemElement10.RowIndex = 1;
-            tileViewItemElement10.Text = "tVC_id";
+            tileViewItemElement10.Text = "tVC_ID";
             tileViewItemElement10.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
             tileViewItemElement11.Appearance.Disabled.FontStyleDelta = System.Drawing.FontStyle.Bold;
             tileViewItemElement11.Appearance.Disabled.Options.UseFont = true;
@@ -833,103 +811,73 @@ namespace EuroStatApp {
             this.tV_CategoryScheme.TileSpans.Add(tableSpan5);
             this.tV_CategoryScheme.TileSpans.Add(tableSpan6);
             this.tV_CategoryScheme.TileSpans.Add(tableSpan7);
-            tileViewItemElement12.Appearance.Disabled.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement12.Appearance.Disabled.FontSizeDelta = -1;
             tileViewItemElement12.Appearance.Disabled.Options.UseFont = true;
-            tileViewItemElement12.Appearance.Hovered.FontSizeDelta = 1;
-            tileViewItemElement12.Appearance.Hovered.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement12.Appearance.Hovered.FontSizeDelta = -1;
             tileViewItemElement12.Appearance.Hovered.Options.UseFont = true;
-            tileViewItemElement12.Appearance.Normal.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement12.Appearance.Normal.FontSizeDelta = -1;
             tileViewItemElement12.Appearance.Normal.Options.UseFont = true;
-            tileViewItemElement12.Appearance.Pressed.FontSizeDelta = 1;
-            tileViewItemElement12.Appearance.Pressed.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement12.Appearance.Pressed.FontSizeDelta = -1;
             tileViewItemElement12.Appearance.Pressed.Options.UseFont = true;
-            tileViewItemElement12.Appearance.Selected.FontSizeDelta = 1;
-            tileViewItemElement12.Appearance.Selected.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            tileViewItemElement12.Appearance.Selected.FontSizeDelta = -1;
             tileViewItemElement12.Appearance.Selected.Options.UseFont = true;
-            tileViewItemElement12.Column = this.tVC_Pic;
-            tileViewItemElement12.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
-            tileViewItemElement12.StretchVertical = true;
-            tileViewItemElement12.Text = "tVC_Pic";
+            tileViewItemElement12.Column = this.tVC_ID;
+            tileViewItemElement12.ColumnIndex = 1;
+            tileViewItemElement12.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
+            tileViewItemElement12.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
+            tileViewItemElement12.RowIndex = 1;
+            tileViewItemElement12.Text = "tVC_ID";
             tileViewItemElement12.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
-            tileViewItemElement12.TextVisible = false;
-            tileViewItemElement13.Appearance.Disabled.FontSizeDelta = -1;
+            tileViewItemElement13.Appearance.Disabled.FontStyleDelta = System.Drawing.FontStyle.Bold;
             tileViewItemElement13.Appearance.Disabled.Options.UseFont = true;
-            tileViewItemElement13.Appearance.Hovered.FontSizeDelta = -1;
+            tileViewItemElement13.Appearance.Hovered.FontStyleDelta = System.Drawing.FontStyle.Bold;
             tileViewItemElement13.Appearance.Hovered.Options.UseFont = true;
-            tileViewItemElement13.Appearance.Normal.FontSizeDelta = -1;
+            tileViewItemElement13.Appearance.Normal.FontStyleDelta = System.Drawing.FontStyle.Bold;
             tileViewItemElement13.Appearance.Normal.Options.UseFont = true;
-            tileViewItemElement13.Appearance.Pressed.FontSizeDelta = -1;
+            tileViewItemElement13.Appearance.Pressed.FontStyleDelta = System.Drawing.FontStyle.Bold;
             tileViewItemElement13.Appearance.Pressed.Options.UseFont = true;
-            tileViewItemElement13.Appearance.Selected.FontSizeDelta = -1;
+            tileViewItemElement13.Appearance.Selected.FontStyleDelta = System.Drawing.FontStyle.Bold;
             tileViewItemElement13.Appearance.Selected.Options.UseFont = true;
-            tileViewItemElement13.Column = this.tVC_id;
+            tileViewItemElement13.Column = this.tVC_Name;
             tileViewItemElement13.ColumnIndex = 1;
             tileViewItemElement13.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
             tileViewItemElement13.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
-            tileViewItemElement13.RowIndex = 1;
-            tileViewItemElement13.Text = "tVC_id";
+            tileViewItemElement13.Text = "tVC_Name";
             tileViewItemElement13.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
-            tileViewItemElement14.Appearance.Disabled.FontStyleDelta = System.Drawing.FontStyle.Bold;
-            tileViewItemElement14.Appearance.Disabled.Options.UseFont = true;
-            tileViewItemElement14.Appearance.Hovered.FontStyleDelta = System.Drawing.FontStyle.Bold;
-            tileViewItemElement14.Appearance.Hovered.Options.UseFont = true;
-            tileViewItemElement14.Appearance.Normal.FontStyleDelta = System.Drawing.FontStyle.Bold;
-            tileViewItemElement14.Appearance.Normal.Options.UseFont = true;
-            tileViewItemElement14.Appearance.Pressed.FontStyleDelta = System.Drawing.FontStyle.Bold;
-            tileViewItemElement14.Appearance.Pressed.Options.UseFont = true;
-            tileViewItemElement14.Appearance.Selected.FontStyleDelta = System.Drawing.FontStyle.Bold;
-            tileViewItemElement14.Appearance.Selected.Options.UseFont = true;
-            tileViewItemElement14.Column = this.tVC_Name;
-            tileViewItemElement14.ColumnIndex = 1;
+            tileViewItemElement14.Column = this.tVC_IconColor;
+            tileViewItemElement14.ColumnIndex = 2;
             tileViewItemElement14.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
             tileViewItemElement14.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
-            tileViewItemElement14.Text = "tVC_Name";
-            tileViewItemElement14.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
-            tileViewItemElement15.Column = this.tVC_COLOR_ICON;
-            tileViewItemElement15.ColumnIndex = 2;
+            tileViewItemElement14.StretchVertical = true;
+            tileViewItemElement14.Text = "tVC_IconColor";
+            tileViewItemElement14.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
+            tileViewItemElement14.TextVisible = false;
+            tileViewItemElement15.Column = this.tVC_IconGrey;
+            tileViewItemElement15.ColumnIndex = 3;
             tileViewItemElement15.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
             tileViewItemElement15.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
             tileViewItemElement15.StretchVertical = true;
-            tileViewItemElement15.Text = "tVC_COLOR_ICON";
+            tileViewItemElement15.Text = "tVC_IconGrey";
             tileViewItemElement15.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
             tileViewItemElement15.TextVisible = false;
-            tileViewItemElement16.Column = this.tVC_GREY_ICON;
-            tileViewItemElement16.ColumnIndex = 3;
+            tileViewItemElement16.Column = this.tVC_IconHover;
+            tileViewItemElement16.ColumnIndex = 4;
             tileViewItemElement16.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
             tileViewItemElement16.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
             tileViewItemElement16.StretchVertical = true;
-            tileViewItemElement16.Text = "tVC_GREY_ICON";
+            tileViewItemElement16.Text = "tVC_IconHover";
             tileViewItemElement16.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
             tileViewItemElement16.TextVisible = false;
-            tileViewItemElement17.Column = this.tVC_HOVER_ICON;
-            tileViewItemElement17.ColumnIndex = 4;
-            tileViewItemElement17.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
-            tileViewItemElement17.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
-            tileViewItemElement17.StretchVertical = true;
-            tileViewItemElement17.Text = "tVC_HOVER_ICON";
-            tileViewItemElement17.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
-            tileViewItemElement17.TextVisible = false;
             this.tV_CategoryScheme.TileTemplate.Add(tileViewItemElement12);
             this.tV_CategoryScheme.TileTemplate.Add(tileViewItemElement13);
             this.tV_CategoryScheme.TileTemplate.Add(tileViewItemElement14);
             this.tV_CategoryScheme.TileTemplate.Add(tileViewItemElement15);
             this.tV_CategoryScheme.TileTemplate.Add(tileViewItemElement16);
-            this.tV_CategoryScheme.TileTemplate.Add(tileViewItemElement17);
             this.tV_CategoryScheme.ItemClick += new DevExpress.XtraGrid.Views.Tile.TileViewItemClickEventHandler(this.tV_CategoryScheme_ItemClick);
             this.tV_CategoryScheme.ItemCustomize += new DevExpress.XtraGrid.Views.Tile.TileViewItemCustomizeEventHandler(this.tV_CategoryScheme_ItemCustomize);
             this.tV_CategoryScheme.CustomItemTemplate += new DevExpress.XtraGrid.Views.Tile.TileViewCustomItemTemplateEventHandler(this.tV_CategoryScheme_CustomItemTemplate);
             this.tV_CategoryScheme.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.tV_CategoryScheme_FocusedRowChanged);
             this.tV_CategoryScheme.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.tV_CategoryScheme_CustomColumnDisplayText);
-            // 
-            // tVC_PicIdx
-            // 
-            this.tVC_PicIdx.Caption = "PicIdx";
-            this.tVC_PicIdx.FieldName = "PicIdx";
-            this.tVC_PicIdx.FieldNameSortGroup = "PicIdx";
-            this.tVC_PicIdx.Name = "tVC_PicIdx";
-            this.tVC_PicIdx.SortMode = DevExpress.XtraGrid.ColumnSortMode.Value;
-            this.tVC_PicIdx.Visible = true;
-            this.tVC_PicIdx.VisibleIndex = 3;
             // 
             // pC_Left
             // 
@@ -1234,7 +1182,6 @@ namespace EuroStatApp {
             ((System.ComponentModel.ISupportInitialize)(this.bE_DownLoad.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.iCBE_Source.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gC_Dataflow)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bS_Dataflow)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tV_Dataflow)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tL_Category)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gC_CategoryScheme)).EndInit();
@@ -1273,8 +1220,7 @@ namespace EuroStatApp {
         private DevExpress.XtraGrid.Views.Tile.TileView tV_CategoryScheme;
         private DevExpress.XtraGrid.Columns.TileViewColumn tVC_Name;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn1;
-        private System.Windows.Forms.BindingSource bS_Dataflow;
-        private DevExpress.XtraGrid.Columns.TileViewColumn tVC_id;
+        private DevExpress.XtraGrid.Columns.TileViewColumn tVC_ID;
         private DevExpress.XtraEditors.LabelControl labelControl1;
         private DevExpress.XtraEditors.LabelControl lC_Download;
         private DevExpress.XtraEditors.ProgressBarControl pBC_URI;
@@ -1289,17 +1235,15 @@ namespace EuroStatApp {
         private DevExpress.XtraEditors.SplitterControl sC_Left;
         private DevExpress.XtraTab.XtraTabControl xTabControl;
         private DevExpress.XtraGrid.Views.Tile.TileView tV_Dataflow;
-        private DevExpress.XtraGrid.Columns.TileViewColumn gC_DataflowName;
-        private DevExpress.XtraGrid.Columns.TileViewColumn gC_id;
+        private DevExpress.XtraGrid.Columns.TileViewColumn gC_Name;
+        private DevExpress.XtraGrid.Columns.TileViewColumn gC_ID;
         private DevExpress.Utils.FlyoutPanel fP_Right;
         private DevExpress.XtraWaitForm.ProgressPanel pP_Right;
         private DevExpress.XtraEditors.ProgressBarControl pBC_Right;
         private DevExpress.XtraEditors.LabelControl lC_Dataflow;
         private DevExpress.XtraEditors.LabelControl lC_DataflowURI;
-        private DevExpress.XtraGrid.Columns.TileViewColumn tVC_Pic;
         private DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit rIPE_Pic;
         private DevExpress.Utils.ImageCollection iC;
-        private DevExpress.XtraGrid.Columns.TileViewColumn tVC_PicIdx;
         private DevExpress.XtraBars.ToolbarForm.ToolbarFormControl toolbarFormControl1;
         private DevExpress.XtraBars.ToolbarForm.ToolbarFormManager toolbarFormManager;
         private DevExpress.XtraBars.BarDockControl barDockControlTop;
@@ -1309,9 +1253,9 @@ namespace EuroStatApp {
         private DevExpress.XtraBars.SkinDropDownButtonItem skinDropDownButtonItem;
         private DevExpress.XtraBars.BarEditItem barEditItemLoadType;
         private DevExpress.XtraEditors.Repository.RepositoryItemImageComboBox repItemImageComboBoxLoadType;
-        private DevExpress.XtraGrid.Columns.TileViewColumn tVC_COLOR_ICON;
-        private DevExpress.XtraGrid.Columns.TileViewColumn tVC_GREY_ICON;
-        private DevExpress.XtraGrid.Columns.TileViewColumn tVC_HOVER_ICON;
+        private DevExpress.XtraGrid.Columns.TileViewColumn tVC_IconColor;
+        private DevExpress.XtraGrid.Columns.TileViewColumn tVC_IconGrey;
+        private DevExpress.XtraGrid.Columns.TileViewColumn tVC_IconHover;
     }
 }
 
