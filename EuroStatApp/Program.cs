@@ -23,7 +23,7 @@ namespace EuroStatApp {
                 DevExpress.XtraEditors.XtraMessageBox.Show(args.Exception.Message, args.Exception.Source);
             };
 
-
+            EuroStat.Dictionary.Migrate();
             Application.Run(new EuroStatForm());
         }
     }

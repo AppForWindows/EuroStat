@@ -108,7 +108,7 @@ namespace EuroStatApp {
             this.rIPE_Pic = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
             this.tVC_ID = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.tVC_Name = new DevExpress.XtraGrid.Columns.TileViewColumn();
-            this.tVC_IconGrey = new DevExpress.XtraGrid.Columns.TileViewColumn();
+            this.tVC_IconGray = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.tVC_IconHover = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.lC_URI = new DevExpress.XtraEditors.LabelControl();
@@ -232,14 +232,14 @@ namespace EuroStatApp {
             this.tVC_Name.Visible = true;
             this.tVC_Name.VisibleIndex = 1;
             // 
-            // tVC_IconGrey
+            // tVC_IconGray
             // 
-            this.tVC_IconGrey.Caption = "IconGrey";
-            this.tVC_IconGrey.ColumnEdit = this.rIPE_Pic;
-            this.tVC_IconGrey.FieldName = "IconGrey";
-            this.tVC_IconGrey.Name = "tVC_IconGrey";
-            this.tVC_IconGrey.Visible = true;
-            this.tVC_IconGrey.VisibleIndex = 3;
+            this.tVC_IconGray.Caption = "IconGray";
+            this.tVC_IconGray.ColumnEdit = this.rIPE_Pic;
+            this.tVC_IconGray.FieldName = "IconGray";
+            this.tVC_IconGray.Name = "tVC_IconGray";
+            this.tVC_IconGray.Visible = true;
+            this.tVC_IconGray.VisibleIndex = 3;
             // 
             // tVC_IconHover
             // 
@@ -567,7 +567,7 @@ namespace EuroStatApp {
             this.tVC_ID,
             this.tVC_Name,
             this.tVC_IconColor,
-            this.tVC_IconGrey,
+            this.tVC_IconGray,
             this.tVC_IconHover});
             this.tV_CategoryScheme.GridControl = this.gC_CategoryScheme;
             this.tV_CategoryScheme.Name = "tV_CategoryScheme";
@@ -666,10 +666,10 @@ namespace EuroStatApp {
             tileViewItemElement6.Appearance.Selected.FontSizeDelta = 1;
             tileViewItemElement6.Appearance.Selected.FontStyleDelta = System.Drawing.FontStyle.Bold;
             tileViewItemElement6.Appearance.Selected.Options.UseFont = true;
-            tileViewItemElement6.Column = this.tVC_IconGrey;
+            tileViewItemElement6.Column = this.tVC_IconHover;
             tileViewItemElement6.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
             tileViewItemElement6.StretchVertical = true;
-            tileViewItemElement6.Text = "tVC_IconGrey";
+            tileViewItemElement6.Text = "tVC_IconHover";
             tileViewItemElement6.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
             tileViewItemElement6.TextVisible = false;
             tileViewItemElement7.Appearance.Disabled.FontSizeDelta = -1;
@@ -708,7 +708,7 @@ namespace EuroStatApp {
             itemTemplate2.Elements.Add(tileViewItemElement6);
             itemTemplate2.Elements.Add(tileViewItemElement7);
             itemTemplate2.Elements.Add(tileViewItemElement8);
-            itemTemplate2.Name = "GREY";
+            itemTemplate2.Name = "HOVER";
             tableRowDefinition5.Length.Value = 15D;
             tableRowDefinition6.Length.Value = 14D;
             itemTemplate2.Rows.Add(tableRowDefinition5);
@@ -733,10 +733,10 @@ namespace EuroStatApp {
             tileViewItemElement9.Appearance.Selected.FontSizeDelta = 1;
             tileViewItemElement9.Appearance.Selected.FontStyleDelta = System.Drawing.FontStyle.Bold;
             tileViewItemElement9.Appearance.Selected.Options.UseFont = true;
-            tileViewItemElement9.Column = this.tVC_IconHover;
+            tileViewItemElement9.Column = this.tVC_IconGray;
             tileViewItemElement9.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
             tileViewItemElement9.StretchVertical = true;
-            tileViewItemElement9.Text = "tVC_IconHover";
+            tileViewItemElement9.Text = "tVC_IconGray";
             tileViewItemElement9.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
             tileViewItemElement9.TextVisible = false;
             tileViewItemElement10.Appearance.Disabled.FontSizeDelta = -1;
@@ -775,7 +775,7 @@ namespace EuroStatApp {
             itemTemplate3.Elements.Add(tileViewItemElement9);
             itemTemplate3.Elements.Add(tileViewItemElement10);
             itemTemplate3.Elements.Add(tileViewItemElement11);
-            itemTemplate3.Name = "HOVER";
+            itemTemplate3.Name = "GRAY";
             tableRowDefinition7.Length.Value = 15D;
             tableRowDefinition8.Length.Value = 14D;
             itemTemplate3.Rows.Add(tableRowDefinition7);
@@ -852,12 +852,12 @@ namespace EuroStatApp {
             tileViewItemElement14.Text = "tVC_IconColor";
             tileViewItemElement14.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
             tileViewItemElement14.TextVisible = false;
-            tileViewItemElement15.Column = this.tVC_IconGrey;
+            tileViewItemElement15.Column = this.tVC_IconGray;
             tileViewItemElement15.ColumnIndex = 3;
             tileViewItemElement15.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
             tileViewItemElement15.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
             tileViewItemElement15.StretchVertical = true;
-            tileViewItemElement15.Text = "tVC_IconGrey";
+            tileViewItemElement15.Text = "tVC_IconGray";
             tileViewItemElement15.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
             tileViewItemElement15.TextVisible = false;
             tileViewItemElement16.Column = this.tVC_IconHover;
@@ -1254,7 +1254,7 @@ namespace EuroStatApp {
         private DevExpress.XtraBars.BarEditItem barEditItemLoadType;
         private DevExpress.XtraEditors.Repository.RepositoryItemImageComboBox repItemImageComboBoxLoadType;
         private DevExpress.XtraGrid.Columns.TileViewColumn tVC_IconColor;
-        private DevExpress.XtraGrid.Columns.TileViewColumn tVC_IconGrey;
+        private DevExpress.XtraGrid.Columns.TileViewColumn tVC_IconGray;
         private DevExpress.XtraGrid.Columns.TileViewColumn tVC_IconHover;
     }
 }

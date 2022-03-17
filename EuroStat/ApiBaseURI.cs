@@ -7,21 +7,63 @@ using System.Threading.Tasks;
 using System.Data;
 using System.IO;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace EuroStat {
-    [DisplayName("ApiBaseURI"), Description("https://ec.europa.eu/eurostat/online-help/public/en/API_01_Introduction_en/#APIBASE_URI")]
-    public abstract class ApiBaseURI {
-        public abstract string ID { get; }
-        public string DisplayName { get { return Components.GetDisplayName(this.GetType()); } }
-        public string Description { get { return Attribute.GetCustomAttribute(this.GetType(), typeof(DescriptionAttribute)) != null ? ((DescriptionAttribute)Attribute.GetCustomAttribute(this.GetType(), typeof(DescriptionAttribute))).Description : this.GetType().FullName; } }
-        public abstract string api_base_uri { get; }
-        public abstract string agencyID { get; }
-        public abstract string catalogue { get; }
+    public class ApiBaseURI {
+        [Key]
+        public virtual string ID { get; set; }
+        public virtual string DisplayName { get; private set; }
+        public virtual string Description { get; private set; }
+        public virtual string api_base_uri { get; private set; }
+        public virtual string agencyID { get; private set; }
+        public virtual string catalogue { get; private set; }
+        public DateTime? dbLoad { get; private set; } = null;
 
-        public List<CategoryScheme> CategorySchemeList = null;
-        public List<Category> CategoryList = null;
-        public List<Categorisation> CategorisationList = null;
-        public List<Dataflow> DataflowList = null;
+        public ApiBaseURI(string ID, string DisplayName, string Description, string api_base_uri, string agencyID, string catalogue) {
+            this.ID = ID;
+            this.DisplayName = DisplayName;
+            this.Description = Description;
+            this.api_base_uri = api_base_uri;
+            this.agencyID = agencyID;
+            this.catalogue = catalogue;
+            CategorySchemeList = null; CategoryList = null; CategorisationList = null; DataflowList = null;
+            ClearDataSet();
+        }
+        [NotMapped]
+        public virtual List<CategoryScheme> CategorySchemeList { get; set; }
+        [NotMapped]
+        public virtual List<Category> CategoryList { get; set; }
+        [NotMapped]
+        public virtual List<Categorisation> CategorisationList { get; set; }
+        [NotMapped]
+        public virtual List<Dataflow> DataflowList { get; set; }
+        public bool LoadDB() {
+            if (nowSaving)
+                return false;
+            nowSaving = true;
+            using (DataContext context = new DataContext())
+                try {
+                    CategorySchemeList = context.CategorySchemes.Where(c => c.ApiBaseID == this.ID).ToList();
+                    foreach (CategoryScheme CS in CategorySchemeList)
+                        CS.ApiBase = this;
+
+                    CategoryList = context.Categories.Where(c => c.ApiBaseID == this.ID).ToList();
+                    foreach (Category C in CategoryList)
+                        C.ApiBase = this;
+
+                    DataflowList = context.Dataflows.Where(c => c.ApiBaseID == this.ID).ToList();
+                    foreach (Dataflow Df in DataflowList)
+                        Df.ApiBase = this;
+
+                    CategorisationList = context.Categorisations.Where(c => c.ApiBaseID == this.ID).ToList();
+                    foreach (Categorisation C in CategorisationList)
+                        C.ApiBase = this;
+                } finally { nowSaving = false; }
+            return true;
+        }
+        bool nowSaving = false;
 
         public void ClearDataSet() { CategorySchemeList = null; CategoryList = null; CategorisationList = null; DataflowList = null; }
 
@@ -66,6 +108,13 @@ namespace EuroStat {
             foreach (Dataflow Df in DataflowList) {
                 await Components.GetDataSetAsync(string.Format(@"{0}/sdmx/2.1/dataflow/{1}/{2}?detail=allstubs&completestub=true", api_base_uri, agencyID, Df.ID), delegate (DataSet ds) { Df.UpdateFromDS(ds); });
                 if (DfU != null) DfU.Invoke(Df);
+                using (DataContext context = new DataContext()) {
+                    if (context.Dataflows.Any(db => db.ID == Df.ID))
+                        context.Update(Df);
+                    else
+                        context.Dataflows.Add(Df);
+                    await context.SaveChangesAsync();
+                }
             }
         }
 
@@ -127,7 +176,6 @@ namespace EuroStat {
         }
         public virtual void DataflowDataPrepare(DataSet ds, string ID, DataflowDataDetail DDD, bool compressed) {
             if (ds == null || ds.Tables.Count == 0) return;
-
         }
         public virtual async Task<DataSet> DataflowDataAsync(string ID, DataflowDataDetail DDD, bool compressed) {
             return await Components.GetDataSetAsync(DataflowDataURI(ID, DDD, compressed), delegate (DataSet ds) { DataflowDataPrepare(ds, ID, DDD, compressed); });
@@ -135,14 +183,15 @@ namespace EuroStat {
     }
 
     public class CategoryScheme {
-        public ApiBaseURI ApiBase { get; private set; }
-        public string ApiBaseID { get; private set; }
-        public string ID { get; private set; }
+        [Key]
+        public string ID { get; set; }
         public string Name { get; set; }
+        public string ApiBaseID { get; private set; }        
         public byte[] IconColor { get; set; }
         public byte[] IconGray { get; set; }
         public byte[] IconHover { get; set; }
 
+        public CategoryScheme() { }
         public CategoryScheme(ApiBaseURI _ApiBase, string _ID, DataRow drCategoryScheme) {
             ApiBase = _ApiBase;
             ApiBaseID = _ApiBase.ID;
@@ -162,18 +211,21 @@ namespace EuroStat {
                     IconHover = Convert.FromBase64String(Ic["AnnotationTitle"].ToString());
             } catch (Exception cs) { }
         }
+        [NotMapped]
+        public virtual Category[] CategoryList { get { return ApiBase != null && ApiBase.CategoryList != null ? ApiBase.CategoryList.Where(cl => cl.CategorySchemeID == ID).ToArray() : new Category[] { }; } }
 
-        public Category[] CategoryList { get { return ApiBase != null && ApiBase.CategoryList != null ? ApiBase.CategoryList.Where(cl => cl.CategorySchemeID == ID).ToArray() : new Category[] { }; } }
+        [NotMapped]//[ForeignKey("ApiBaseID")]//
+        public virtual ApiBaseURI ApiBase { get; set; }
     }
     public class Category {
-        public ApiBaseURI ApiBase { get; private set; }
+        [Key]
+        public string ID { get; set; }
         public string ApiBaseID { get; private set; }
-        public CategoryScheme CategoryScheme { get { return ApiBase != null && ApiBase.CategorySchemeList != null ? ApiBase.CategorySchemeList.FirstOrDefault(cs => cs.ID == CategorySchemeID) : null; } }
         public string CategorySchemeID { get; private set; }
-        public string ID { get; private set; }
         public string ParentID { get; private set; }
         public string Name { get; private set; }
 
+        public Category() { }
         public Category(ApiBaseURI _ApiBase, string _ID, DataRow drCategory) {
             ApiBase = _ApiBase;
             ApiBaseID = _ApiBase.ID;
@@ -188,15 +240,20 @@ namespace EuroStat {
                     Name = name["Name_Text"].ToString();
             } catch (Exception c) { }
         }
+        [NotMapped]//[ForeignKey("ApiBaseID")]//
+        public virtual ApiBaseURI ApiBase { get; set; }
+        [NotMapped]//[ForeignKey("CategorySchemeID")]//
+        public virtual CategoryScheme CategoryScheme { get { return ApiBase != null && ApiBase.CategorySchemeList != null ? ApiBase.CategorySchemeList.FirstOrDefault(cs => cs.ID == CategorySchemeID) : null; } }
     }
     public class Categorisation {
-        public ApiBaseURI ApiBase { get; private set; }
+        [Key]
+        public string ID { get; set; }
         public string ApiBaseID { get; private set; }
-        public string ID { get; private set; }
         public string SourceID { get; private set; }
         public string TargetID { get; private set; }
         public string TargetParentID { get; private set; }
 
+        public Categorisation() { }
         public Categorisation(ApiBaseURI _ApiBase, string _ID, DataRow drCategorisation) {
             ApiBase = _ApiBase;
             ApiBaseID = _ApiBase.ID;
@@ -212,16 +269,20 @@ namespace EuroStat {
                 }
             } catch (Exception c) { }
         }
+
+        [NotMapped]//[ForeignKey("ApiBaseID")]//
+        public virtual ApiBaseURI ApiBase { get; set; }
     }
     public class Dataflow {
-        public ApiBaseURI ApiBase { get; private set; }
+        [Key]
+        public string ID { get; set; }
         public string ApiBaseID { get; private set; }
-        public string ID { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; } = null;
         public string HTML { get; private set; } = null;
         public string SDMX { get; private set; } = null;
 
+        public Dataflow() { }
         public Dataflow(ApiBaseURI _ApiBase, string _ID, DataRow drDataflow) {
             ApiBase = _ApiBase;
             ApiBaseID = _ApiBase.ID;
@@ -250,6 +311,8 @@ namespace EuroStat {
                 DataRow name = Df.GetChildRows("Dataflow_Name").FirstOrDefault(n => n["lang"].ToString() == "en");
                 if (name != null)
                     Name = name["Name_Text"].ToString();
+                else if (Name == null)
+                    Name = string.Empty;
                 if (ds.Tables.Contains("Description") && ds.Tables["Description"].Columns.Contains("Description_Text")) {
                     DataRow desc = Df.GetChildRows("Dataflow_Description").FirstOrDefault(d => d["lang"].ToString() == "en");
                     if (desc != null)
@@ -275,5 +338,8 @@ namespace EuroStat {
                 }
             }
         }
+
+        [NotMapped]//[ForeignKey("ApiBaseID")]//
+        public virtual ApiBaseURI ApiBase { get; set; }
     }
 }

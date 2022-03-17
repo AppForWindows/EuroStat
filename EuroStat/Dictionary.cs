@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace EuroStat {
     public enum details {
@@ -40,20 +41,33 @@ namespace EuroStat {
         nodata
     }
     public static class Dictionary {
-        public static List<Type> ApiBaseURITypes {
+        public static void Migrate() {
+            //using (DataContext db = new DataContext())
+            //    db.Database.Migrate();
+        }
+        public static List<ApiBaseURI> ApiBaseEmpty {
             get {
-                if (ABUT == null || ABUT.Count == 0)
-                    try {
-                        ABUT = new List<Type>();
-                        System.Reflection.Assembly cur = typeof(ApiBaseURI).Assembly;
-                        foreach (System.Reflection.Assembly s in AppDomain.CurrentDomain.GetAssemblies().Where(s => s == cur || s.GetReferencedAssemblies().Any(a => a.FullName == cur.FullName)))
-                            try {
-                                ABUT.AddRange(s.GetTypes().Where(t => t.IsSubclassOf(typeof(ApiBaseURI)) && !t.IsAbstract));
-                            } catch { }
-                    } catch (Exception gt) { }
-                return ABUT;
+                return new List<ApiBaseURI> {
+                    new ApiBaseURI("Eurostat", "Eurostat", "https://ec.europa.eu/eurostat/online-help/public/en/API_01_Introduction_en/#APIBASE_URI", "https://ec.europa.eu/eurostat/api/dissemination", "ESTAT", "https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/sdmx-rest.wadl"),
+                    new ApiBaseURI("DG_COMP", "DG COMP", "https://ec.europa.eu/eurostat/online-help/public/en/API_01_Introduction_en/#APIBASE_URI", "https://webgate.ec.europa.eu/comp/redisstat/api/dissemination", "COMP", "https://webgate.ec.europa.eu/comp/redisstat/api/dissemination/sdmx/2.1/sdmx-rest.wadl"),
+                    new ApiBaseURI("DG_EMPL", "DG EMPL", "https://ec.europa.eu/eurostat/online-help/public/en/API_01_Introduction_en/#APIBASE_URI", "https://webgate.ec.europa.eu/empl/redisstat/api/dissemination", "EMPL", "https://webgate.ec.europa.eu/empl/redisstat/api/dissemination/sdmx/2.1/sdmx-rest.wadl"),
+                    new ApiBaseURI("DG_GROW", "DG GROW", "https://ec.europa.eu/eurostat/online-help/public/en/API_01_Introduction_en/#APIBASE_URI", "https://webgate.ec.europa.eu/grow/redisstat/api/dissemination", "GROW", "https://webgate.ec.europa.eu/grow/redisstat/api/dissemination/sdmx/2.1/sdmx-rest.wadl")
+                };
             }
         }
-        private static List<Type> ABUT = new List<Type>();
+        public static List<ApiBaseURI> ApiBaseList {
+            get {
+                if (ABL == null || ABL.Count == 0)
+                    using (DataContext context = new DataContext())
+                        try {
+                            ABL = context.ApiBaseURIes.ToList();
+                            foreach (ApiBaseURI a in ABL)
+                                a.LoadDB();
+                        } catch (Exception gl) {
+                        }
+                return ABL;
+            }
+        }
+        private static List<ApiBaseURI> ABL = new List<ApiBaseURI>();
     }
 }
