@@ -108,8 +108,8 @@ namespace EuroStatApp {
             this.rIPE_Pic = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
             this.tVC_ID = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.tVC_Name = new DevExpress.XtraGrid.Columns.TileViewColumn();
-            this.tVC_IconGray = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.tVC_IconHover = new DevExpress.XtraGrid.Columns.TileViewColumn();
+            this.tVC_IconGray = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.lC_URI = new DevExpress.XtraEditors.LabelControl();
             this.pBC_URI = new DevExpress.XtraEditors.ProgressBarControl();
@@ -232,15 +232,6 @@ namespace EuroStatApp {
             this.tVC_Name.Visible = true;
             this.tVC_Name.VisibleIndex = 1;
             // 
-            // tVC_IconGray
-            // 
-            this.tVC_IconGray.Caption = "IconGray";
-            this.tVC_IconGray.ColumnEdit = this.rIPE_Pic;
-            this.tVC_IconGray.FieldName = "IconGray";
-            this.tVC_IconGray.Name = "tVC_IconGray";
-            this.tVC_IconGray.Visible = true;
-            this.tVC_IconGray.VisibleIndex = 3;
-            // 
             // tVC_IconHover
             // 
             this.tVC_IconHover.Caption = "IconHover";
@@ -249,6 +240,15 @@ namespace EuroStatApp {
             this.tVC_IconHover.Name = "tVC_IconHover";
             this.tVC_IconHover.Visible = true;
             this.tVC_IconHover.VisibleIndex = 4;
+            // 
+            // tVC_IconGray
+            // 
+            this.tVC_IconGray.Caption = "IconGray";
+            this.tVC_IconGray.ColumnEdit = this.rIPE_Pic;
+            this.tVC_IconGray.FieldName = "IconGray";
+            this.tVC_IconGray.Name = "tVC_IconGray";
+            this.tVC_IconGray.Visible = true;
+            this.tVC_IconGray.VisibleIndex = 3;
             // 
             // panelControl1
             // 
@@ -294,12 +294,15 @@ namespace EuroStatApp {
             this.bE_DownLoad.Dock = System.Windows.Forms.DockStyle.Fill;
             this.bE_DownLoad.Location = new System.Drawing.Point(468, 2);
             this.bE_DownLoad.Name = "bE_DownLoad";
+            this.bE_DownLoad.Properties.Appearance.ForeColor = System.Drawing.Color.Silver;
+            this.bE_DownLoad.Properties.Appearance.Options.UseForeColor = true;
             this.bE_DownLoad.Properties.AutoHeight = false;
             editorButtonImageOptions1.Image = ((System.Drawing.Image)(resources.GetObject("editorButtonImageOptions1.Image")));
             this.bE_DownLoad.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Search, "", -1, false, true, true, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "GetFileSize", null, null, DevExpress.Utils.ToolTipAnchor.Default),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.OK)});
+            this.bE_DownLoad.Properties.NullText = "Загрузка DataSet по ссылке...";
             this.bE_DownLoad.Size = new System.Drawing.Size(876, 19);
             toolTipTitleItem1.Text = "NAME";
             toolTipItem1.Text = "Description";
@@ -337,12 +340,15 @@ namespace EuroStatApp {
             this.iCBE_Source.Dock = System.Windows.Forms.DockStyle.Left;
             this.iCBE_Source.Location = new System.Drawing.Point(77, 2);
             this.iCBE_Source.Name = "iCBE_Source";
+            this.iCBE_Source.Properties.Appearance.ForeColor = System.Drawing.Color.Silver;
+            this.iCBE_Source.Properties.Appearance.Options.UseForeColor = true;
             this.iCBE_Source.Properties.AppearanceDisabled.FontStyleDelta = System.Drawing.FontStyle.Bold;
             this.iCBE_Source.Properties.AppearanceDisabled.Options.UseFont = true;
             this.iCBE_Source.Properties.AutoHeight = false;
             this.iCBE_Source.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.OK, "Обновить", -1, false, true, true, editorButtonImageOptions3, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Перезагрузка каталогов", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
+            this.iCBE_Source.Properties.NullText = "Выбор Источника...";
             this.iCBE_Source.Size = new System.Drawing.Size(218, 19);
             this.iCBE_Source.TabIndex = 0;
             this.iCBE_Source.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.iCBE_Source_ButtonClick);

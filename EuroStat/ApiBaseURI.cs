@@ -19,7 +19,7 @@ namespace EuroStat {
         public virtual string api_base_uri { get; private set; }
         public virtual string agencyID { get; private set; }
         public virtual string catalogue { get; private set; }
-        public DateTime? dbLoad { get; private set; } = null;
+        public DateTime? dbLoad { get; set; } = null;
 
         public ApiBaseURI(string ID, string DisplayName, string Description, string api_base_uri, string agencyID, string catalogue) {
             this.ID = ID;
@@ -29,7 +29,7 @@ namespace EuroStat {
             this.agencyID = agencyID;
             this.catalogue = catalogue;
             CategorySchemeList = null; CategoryList = null; CategorisationList = null; DataflowList = null;
-            ClearDataSet();
+            ClearDataSet(false, false);
         }
         [NotMapped]
         public virtual List<CategoryScheme> CategorySchemeList { get; set; }
@@ -65,7 +65,39 @@ namespace EuroStat {
         }
         bool nowSaving = false;
 
-        public void ClearDataSet() { CategorySchemeList = null; CategoryList = null; CategorisationList = null; DataflowList = null; }
+        public void ClearDataSet(bool Save, bool dtLoadClear) {
+            if (Save)
+                using (DataContext context = new DataContext())
+                    try {
+                        if (dtLoadClear)
+                            this.dbLoad = null;
+                        if (context.ApiBaseURIes.Any(db => db.ID == ID))
+                            context.ApiBaseURIes.Update(this);
+                        else
+                            context.ApiBaseURIes.Add(this);
+                        context.SaveChanges();
+                        if (DataflowList != null)
+                            foreach (Dataflow d in DataflowList)
+                                if (context.Dataflows.Any(db => db.ID == d.ID))
+                                    context.Dataflows.Remove(d);
+                        if (CategorisationList != null)
+                            foreach (Categorisation c in CategorisationList)
+                                if (context.Categorisations.Any(db => db.ID == c.ID))
+                                    context.Categorisations.Remove(c);
+                        if (CategoryList != null)
+                            foreach (Category c in CategoryList)
+                                if (context.Categories.Any(db => db.ID == c.ID))
+                                    context.Categories.Remove(c);
+                        if (CategorySchemeList != null)
+                            foreach (CategoryScheme c in CategorySchemeList)
+                                if (context.CategorySchemes.Any(db => db.ID == c.ID))
+                                    context.CategorySchemes.Remove(c);
+                        context.SaveChanges();
+                    } catch (Exception e) { } finally { }
+            if (dtLoadClear)
+                this.dbLoad = null;
+            CategorySchemeList = null; CategoryList = null; CategorisationList = null; DataflowList = null; 
+        }
 
         public virtual string DataflowListURI(MetaDataListResource MTLR, details D, bool completestubs) {
             return string.Format(@"{0}/sdmx/2.1/{1}/{2}/all?detail={3}{4}", api_base_uri, MTLR.ToString(), agencyID, D.ToString(), completestubs ? "&completestub=true" : "");
@@ -105,17 +137,18 @@ namespace EuroStat {
         }
         public virtual async void DataflowUpdateAsync(Components.DataflowUpdated DfU) {
             if (DataflowList == null || DataflowList.Count == 0) return;
-            foreach (Dataflow Df in DataflowList) {
-                await Components.GetDataSetAsync(string.Format(@"{0}/sdmx/2.1/dataflow/{1}/{2}?detail=allstubs&completestub=true", api_base_uri, agencyID, Df.ID), delegate (DataSet ds) { Df.UpdateFromDS(ds); });
-                if (DfU != null) DfU.Invoke(Df);
-                using (DataContext context = new DataContext()) {
-                    if (context.Dataflows.Any(db => db.ID == Df.ID))
-                        context.Update(Df);
-                    else
-                        context.Dataflows.Add(Df);
-                    await context.SaveChangesAsync();
-                }
-            }
+            foreach (Dataflow Df in DataflowList)
+                try {
+                    await Components.GetDataSetAsync(string.Format(@"{0}/sdmx/2.1/dataflow/{1}/{2}?detail=allstubs&completestub=true", api_base_uri, agencyID, Df.ID), delegate (DataSet ds) { Df.UpdateFromDS(ds); });
+                    if (DfU != null) DfU.Invoke(Df);
+                    using (DataContext context = new DataContext()) {
+                        if (context.Dataflows.Any(db => db.ID == Df.ID))
+                            context.Update(Df);
+                        else
+                            context.Dataflows.Add(Df);
+                        await context.SaveChangesAsync();
+                    }
+                } catch { }
         }
 
         public virtual string CategoryListURI(CategoryResource CR) {
@@ -138,13 +171,16 @@ namespace EuroStat {
             if (ds == null || ds.Tables.Count == 0) return;
             if (CR == CategoryResource.categoryscheme)
                 try {
+                    string SkipStart = "t_";
                     foreach (DataRow CS in ds.Tables["CategoryScheme"].Rows)
-                        CategorySchemeList.Add(new CategoryScheme(this, CS["id"].ToString(), CS));
+                        if (!CS["id"].ToString().StartsWith(SkipStart))
+                            CategorySchemeList.Add(new CategoryScheme(this, CS["id"].ToString(), CS));
 
                     foreach (DataRow C in ds.Tables["Category"].Select("CategoryScheme_Id is not null"))
                         SetCategoryScheme(C, C["CategoryScheme_Id"]);
                     foreach (DataRow C in ds.Tables["Category"].Rows)
-                        CategoryList.Add(new Category(this, C["id"].ToString(), C));
+                        if (!C["CategoryScheme_Id"].ToString().StartsWith(SkipStart))
+                            CategoryList.Add(new Category(this, C["id"].ToString(), C));
                 } catch { }
             else if (CR == CategoryResource.categorisation)
                 try {
@@ -305,6 +341,20 @@ namespace EuroStat {
                         SDMX = sdmx["AnnotationURL"].ToString();
                 }
             } catch (Exception d) { }
+        }
+        public async void UpdateAsync(Components.DataflowUpdated DfU) {
+            if (ApiBase == null) return;
+            try {
+                await Components.GetDataSetAsync(string.Format(@"{0}/sdmx/2.1/dataflow/{1}/{2}?detail=allstubs&completestub=true", ApiBase.api_base_uri, ApiBase.agencyID, ID), delegate (DataSet ds) { UpdateFromDS(ds); });
+                if (DfU != null) DfU.Invoke(this);
+            } catch { }
+            using (DataContext context = new DataContext()) {
+                if (context.Dataflows.Any(db => db.ID == ID))
+                    context.Update(this);
+                else
+                    context.Dataflows.Add(this);
+                await context.SaveChangesAsync();
+            }
         }
         public void UpdateFromDS(DataSet ds) {
             foreach (DataRow Df in ds.Tables["Dataflow"].Select("id='" + ID + "'")) {

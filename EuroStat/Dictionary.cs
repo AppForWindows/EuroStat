@@ -42,8 +42,10 @@ namespace EuroStat {
     }
     public static class Dictionary {
         public static void Migrate() {
-            //using (DataContext db = new DataContext())
-            //    db.Database.Migrate();
+            using (DataContext db = new DataContext())
+                try {
+                    db.Database.Migrate();
+                } catch { }
         }
         public static List<ApiBaseURI> ApiBaseEmpty {
             get {
@@ -63,8 +65,7 @@ namespace EuroStat {
                             ABL = context.ApiBaseURIes.ToList();
                             foreach (ApiBaseURI a in ABL)
                                 a.LoadDB();
-                        } catch (Exception gl) {
-                        }
+                        } catch (Exception gl) { }
                 return ABL;
             }
         }

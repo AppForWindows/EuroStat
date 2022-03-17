@@ -159,7 +159,18 @@ namespace EuroStatApp {
             if (TV == null || TVI == null || ApiBase == null) return;
             Dataflow Df = TV.GetRow(TVI.RowHandle) as Dataflow;
             if (Df == null) return;
-            if (e.Item.Name.Contains("Description") || e.Item.Name.Contains("Loading")) {
+            if (e.Item.Name.Contains("Loading")) {
+                Df.UpdateAsync(delegate (Dataflow df) {
+                    this.Invoke((MethodInvoker)delegate {
+                        if (ApiBase.DataflowList != null)
+                            try {
+                                tV_Dataflow.BeginUpdate();
+                                tV_Dataflow.RefreshRow(tV_Dataflow.GetRowHandle(ApiBase.DataflowList.IndexOf(df)));
+                            } catch { } finally { tV_Dataflow.EndUpdate(); }
+                        tV_Dataflow_ContextButtonClick(tV_Dataflow, new DevExpress.Utils.ContextItemClickEventArgs(TV.ContextButtons[3], null, TVI));
+                    });
+                });
+            } else if (e.Item.Name.Contains("Description")) {
                 DevExpress.Utils.ToolTipControllerShowEventArgs TT = DevExpress.Utils.ToolTipController.DefaultController.CreateShowArgs();
                 TT.ToolTipLocation = DevExpress.Utils.ToolTipLocation.LeftTop;
                 if (Df.Description == null || Df.HTML == null || Df.SDMX == null) {
@@ -284,11 +295,17 @@ namespace EuroStatApp {
         }
 
         bool SetEnabled(bool En) {
-            bool Res = ApiBase != null && ApiBase.CategorySchemeList != null &&  ApiBase.CategorisationList != null &&  ApiBase.DataflowList != null || En;
+            bool Res = En || ApiBase != null
+                && ApiBase.CategorySchemeList != null && ApiBase.CategorySchemeList.Count > 0
+                && ApiBase.CategoryList != null && ApiBase.CategoryList.Count > 0
+                && ApiBase.CategorisationList != null && ApiBase.CategorisationList.Count > 0
+                && ApiBase.DataflowList != null && ApiBase.DataflowList.Count > 0;
             gC_CategoryScheme.Enabled = iCBE_Source.Enabled = Res;
             return Res;
         }
         private async void iCBE_Source_EditValueChanged(object sender, EventArgs e) {
+            if (iCBE_Source.EditValue != null && iCBE_Source.EditValue != DBNull.Value)
+                iCBE_Source.ForeColor = System.Drawing.SystemColors.ControlText;
             if (iCBE_Source.EditValue is ApiBaseURI)
                 try {
                     ApiBase = (ApiBaseURI)iCBE_Source.EditValue;
@@ -374,13 +391,14 @@ namespace EuroStatApp {
                             });
                     } else if (curLoadTyte == LoadType.Async)
                         try {
-                            ShowLoadMessage(this, "Загрузка Данных", "Ожидайте...");
+                            ShowLoadMessage(this, "Загрузка ''" + ApiBase.DisplayName + "''", "Ожидайте...");
                             Task<DataSet> CategorySchemeTask = ApiBase.CategoryListAsync(CategoryResource.categoryscheme);
                             Task<DataSet> CategoriSationTask = ApiBase.CategoryListAsync(CategoryResource.categorisation);
                             Task<DataSet> DataflowListTask = ApiBase.DataflowListAsync(MetaDataListResource.dataflow, details.allstubs, false);
 
                             DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoryScheme");
                             DataSet CategoryScheme = await CategorySchemeTask;
+                            DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoryScheme Save");
                             this.Invoke((MethodInvoker)delegate {
                                 SetDataSourceCategoryScheme(true);
                                 if (fP_Left.IsPopupOpen) fP_Left.HidePopup();
@@ -389,6 +407,7 @@ namespace EuroStatApp {
                             DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoryScheme Done");
                             DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoriSation");
                             DataSet CategoriSation = await CategoriSationTask;
+                            DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoriSation Save");
                             this.Invoke((MethodInvoker)delegate {
                                 SetDataSourceCategorysation(true);
                                 if (fP_Center.IsPopupOpen) fP_Center.HidePopup();
@@ -397,6 +416,7 @@ namespace EuroStatApp {
                             DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoriSation Done");
                             DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("DataflowList");
                             DataSet DataflowList = await DataflowListTask;
+                            DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("DataflowList Save");
                             this.Invoke((MethodInvoker)delegate {
                                 SetDataSourceDataflow(true);
                                 if (fP_Right.IsPopupOpen) fP_Right.HidePopup();
@@ -405,11 +425,14 @@ namespace EuroStatApp {
                             DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("DataflowList Done");
                             ApiBase.DataflowUpdateAsync(delegate (Dataflow Df) {
                                 this.Invoke((MethodInvoker)delegate {
-                                    if (ApiBase.DataflowList != null)
-                                        try {
-                                            tV_Dataflow.BeginUpdate();
-                                            tV_Dataflow.RefreshRow(tV_Dataflow.GetRowHandle(ApiBase.DataflowList.IndexOf(Df)));
-                                        } catch { } finally { tV_Dataflow.EndUpdate(); }
+                                    if (ApiBase.DataflowList != null) {
+                                        int RowHandle = tV_Dataflow.GetRowHandle(ApiBase.DataflowList.IndexOf(Df));
+                                        if (tV_Dataflow.IsTileVisible(RowHandle) != DevExpress.XtraGrid.Views.Grid.RowVisibleState.Hidden)
+                                            try {
+                                                tV_Dataflow.BeginUpdate();
+                                                tV_Dataflow.RefreshRow(RowHandle);
+                                            } catch { } finally { tV_Dataflow.EndUpdate(); }
+                                    }
                                 });
                             });
                             SetEnabled(false);
@@ -453,7 +476,10 @@ namespace EuroStatApp {
         private void iCBE_Source_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e) {
             if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.OK) {
                 if (ApiBase != null)
-                    ApiBase.ClearDataSet();
+                    try {
+                        ShowLoadMessage(this, "Очистка ''" + ApiBase.DisplayName + "''", "Ожидайте...");
+                        ApiBase.ClearDataSet(false, true);
+                    } finally { CloseLoadMessage();}
                 iCBE_Source_EditValueChanged(iCBE_Source, new EventArgs());
             }
         }
@@ -474,23 +500,33 @@ namespace EuroStatApp {
             if (ApiBase == null || !Save) return;
             using (DataContext context = new DataContext())
                 try {
+                    if (!ApiBase.dbLoad.HasValue)
+                        ApiBase.dbLoad = DateTime.Now;
                     if (context.ApiBaseURIes.Any(db => db.ID == ApiBase.ID))
-                        context.Update(ApiBase);
+                        context.ApiBaseURIes.Update(ApiBase);
                     else
                         context.ApiBaseURIes.Add(ApiBase);
                     context.SaveChanges();
                     if (ApiBase.CategorySchemeList != null)
                         foreach (CategoryScheme c in ApiBase.CategorySchemeList)
                             if (context.CategorySchemes.Any(db => db.ID == c.ID))
-                                context.Update(c);
+                                context.CategorySchemes.Update(c);
                             else
                                 context.CategorySchemes.Add(c);
+                    if (ApiBase.CategorySchemeList != null)
+                        foreach (CategoryScheme c in context.CategorySchemes.Where(db => db.ApiBaseID == ApiBase.ID))
+                            if (!ApiBase.CategorySchemeList.Any(cl => cl.ID == c.ID))
+                                context.CategorySchemes.Remove(c);
                     if (ApiBase.CategoryList != null)
-                        foreach (Category c in ApiBase.CategoryList)
+                        foreach (Category c in ApiBase.CategoryList.GroupBy(cl => cl.ID).Select(gr => gr.First()))// сам в шоке, ID не уникален!
                             if (context.Categories.Any(db => db.ID == c.ID))
-                                context.Update(c);
+                                context.Categories.Update(c);
                             else
                                 context.Categories.Add(c);
+                    if (ApiBase.CategoryList != null)
+                        foreach (Category c in context.Categories.Where(db => db.ApiBaseID == ApiBase.ID))
+                            if (!ApiBase.CategoryList.Any(cl => cl.ID == c.ID))
+                                context.Categories.Remove(c);
                     context.SaveChangesAsync();
                 } catch (Exception e) { } finally { }
         }
@@ -501,17 +537,23 @@ namespace EuroStatApp {
             if (ApiBase == null || !Save) return;
             using (DataContext context = new DataContext())
                 try {
+                    if (!ApiBase.dbLoad.HasValue)
+                        ApiBase.dbLoad = DateTime.Now;
                     if (context.ApiBaseURIes.Any(db => db.ID == ApiBase.ID))
-                        context.Update(ApiBase);
+                        context.ApiBaseURIes.Update(ApiBase);
                     else
                         context.ApiBaseURIes.Add(ApiBase);
                     context.SaveChanges();
                     if (ApiBase.CategorisationList != null)
                         foreach (Categorisation c in ApiBase.CategorisationList)
                             if (context.Categorisations.Any(db => db.ID == c.ID))
-                                context.Update(c);
+                                context.Categorisations.Update(c);
                             else
                                 context.Categorisations.Add(c);
+                    if (ApiBase.CategorisationList != null)
+                        foreach (Categorisation c in context.Categorisations.Where(db => db.ApiBaseID == ApiBase.ID))
+                            if (!ApiBase.CategorisationList.Any(cl => cl.ID == c.ID))
+                            context.Categorisations.Remove(c);
                     context.SaveChangesAsync();
                 } catch (Exception e) { } finally { }
         }
@@ -524,17 +566,23 @@ namespace EuroStatApp {
             if (ApiBase == null || !Save) return;
             using (DataContext context = new DataContext())
                 try {
+                    if (!ApiBase.dbLoad.HasValue)
+                        ApiBase.dbLoad = DateTime.Now;
                     if (context.ApiBaseURIes.Any(db => db.ID == ApiBase.ID))
-                        context.Update(ApiBase);
+                        context.ApiBaseURIes.Update(ApiBase);
                     else
                         context.ApiBaseURIes.Add(ApiBase);
                     context.SaveChanges();
                     if (ApiBase.DataflowList != null)
                         foreach (Dataflow d in ApiBase.DataflowList)
                             if (context.Dataflows.Any(db => db.ID == d.ID))
-                                context.Update(d);
+                                context.Dataflows.Update(d);
                             else
                                 context.Dataflows.Add(d);
+                    if (ApiBase.DataflowList != null)
+                        foreach (Dataflow d in context.Dataflows.Where(db => db.ApiBaseID == ApiBase.ID))
+                            if (!ApiBase.DataflowList.Any(dl => dl.ID == d.ID))
+                                context.Dataflows.Remove(d);
                     context.SaveChangesAsync();
                 } catch (Exception e) { } finally { }
         }
@@ -592,6 +640,7 @@ namespace EuroStatApp {
             wClient.DownloadStringAsync(uri);
         }
         private void bE_DownLoad_TextChanged(object sender, EventArgs e) {
+            bE_DownLoad.ForeColor = System.Drawing.SystemColors.ControlText;
             bE_DownLoad.Properties.Buttons[1].Enabled = !string.IsNullOrWhiteSpace(bE_DownLoad.Text);
         }
         private void bE_DownLoad_Click(object sender, EventArgs e) {
