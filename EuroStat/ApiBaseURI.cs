@@ -20,6 +20,8 @@ namespace EuroStat {
         public string agencyID { get; private set; }
         public string catalogue { get; private set; }
         public DateTime? dbLoad { get; set; } = null;
+        [NotMapped]
+        public DateTime? time { get => dbLoad; }
         public byte[] IconColor { get; set; }
 
         public ApiBaseURI(string ID, string DisplayName, string Description, string api_base_uri, string agencyID, string catalogue, byte[] IconColor) {

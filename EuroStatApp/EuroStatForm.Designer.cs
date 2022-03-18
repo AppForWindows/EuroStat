@@ -105,12 +105,15 @@ namespace EuroStatApp {
             DevExpress.Utils.ContextButton contextButton8 = new DevExpress.Utils.ContextButton();
             DevExpress.XtraEditors.TableLayout.TableColumnDefinition tableColumnDefinition13 = new DevExpress.XtraEditors.TableLayout.TableColumnDefinition();
             DevExpress.XtraEditors.TableLayout.TableColumnDefinition tableColumnDefinition14 = new DevExpress.XtraEditors.TableLayout.TableColumnDefinition();
+            DevExpress.XtraEditors.TableLayout.TableColumnDefinition tableColumnDefinition15 = new DevExpress.XtraEditors.TableLayout.TableColumnDefinition();
             DevExpress.XtraEditors.TableLayout.TableRowDefinition tableRowDefinition11 = new DevExpress.XtraEditors.TableLayout.TableRowDefinition();
             DevExpress.XtraEditors.TableLayout.TableRowDefinition tableRowDefinition12 = new DevExpress.XtraEditors.TableLayout.TableRowDefinition();
             DevExpress.XtraEditors.TableLayout.TableSpan tableSpan8 = new DevExpress.XtraEditors.TableLayout.TableSpan();
+            DevExpress.XtraEditors.TableLayout.TableSpan tableSpan9 = new DevExpress.XtraEditors.TableLayout.TableSpan();
             DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement17 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
             DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement18 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
             DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement19 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
+            DevExpress.XtraGrid.Views.Tile.TileViewItemElement tileViewItemElement20 = new DevExpress.XtraGrid.Views.Tile.TileViewItemElement();
             this.gC_Name = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.gC_ID = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.tVC_IconColor = new DevExpress.XtraGrid.Columns.TileViewColumn();
@@ -122,6 +125,7 @@ namespace EuroStatApp {
             this.tV_IconColor = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.rIPictureEdit = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
             this.tV_DisplayName = new DevExpress.XtraGrid.Columns.TileViewColumn();
+            this.tV_time = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.tV_dbLoad = new DevExpress.XtraGrid.Columns.TileViewColumn();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.lC_URI = new DevExpress.XtraEditors.LabelControl();
@@ -294,10 +298,20 @@ namespace EuroStatApp {
             this.tV_DisplayName.Visible = true;
             this.tV_DisplayName.VisibleIndex = 0;
             // 
+            // tV_time
+            // 
+            this.tV_time.Caption = "time";
+            this.tV_time.DisplayFormat.FormatString = "HH:mm";
+            this.tV_time.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.tV_time.FieldName = "time";
+            this.tV_time.Name = "tV_time";
+            this.tV_time.Visible = true;
+            this.tV_time.VisibleIndex = 3;
+            // 
             // tV_dbLoad
             // 
             this.tV_dbLoad.Caption = "dbLoad";
-            this.tV_dbLoad.DisplayFormat.FormatString = "dd MMM yyг.";
+            this.tV_dbLoad.DisplayFormat.FormatString = "dd MMM yyyy г.";
             this.tV_dbLoad.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.tV_dbLoad.FieldName = "dbLoad";
             this.tV_dbLoad.Name = "tV_dbLoad";
@@ -426,11 +440,11 @@ namespace EuroStatApp {
             // gC_Dataflow
             // 
             this.gC_Dataflow.Dock = System.Windows.Forms.DockStyle.Left;
-            this.gC_Dataflow.Location = new System.Drawing.Point(411, 154);
+            this.gC_Dataflow.Location = new System.Drawing.Point(411, 188);
             this.gC_Dataflow.MainView = this.tV_Dataflow;
             this.gC_Dataflow.Name = "gC_Dataflow";
             this.gC_Dataflow.ShowOnlyPredefinedDetails = true;
-            this.gC_Dataflow.Size = new System.Drawing.Size(467, 593);
+            this.gC_Dataflow.Size = new System.Drawing.Size(467, 559);
             this.gC_Dataflow.TabIndex = 1;
             this.gC_Dataflow.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.tV_Dataflow});
@@ -565,9 +579,9 @@ namespace EuroStatApp {
             // 
             // splitterControl1
             // 
-            this.splitterControl1.Location = new System.Drawing.Point(878, 154);
+            this.splitterControl1.Location = new System.Drawing.Point(878, 188);
             this.splitterControl1.Name = "splitterControl1";
-            this.splitterControl1.Size = new System.Drawing.Size(10, 593);
+            this.splitterControl1.Size = new System.Drawing.Size(10, 559);
             this.splitterControl1.TabIndex = 2;
             this.splitterControl1.TabStop = false;
             // 
@@ -584,7 +598,7 @@ namespace EuroStatApp {
             this.tL_Category.OptionsView.ShowHorzLines = false;
             this.tL_Category.OptionsView.ShowIndicator = false;
             this.tL_Category.OptionsView.ShowVertLines = false;
-            this.tL_Category.Size = new System.Drawing.Size(267, 593);
+            this.tL_Category.Size = new System.Drawing.Size(267, 559);
             this.tL_Category.TabIndex = 3;
             this.tL_Category.FocusedNodeChanged += new DevExpress.XtraTreeList.FocusedNodeChangedEventHandler(this.tL_Category_FocusedNodeChanged);
             this.tL_Category.VisibleChanged += new System.EventHandler(this.tL_Category_VisibleChanged);
@@ -599,9 +613,9 @@ namespace EuroStatApp {
             // 
             // splitterControl2
             // 
-            this.splitterControl2.Location = new System.Drawing.Point(401, 154);
+            this.splitterControl2.Location = new System.Drawing.Point(401, 188);
             this.splitterControl2.Name = "splitterControl2";
-            this.splitterControl2.Size = new System.Drawing.Size(10, 593);
+            this.splitterControl2.Size = new System.Drawing.Size(10, 559);
             this.splitterControl2.TabIndex = 4;
             this.splitterControl2.TabStop = false;
             // 
@@ -613,7 +627,7 @@ namespace EuroStatApp {
             this.gC_CategoryScheme.Name = "gC_CategoryScheme";
             this.gC_CategoryScheme.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.rIPE_Pic});
-            this.gC_CategoryScheme.Size = new System.Drawing.Size(118, 593);
+            this.gC_CategoryScheme.Size = new System.Drawing.Size(118, 559);
             this.gC_CategoryScheme.TabIndex = 5;
             this.gC_CategoryScheme.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.tV_CategoryScheme});
@@ -951,9 +965,9 @@ namespace EuroStatApp {
             this.pC_Left.Controls.Add(this.gC_CategoryScheme);
             this.pC_Left.Controls.Add(this.tL_Category);
             this.pC_Left.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pC_Left.Location = new System.Drawing.Point(0, 154);
+            this.pC_Left.Location = new System.Drawing.Point(0, 188);
             this.pC_Left.Name = "pC_Left";
-            this.pC_Left.Size = new System.Drawing.Size(401, 593);
+            this.pC_Left.Size = new System.Drawing.Size(401, 559);
             this.pC_Left.TabIndex = 6;
             this.pC_Left.SizeChanged += new System.EventHandler(this.pC_Left_SizeChanged);
             // 
@@ -1005,10 +1019,10 @@ namespace EuroStatApp {
             this.xTabControl.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.xTabControl.BorderStylePage = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.xTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.xTabControl.Location = new System.Drawing.Point(888, 179);
+            this.xTabControl.Location = new System.Drawing.Point(888, 213);
             this.xTabControl.LookAndFeel.UseDefaultLookAndFeel = false;
             this.xTabControl.Name = "xTabControl";
-            this.xTabControl.Size = new System.Drawing.Size(458, 568);
+            this.xTabControl.Size = new System.Drawing.Size(458, 534);
             this.xTabControl.TabIndex = 8;
             // 
             // fP_Left
@@ -1052,7 +1066,7 @@ namespace EuroStatApp {
             this.sC_Left.Dock = System.Windows.Forms.DockStyle.Right;
             this.sC_Left.Location = new System.Drawing.Point(124, 0);
             this.sC_Left.Name = "sC_Left";
-            this.sC_Left.Size = new System.Drawing.Size(10, 593);
+            this.sC_Left.Size = new System.Drawing.Size(10, 559);
             this.sC_Left.TabIndex = 7;
             this.sC_Left.TabStop = false;
             // 
@@ -1097,7 +1111,7 @@ namespace EuroStatApp {
             this.lC_Dataflow.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lC_Dataflow.Appearance.Options.UseFont = true;
             this.lC_Dataflow.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lC_Dataflow.Location = new System.Drawing.Point(888, 154);
+            this.lC_Dataflow.Location = new System.Drawing.Point(888, 188);
             this.lC_Dataflow.Name = "lC_Dataflow";
             this.lC_Dataflow.Size = new System.Drawing.Size(50, 13);
             this.lC_Dataflow.TabIndex = 0;
@@ -1108,7 +1122,7 @@ namespace EuroStatApp {
             this.lC_DataflowURI.Appearance.FontSizeDelta = -1;
             this.lC_DataflowURI.Appearance.Options.UseFont = true;
             this.lC_DataflowURI.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lC_DataflowURI.Location = new System.Drawing.Point(888, 167);
+            this.lC_DataflowURI.Location = new System.Drawing.Point(888, 201);
             this.lC_DataflowURI.Name = "lC_DataflowURI";
             this.lC_DataflowURI.Size = new System.Drawing.Size(56, 12);
             this.lC_DataflowURI.TabIndex = 9;
@@ -1222,7 +1236,7 @@ namespace EuroStatApp {
             this.gC_ApiBase.Name = "gC_ApiBase";
             this.gC_ApiBase.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.rIPictureEdit});
-            this.gC_ApiBase.Size = new System.Drawing.Size(1346, 100);
+            this.gC_ApiBase.Size = new System.Drawing.Size(1346, 134);
             this.gC_ApiBase.TabIndex = 14;
             this.gC_ApiBase.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.tV_ApiBase});
@@ -1232,32 +1246,40 @@ namespace EuroStatApp {
             this.tV_ApiBase.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.tV_DisplayName,
             this.tV_IconColor,
-            this.tV_dbLoad});
+            this.tV_dbLoad,
+            this.tV_time});
             contextButton8.AlignmentOptions.Panel = DevExpress.Utils.ContextItemPanel.Bottom;
-            contextButton8.AlignmentOptions.Position = DevExpress.Utils.ContextItemPosition.Center;
             contextButton8.Id = new System.Guid("d9c6df6a-fda0-49f4-abe2-b3f338671819");
             contextButton8.ImageOptionsCollection.ItemHovered.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image19")));
             contextButton8.ImageOptionsCollection.ItemNormal.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image20")));
             contextButton8.ImageOptionsCollection.ItemPressed.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image21")));
             contextButton8.Name = "Load";
+            contextButton8.Padding = new System.Windows.Forms.Padding(80, 0, 0, 0);
             contextButton8.ToolTip = "Загрузить Данные из источника";
             contextButton8.ToolTipTitle = "Обновить";
             this.tV_ApiBase.ContextButtons.Add(contextButton8);
             this.tV_ApiBase.GridControl = this.gC_ApiBase;
             this.tV_ApiBase.Name = "tV_ApiBase";
+            this.tV_ApiBase.OptionsTiles.IndentBetweenItems = 4;
             this.tV_ApiBase.OptionsTiles.ItemPadding = new System.Windows.Forms.Padding(2);
             this.tV_ApiBase.OptionsTiles.ItemSize = new System.Drawing.Size(248, 80);
+            this.tV_ApiBase.OptionsTiles.Padding = new System.Windows.Forms.Padding(4);
             this.tV_ApiBase.OptionsTiles.RowCount = 0;
-            tableColumnDefinition13.Length.Value = 82D;
-            tableColumnDefinition14.Length.Value = 162D;
+            tableColumnDefinition13.Length.Value = 70D;
+            tableColumnDefinition14.Length.Value = 153D;
+            tableColumnDefinition15.Length.Value = 21D;
             this.tV_ApiBase.TileColumns.Add(tableColumnDefinition13);
             this.tV_ApiBase.TileColumns.Add(tableColumnDefinition14);
-            tableRowDefinition11.Length.Value = 77D;
-            tableRowDefinition12.Length.Value = 19D;
+            this.tV_ApiBase.TileColumns.Add(tableColumnDefinition15);
+            tableRowDefinition11.Length.Value = 51D;
+            tableRowDefinition12.Length.Value = 25D;
             this.tV_ApiBase.TileRows.Add(tableRowDefinition11);
             this.tV_ApiBase.TileRows.Add(tableRowDefinition12);
             tableSpan8.RowSpan = 2;
+            tableSpan9.ColumnIndex = 1;
+            tableSpan9.ColumnSpan = 2;
             this.tV_ApiBase.TileSpans.Add(tableSpan8);
+            this.tV_ApiBase.TileSpans.Add(tableSpan9);
             tileViewItemElement17.Column = this.tV_IconColor;
             tileViewItemElement17.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
             tileViewItemElement17.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
@@ -1272,16 +1294,26 @@ namespace EuroStatApp {
             tileViewItemElement18.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
             tileViewItemElement18.Text = "tV_DisplayName";
             tileViewItemElement18.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleLeft;
-            tileViewItemElement19.Column = this.tV_dbLoad;
-            tileViewItemElement19.ColumnIndex = 1;
+            tileViewItemElement19.Appearance.Normal.FontSizeDelta = -2;
+            tileViewItemElement19.Appearance.Normal.Options.UseFont = true;
+            tileViewItemElement19.Column = this.tV_time;
+            tileViewItemElement19.ColumnIndex = 2;
             tileViewItemElement19.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
             tileViewItemElement19.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
             tileViewItemElement19.RowIndex = 1;
-            tileViewItemElement19.Text = "tV_dtLoad";
-            tileViewItemElement19.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleRight;
+            tileViewItemElement19.Text = "tV_time";
+            tileViewItemElement19.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.BottomRight;
+            tileViewItemElement20.Column = this.tV_dbLoad;
+            tileViewItemElement20.ColumnIndex = 1;
+            tileViewItemElement20.ImageOptions.ImageAlignment = DevExpress.XtraEditors.TileItemContentAlignment.MiddleCenter;
+            tileViewItemElement20.ImageOptions.ImageScaleMode = DevExpress.XtraEditors.TileItemImageScaleMode.Squeeze;
+            tileViewItemElement20.RowIndex = 1;
+            tileViewItemElement20.Text = "tV_dbLoad";
+            tileViewItemElement20.TextAlignment = DevExpress.XtraEditors.TileItemContentAlignment.BottomRight;
             this.tV_ApiBase.TileTemplate.Add(tileViewItemElement17);
             this.tV_ApiBase.TileTemplate.Add(tileViewItemElement18);
             this.tV_ApiBase.TileTemplate.Add(tileViewItemElement19);
+            this.tV_ApiBase.TileTemplate.Add(tileViewItemElement20);
             this.tV_ApiBase.ItemClick += new DevExpress.XtraGrid.Views.Tile.TileViewItemClickEventHandler(this.tV_ApiBase_ItemClick);
             this.tV_ApiBase.ContextButtonClick += new DevExpress.Utils.ContextItemClickEventHandler(this.tV_ApiBase_ContextButtonClick);
             this.tV_ApiBase.ItemCustomize += new DevExpress.XtraGrid.Views.Tile.TileViewItemCustomizeEventHandler(this.tV_ApiBase_ItemCustomize);
@@ -1402,6 +1434,7 @@ namespace EuroStatApp {
         private DevExpress.XtraGrid.Columns.TileViewColumn tV_IconColor;
         private DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit rIPictureEdit;
         private DevExpress.XtraGrid.Columns.TileViewColumn tV_dbLoad;
+        private DevExpress.XtraGrid.Columns.TileViewColumn tV_time;
     }
 }
 
