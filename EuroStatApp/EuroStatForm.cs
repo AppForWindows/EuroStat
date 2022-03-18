@@ -32,6 +32,12 @@ namespace EuroStatApp {
             repItemImageComboBoxLoadType.AddEnum(typeof(LoadType));
             curLoadTyte = LoadType.Async;
             iCBE_Source.Properties.Items.AddRange(EuroStat.Dictionary.ApiBaseList.Select(t => new DevExpress.XtraEditors.Controls.ImageComboBoxItem(t.DisplayName, t)).ToArray());
+            try {
+                gC_ApiBase.Enabled = false;
+                gC_ApiBase.BeginUpdate();
+                gC_ApiBase.DataSource = EuroStat.Dictionary.ApiBaseList;
+                tV_ApiBase.FocusedRowHandle = -1;
+            } finally { gC_ApiBase.EndUpdate(); gC_ApiBase.Enabled = true; }
             DevExpress.LookAndFeel.UserLookAndFeel.Default.StyleChanged += Default_StyleChanged;
             DevExpress.Utils.ToolTipController.DefaultController.KeepWhileHovered = true;
             DevExpress.Utils.ToolTipController.DefaultController.HyperlinkClick += DefaultController_HyperlinkClick;
@@ -300,24 +306,27 @@ namespace EuroStatApp {
                 && ApiBase.CategoryList != null && ApiBase.CategoryList.Count > 0
                 && ApiBase.CategorisationList != null && ApiBase.CategorisationList.Count > 0
                 && ApiBase.DataflowList != null && ApiBase.DataflowList.Count > 0;
-            gC_CategoryScheme.Enabled = iCBE_Source.Enabled = Res;
+            gC_CategoryScheme.Enabled = iCBE_Source.Enabled = gC_ApiBase.Enabled = Res;
             return Res;
         }
         private async void iCBE_Source_EditValueChanged(object sender, EventArgs e) {
             if (iCBE_Source.EditValue != null && iCBE_Source.EditValue != DBNull.Value)
                 iCBE_Source.ForeColor = System.Drawing.SystemColors.ControlText;
-            if (iCBE_Source.EditValue is ApiBaseURI)
+            if (iCBE_Source.EditValue is ApiBaseURI && ApiBase != (ApiBaseURI)iCBE_Source.EditValue)
                 try {
                     ApiBase = (ApiBaseURI)iCBE_Source.EditValue;
                     if (ApiBase == null) return;
-                    iCBE_Source.Enabled = false;
+                    int ApiBaseRowHandle = tV_ApiBase.GetRowHandle(EuroStat.Dictionary.ApiBaseList.IndexOf(ApiBase));
+                    if (tV_ApiBase.FocusedRowHandle != ApiBaseRowHandle && ApiBaseRowHandle >= 0)
+                        tV_ApiBase.FocusedRowHandle = ApiBaseRowHandle;
+                    iCBE_Source.Enabled = gC_ApiBase.Enabled = false;
                     if (SetEnabled(false)) {
                         SetDataSourceCategoryScheme(false);
                         SetDataSourceCategorysation(false);
                         SetDataSourceDataflow(false);
                         return;
                     }
-                    iCBE_Source.Enabled = false;
+                    iCBE_Source.Enabled = gC_ApiBase.Enabled = false;
 
                     if (curLoadTyte == LoadType.Delegate) {
                         pP_Left.Caption = "Загрузка Каталогов"; pP_Left.Description = string.Empty;
@@ -480,12 +489,103 @@ namespace EuroStatApp {
                         ShowLoadMessage(this, "Очистка ''" + ApiBase.DisplayName + "''", "Ожидайте...");
                         ApiBase.ClearDataSet(false, true);
                     } finally { CloseLoadMessage();}
+                ApiBase = null;
                 iCBE_Source_EditValueChanged(iCBE_Source, new EventArgs());
             }
         }
         private void iCBE_Source_EnabledChanged(object sender, EventArgs e) {
             foreach (DevExpress.XtraEditors.Controls.EditorButton b in iCBE_Source.Properties.Buttons)
                 b.Enabled = (sender as DevExpress.XtraEditors.ImageComboBoxEdit).Enabled;
+        }
+        private void tV_ApiBase_ItemClick(object sender, DevExpress.XtraGrid.Views.Tile.TileViewItemClickEventArgs e) {
+            DevExpress.XtraGrid.Views.Tile.TileView TV = (DevExpress.XtraGrid.Views.Tile.TileView)sender;
+            ApiBaseURI ItemApiBase = TV.GetRow(e.Item.RowHandle) as ApiBaseURI;
+            if (TV.FocusedRowHandle == e.Item.RowHandle)
+                tV_ApiBase_FocusedRowChanged(sender, new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs(TV.FocusedRowHandle, e.Item.RowHandle));
+        }
+        private async void tV_ApiBase_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e) {
+            DevExpress.XtraGrid.Views.Tile.TileView TV = (DevExpress.XtraGrid.Views.Tile.TileView)sender;
+            if (!TV.GridControl.Enabled) return;
+            ApiBase = TV.GetRow(e.FocusedRowHandle) as ApiBaseURI;
+            if (iCBE_Source.EditValue != ApiBase)
+                iCBE_Source.EditValue = ApiBase;
+            if (ApiBase == null) return;
+            try {
+                iCBE_Source.Enabled = gC_ApiBase.Enabled = false;
+                if (SetEnabled(false)) {
+                    SetDataSourceCategoryScheme(false);
+                    SetDataSourceCategorysation(false);
+                    SetDataSourceDataflow(false);
+                    return;
+                }
+                iCBE_Source.Enabled = gC_ApiBase.Enabled = false;
+                try {
+                    ShowLoadMessage(this, "Загрузка ''" + ApiBase.DisplayName + "''", "Ожидайте...");
+                    Task<DataSet> CategorySchemeTask = ApiBase.CategoryListAsync(CategoryResource.categoryscheme);
+                    Task<DataSet> CategoriSationTask = ApiBase.CategoryListAsync(CategoryResource.categorisation);
+                    Task<DataSet> DataflowListTask = ApiBase.DataflowListAsync(MetaDataListResource.dataflow, details.allstubs, false);
+
+                    DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoryScheme");
+                    DataSet CategoryScheme = await CategorySchemeTask;
+                    DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoryScheme Save");
+                    this.Invoke((MethodInvoker)delegate {
+                        SetDataSourceCategoryScheme(true);
+                        if (fP_Left.IsPopupOpen) fP_Left.HidePopup();
+                        SetEnabled(false);
+                    });
+                    DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoryScheme Done");
+                    DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoriSation");
+                    DataSet CategoriSation = await CategoriSationTask;
+                    DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoriSation Save");
+                    this.Invoke((MethodInvoker)delegate {
+                        SetDataSourceCategorysation(true);
+                        if (fP_Center.IsPopupOpen) fP_Center.HidePopup();
+                        SetEnabled(false);
+                    });
+                    DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("CategoriSation Done");
+                    DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("DataflowList");
+                    DataSet DataflowList = await DataflowListTask;
+                    DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("DataflowList Save");
+                    this.Invoke((MethodInvoker)delegate {
+                        SetDataSourceDataflow(true);
+                        if (fP_Right.IsPopupOpen) fP_Right.HidePopup();
+                        SetEnabled(false);
+                    });
+                    DevExpress.XtraSplashScreen.SplashScreenManager.Default.SetWaitFormDescription("DataflowList Done");
+                    ApiBase.DataflowUpdateAsync(delegate (Dataflow Df) {
+                        this.Invoke((MethodInvoker)delegate {
+                            if (ApiBase.DataflowList != null) {
+                                int RowHandle = tV_Dataflow.GetRowHandle(ApiBase.DataflowList.IndexOf(Df));
+                                if (tV_Dataflow.IsTileVisible(RowHandle) != DevExpress.XtraGrid.Views.Grid.RowVisibleState.Hidden)
+                                    try {
+                                        tV_Dataflow.BeginUpdate();
+                                        tV_Dataflow.RefreshRow(RowHandle);
+                                    } catch { } finally { tV_Dataflow.EndUpdate(); }
+                            }
+                        });
+                    });
+                    SetEnabled(false);
+                } catch (Exception al) { SetEnabled(true); throw al; } finally { CloseLoadMessage(); }
+            } finally { gC_CategoryScheme_MouseEnter(gC_CategoryScheme, new EventArgs()); }
+        }
+        private void tV_ApiBase_ItemCustomize(object sender, DevExpress.XtraGrid.Views.Tile.TileViewItemCustomizeEventArgs e) {
+            DevExpress.XtraGrid.Views.Tile.TileView TV = (DevExpress.XtraGrid.Views.Tile.TileView)sender;
+            e.Item.Checked = TV.FocusedRowHandle == e.RowHandle;
+        }
+        private void tV_ApiBase_ContextButtonClick(object sender, DevExpress.Utils.ContextItemClickEventArgs e) {
+            DevExpress.XtraGrid.Views.Tile.TileView TV = (DevExpress.XtraGrid.Views.Tile.TileView)sender;
+            DevExpress.XtraGrid.Views.Tile.TileViewItem TVI = e.DataItem as DevExpress.XtraGrid.Views.Tile.TileViewItem;
+            if (TV == null || TVI == null || ApiBase == null) return;
+            ApiBaseURI ItemApiBase = TV.GetRow(TVI.RowHandle) as ApiBaseURI;
+            if (ItemApiBase == null) return;
+            if (e.Item.Name.Contains("Load")) {
+                if (ApiBase != null)
+                    try {
+                        ShowLoadMessage(this, "Очистка ''" + ApiBase.DisplayName + "''", "Ожидайте...");
+                        ApiBase.ClearDataSet(false, true);
+                    } finally { CloseLoadMessage();}
+                tV_ApiBase_FocusedRowChanged(tV_ApiBase, new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs(TV.FocusedRowHandle, TVI.RowHandle));
+            }
         }
         void SetDataSourceCategoryScheme(bool Save) {
             try {

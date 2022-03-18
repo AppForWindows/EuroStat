@@ -467,6 +467,34 @@
   <metadata name="toolbarFormManager.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>198, 17</value>
   </metadata>
+  <data name="resource.Image19" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABt0RVh0VGl0
+        bGUAU29ydDtTb3J0QnlPcmRlckRhdGU77hkpEAAAAIxJREFUOE+1ktENgCAMRLsTc7iUYSiHYAP//XcC
+        bJseCdgGP/CSF89Kz0KgnHP9gmjbD0D8qqwJgEop5nw/DZgpDHD+8GL47k+AhSLPW7OwOOD3LUAIYC0O
+        iLaA2nndzVud+JnEdxN4QpOEwDPaLHQB3u0bGkeSBkRAQYhMQe0wImSR0cY2r3W36TuVHrv+/NNOlabd
+        AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="resource.Image20" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACJ0RVh0VGl0
+        bGUAU29ydDtTb3J0RGVzYztTb3J0QnlJbnZvaWNlO+071DMAAACHSURBVDhPlZCBDYAwCAS7U+dwKdOh
+        3K4CgfpFMEJysVA41DbGmBkUDTnOayqrJoIoygK4lNzqKIKet8BHWQCXkpcFPsoCuJS8LPBREmRw6HMT
+        WM6sA5GGbfwU+O262V65swQFWntMGTZkA/4cDiHYHNDDIYSaMgnXtp8Ywk2K/wSph0P/me0GAwbYc8J+
+        zWQAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="resource.Image21" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m
+        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAhdEVYdFRpdGxlAEFwcGx5O09LO0NoZWNrO0JhcnM7
+        UmliYm9uO2RjyGgAAACqSURBVDhPpc6xDcJADAXQRFS0SJmARSiDREV2oWEQRmATsgINUyAkqJz/pTPy
+        6ewoB8XT3Tn5X25E5C/usEYxOF0vS7R6/6Wghxts+K4tYPgNAiO0NQU2zHMP+QYYrDh0uGGy4S3cYacf
+        kzBMGl7DA/jTC7RkNkx2gwE+oCVnsGGWZWH6FqSSI2iJCsOUFTglPIu1La+AWPKEQ3qHogLqzD1UFNRy
+        h8tJMwFYUmCqbEZGpQAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="EuroStatForm.IconOptions.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAMAEBAAAAEAIABoBAAANgAAACAgAAABACAAqBAAAJ4EAAAwMAAAAQAgAKglAABGFQAAKAAAABAA

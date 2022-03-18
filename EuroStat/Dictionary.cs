@@ -50,10 +50,10 @@ namespace EuroStat {
         public static List<ApiBaseURI> ApiBaseEmpty {
             get {
                 return new List<ApiBaseURI> {
-                    new ApiBaseURI("Eurostat", "Eurostat", "https://ec.europa.eu/eurostat/online-help/public/en/API_01_Introduction_en/#APIBASE_URI", "https://ec.europa.eu/eurostat/api/dissemination", "ESTAT", "https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/sdmx-rest.wadl"),
-                    new ApiBaseURI("DG_COMP", "DG COMP", "https://ec.europa.eu/eurostat/online-help/public/en/API_01_Introduction_en/#APIBASE_URI", "https://webgate.ec.europa.eu/comp/redisstat/api/dissemination", "COMP", "https://webgate.ec.europa.eu/comp/redisstat/api/dissemination/sdmx/2.1/sdmx-rest.wadl"),
-                    new ApiBaseURI("DG_EMPL", "DG EMPL", "https://ec.europa.eu/eurostat/online-help/public/en/API_01_Introduction_en/#APIBASE_URI", "https://webgate.ec.europa.eu/empl/redisstat/api/dissemination", "EMPL", "https://webgate.ec.europa.eu/empl/redisstat/api/dissemination/sdmx/2.1/sdmx-rest.wadl"),
-                    new ApiBaseURI("DG_GROW", "DG GROW", "https://ec.europa.eu/eurostat/online-help/public/en/API_01_Introduction_en/#APIBASE_URI", "https://webgate.ec.europa.eu/grow/redisstat/api/dissemination", "GROW", "https://webgate.ec.europa.eu/grow/redisstat/api/dissemination/sdmx/2.1/sdmx-rest.wadl")
+                    new ApiBaseURI("Eurostat", "Eurostat", "https://ec.europa.eu/eurostat/online-help/public/en/API_01_Introduction_en/#APIBASE_URI", "https://ec.europa.eu/eurostat/api/dissemination", "ESTAT", "https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/sdmx-rest.wadl",EuroStat.Properties.Resources.Eurostat),
+                    new ApiBaseURI("DG_COMP", "DG COMP", "https://ec.europa.eu/eurostat/online-help/public/en/API_01_Introduction_en/#APIBASE_URI", "https://webgate.ec.europa.eu/comp/redisstat/api/dissemination", "COMP", "https://webgate.ec.europa.eu/comp/redisstat/api/dissemination/sdmx/2.1/sdmx-rest.wadl",EuroStat.Properties.Resources.DG_COMP),
+                    new ApiBaseURI("DG_EMPL", "DG EMPL", "https://ec.europa.eu/eurostat/online-help/public/en/API_01_Introduction_en/#APIBASE_URI", "https://webgate.ec.europa.eu/empl/redisstat/api/dissemination", "EMPL", "https://webgate.ec.europa.eu/empl/redisstat/api/dissemination/sdmx/2.1/sdmx-rest.wadl",EuroStat.Properties.Resources.DG_EMPL),
+                    new ApiBaseURI("DG_GROW", "DG GROW", "https://ec.europa.eu/eurostat/online-help/public/en/API_01_Introduction_en/#APIBASE_URI", "https://webgate.ec.europa.eu/grow/redisstat/api/dissemination", "GROW", "https://webgate.ec.europa.eu/grow/redisstat/api/dissemination/sdmx/2.1/sdmx-rest.wadl",EuroStat.Properties.Resources.DG_GROW)
                 };
             }
         }

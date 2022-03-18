@@ -13,32 +13,41 @@ using System.ComponentModel.DataAnnotations;
 namespace EuroStat {
     public class ApiBaseURI {
         [Key]
-        public virtual string ID { get; set; }
-        public virtual string DisplayName { get; private set; }
-        public virtual string Description { get; private set; }
-        public virtual string api_base_uri { get; private set; }
-        public virtual string agencyID { get; private set; }
-        public virtual string catalogue { get; private set; }
+        public string ID { get; set; }
+        public string DisplayName { get; private set; }
+        public string Description { get; private set; }
+        public string api_base_uri { get; private set; }
+        public string agencyID { get; private set; }
+        public string catalogue { get; private set; }
         public DateTime? dbLoad { get; set; } = null;
+        public byte[] IconColor { get; set; }
 
-        public ApiBaseURI(string ID, string DisplayName, string Description, string api_base_uri, string agencyID, string catalogue) {
+        public ApiBaseURI(string ID, string DisplayName, string Description, string api_base_uri, string agencyID, string catalogue, byte[] IconColor) {
             this.ID = ID;
             this.DisplayName = DisplayName;
             this.Description = Description;
             this.api_base_uri = api_base_uri;
             this.agencyID = agencyID;
-            this.catalogue = catalogue;
+            this.catalogue = catalogue;;
+            this.IconColor = IconColor;
             CategorySchemeList = null; CategoryList = null; CategorisationList = null; DataflowList = null;
             ClearDataSet(false, false);
         }
+        public ApiBaseURI(string ID, string DisplayName, string Description, string api_base_uri, string agencyID, string catalogue, System.Drawing.Bitmap IconColor)
+            : this(ID, DisplayName, Description, api_base_uri, agencyID, catalogue, new byte[] { }) {
+            using (MemoryStream ms = new MemoryStream()) {
+                IconColor.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                this.IconColor = ms.ToArray();
+            }
+        }
         [NotMapped]
-        public virtual List<CategoryScheme> CategorySchemeList { get; set; }
+        public List<CategoryScheme> CategorySchemeList { get; set; }
         [NotMapped]
-        public virtual List<Category> CategoryList { get; set; }
+        public List<Category> CategoryList { get; set; }
         [NotMapped]
-        public virtual List<Categorisation> CategorisationList { get; set; }
+        public List<Categorisation> CategorisationList { get; set; }
         [NotMapped]
-        public virtual List<Dataflow> DataflowList { get; set; }
+        public List<Dataflow> DataflowList { get; set; }
         public bool LoadDB() {
             if (nowSaving)
                 return false;
@@ -99,18 +108,18 @@ namespace EuroStat {
             CategorySchemeList = null; CategoryList = null; CategorisationList = null; DataflowList = null; 
         }
 
-        public virtual string DataflowListURI(MetaDataListResource MTLR, details D, bool completestubs) {
+        public string DataflowListURI(MetaDataListResource MTLR, details D, bool completestubs) {
             return string.Format(@"{0}/sdmx/2.1/{1}/{2}/all?detail={3}{4}", api_base_uri, MTLR.ToString(), agencyID, D.ToString(), completestubs ? "&completestub=true" : "");
         }
-        public virtual DataSet DataflowListGet(MetaDataListResource MTLR, details D, bool completestubs, IProgress<decimal> PR) {
+        public DataSet DataflowListGet(MetaDataListResource MTLR, details D, bool completestubs, IProgress<decimal> PR) {
             DataSet ds = Components.GetDataSet(DataflowListURI(MTLR, D, completestubs), PR);
             DataflowPrepare(ds, MTLR, D, completestubs);
             return ds;
         }
-        public virtual void DataflowListBegin(MetaDataListResource MTLR, details D, bool completestubs, Components.DataSetDownloadProgress DDP, Components.DataSetDownloaded DSD) {
+        public void DataflowListBegin(MetaDataListResource MTLR, details D, bool completestubs, Components.DataSetDownloadProgress DDP, Components.DataSetDownloaded DSD) {
             Components.BeginLoadDataSet(DataflowListURI(MTLR, D, completestubs), DDP, DSD, delegate (DataSet ds) { DataflowPrepare(ds, MTLR, D, completestubs); });
         }
-        public virtual void DataflowPrepare(DataSet ds, MetaDataListResource MTLR, details D, bool completestubs) {
+        public void DataflowPrepare(DataSet ds, MetaDataListResource MTLR, details D, bool completestubs) {
             if (MTLR == MetaDataListResource.dataflow)
                 DataflowList = new List<Dataflow>();
             if (ds == null || ds.Tables.Count == 0) return;
@@ -120,22 +129,22 @@ namespace EuroStat {
                         DataflowList.Add(new Dataflow(this, Df["id"].ToString(), Df));
                 } catch (Exception d) { }
         }
-        public virtual async Task<DataSet> DataflowListAsync(MetaDataListResource MTLR, details D, bool completestubs) {
+        public async Task<DataSet> DataflowListAsync(MetaDataListResource MTLR, details D, bool completestubs) {
             return await Components.GetDataSetAsync(DataflowListURI(MTLR, D, completestubs), delegate (DataSet ds) { DataflowPrepare(ds, MTLR, D, completestubs); });
         }
 
-        public virtual void DataflowUpdateBegin(Components.DataflowUpdated DfU, Components.DataSetDownloaded DSD) {
+        public void DataflowUpdateBegin(Components.DataflowUpdated DfU, Components.DataSetDownloaded DSD) {
             if (DataflowList == null || DataflowList.Count == 0) return;
             Components.BeginLoadDataSet(DataflowListURI(MetaDataListResource.dataflow, details.allstubs, true), null, DSD, delegate (DataSet ds) { DataflowUpdatePrepare(ds, DfU); });
         }
-        public virtual void DataflowUpdatePrepare(DataSet ds, Components.DataflowUpdated DfU) {
+        public void DataflowUpdatePrepare(DataSet ds, Components.DataflowUpdated DfU) {
             if (ds == null || ds.Tables.Count == 0 || DataflowList == null || DataflowList.Count == 0) return;
             foreach (Dataflow Df in DataflowList) {
                 Df.UpdateFromDS(ds);
                 if (DfU != null) DfU.Invoke(Df);
             }
         }
-        public virtual async void DataflowUpdateAsync(Components.DataflowUpdated DfU) {
+        public async void DataflowUpdateAsync(Components.DataflowUpdated DfU) {
             if (DataflowList == null || DataflowList.Count == 0) return;
             foreach (Dataflow Df in DataflowList)
                 try {
@@ -151,18 +160,18 @@ namespace EuroStat {
                 } catch { }
         }
 
-        public virtual string CategoryListURI(CategoryResource CR) {
+        public string CategoryListURI(CategoryResource CR) {
             return string.Format(@"{0}/sdmx/2.1/{1}/{2}/all", api_base_uri, CR.ToString(), agencyID);
         }
-        public virtual DataSet CategoryListGet(CategoryResource CR, IProgress<decimal> PR) {
+        public DataSet CategoryListGet(CategoryResource CR, IProgress<decimal> PR) {
             DataSet ds = Components.GetDataSet(CategoryListURI(CR), PR);
             CategoryListPrepare(ds, CR);
             return ds;
         }
-        public virtual void CategoryListBegin(CategoryResource CR, Components.DataSetDownloadProgress DDP, Components.DataSetDownloaded DSD) {
+        public void CategoryListBegin(CategoryResource CR, Components.DataSetDownloadProgress DDP, Components.DataSetDownloaded DSD) {
             Components.BeginLoadDataSet(CategoryListURI(CR), DDP, DSD, delegate (DataSet ds) { CategoryListPrepare(ds, CR); });
         }
-        public virtual void CategoryListPrepare(DataSet ds, CategoryResource CR) {
+        public void CategoryListPrepare(DataSet ds, CategoryResource CR) {
             if (CR == CategoryResource.categoryscheme) {
                 CategorySchemeList = new List<CategoryScheme>();
                 CategoryList = new List<Category>();
@@ -194,26 +203,26 @@ namespace EuroStat {
             foreach (DataRow cr in r.GetChildRows("Category_Category"))
                 SetCategoryScheme(cr, id);
         }
-        public virtual async Task<DataSet> CategoryListAsync(CategoryResource CR) {
+        public async Task<DataSet> CategoryListAsync(CategoryResource CR) {
             return await Components.GetDataSetAsync(CategoryListURI(CR), delegate (DataSet ds) { CategoryListPrepare(ds, CR); });
         }
 
-        public virtual string DataflowDataURI(string ID, DataflowDataDetail DDD, bool compressed) {
+        public string DataflowDataURI(string ID, DataflowDataDetail DDD, bool compressed) {
             string key = "";
             List<string> param = new List<string> { "format=SDMX_2.1_STRUCTURED", DDD != DataflowDataDetail.empty ? "detail=" + DDD.ToString() : "", compressed ? "compressed=true" : "" };
             param.RemoveAll(p => string.IsNullOrWhiteSpace(p));
             return string.Format(@"{0}/sdmx/2.1/data/{1}{2}{3}", api_base_uri, ID, !string.IsNullOrWhiteSpace(key) ? "/" + key : "", param.Count > 0 ? "?" + string.Join("&", param) : "");
         }
-        public virtual DataSet DataflowData(string ID, DataflowDataDetail DDD, bool compressed, IProgress<decimal> PR) {
+        public DataSet DataflowData(string ID, DataflowDataDetail DDD, bool compressed, IProgress<decimal> PR) {
             return Components.GetDataSet(DataflowDataURI(ID, DDD, compressed), PR);
         }
-        public virtual void DataflowDataBegin(string ID, DataflowDataDetail DDD, bool compressed, Components.DataSetDownloadProgress DDP, Components.DataSetDownloaded DSD) {
+        public void DataflowDataBegin(string ID, DataflowDataDetail DDD, bool compressed, Components.DataSetDownloadProgress DDP, Components.DataSetDownloaded DSD) {
             Components.BeginLoadDataSet(DataflowDataURI(ID, DDD, compressed), DDP, DSD, delegate (DataSet ds) { DataflowDataPrepare(ds, ID, DDD, compressed); });
         }
-        public virtual void DataflowDataPrepare(DataSet ds, string ID, DataflowDataDetail DDD, bool compressed) {
+        public void DataflowDataPrepare(DataSet ds, string ID, DataflowDataDetail DDD, bool compressed) {
             if (ds == null || ds.Tables.Count == 0) return;
         }
-        public virtual async Task<DataSet> DataflowDataAsync(string ID, DataflowDataDetail DDD, bool compressed) {
+        public async Task<DataSet> DataflowDataAsync(string ID, DataflowDataDetail DDD, bool compressed) {
             return await Components.GetDataSetAsync(DataflowDataURI(ID, DDD, compressed), delegate (DataSet ds) { DataflowDataPrepare(ds, ID, DDD, compressed); });
         }
     }
@@ -248,7 +257,7 @@ namespace EuroStat {
             } catch (Exception cs) { }
         }
         [NotMapped]
-        public virtual Category[] CategoryList { get { return ApiBase != null && ApiBase.CategoryList != null ? ApiBase.CategoryList.Where(cl => cl.CategorySchemeID == ID).ToArray() : new Category[] { }; } }
+        public Category[] CategoryList { get { return ApiBase != null && ApiBase.CategoryList != null ? ApiBase.CategoryList.Where(cl => cl.CategorySchemeID == ID).ToArray() : new Category[] { }; } }
 
         [NotMapped]//[ForeignKey("ApiBaseID")]//
         public virtual ApiBaseURI ApiBase { get; set; }
@@ -279,7 +288,7 @@ namespace EuroStat {
         [NotMapped]//[ForeignKey("ApiBaseID")]//
         public virtual ApiBaseURI ApiBase { get; set; }
         [NotMapped]//[ForeignKey("CategorySchemeID")]//
-        public virtual CategoryScheme CategoryScheme { get { return ApiBase != null && ApiBase.CategorySchemeList != null ? ApiBase.CategorySchemeList.FirstOrDefault(cs => cs.ID == CategorySchemeID) : null; } }
+        public CategoryScheme CategoryScheme { get { return ApiBase != null && ApiBase.CategorySchemeList != null ? ApiBase.CategorySchemeList.FirstOrDefault(cs => cs.ID == CategorySchemeID) : null; } }
     }
     public class Categorisation {
         [Key]
@@ -307,7 +316,7 @@ namespace EuroStat {
         }
 
         [NotMapped]//[ForeignKey("ApiBaseID")]//
-        public virtual ApiBaseURI ApiBase { get; set; }
+        public ApiBaseURI ApiBase { get; set; }
     }
     public class Dataflow {
         [Key]
@@ -390,6 +399,6 @@ namespace EuroStat {
         }
 
         [NotMapped]//[ForeignKey("ApiBaseID")]//
-        public virtual ApiBaseURI ApiBase { get; set; }
+        public ApiBaseURI ApiBase { get; set; }
     }
 }
